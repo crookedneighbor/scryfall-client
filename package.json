@@ -1,0 +1,42 @@
+{
+  "name": "mtg-cards",
+  "version": "0.0.0",
+  "description": "A module for making requests to scryfall",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard --verbose | snazzy",
+    "test": "npm run test:unit",
+    "test:unit": "mocha test/unit/**/*.js",
+    "test:integration": "mocha test/integration/**/*.js",
+    "test:publishing": "mocha test/publishing/**/*.js"
+  },
+  "keywords": ["mtg", "magic the gathering", "scryfall"],
+  "author": "blade <blade@crookedneighbor.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^16.1.1",
+    "chai": "^4.1.2",
+    "check-ecmascript-version-compatibility": "^0.1.1",
+    "mocha": "^5.0.4",
+    "sinon": "^4.4.6",
+    "sinon-chai": "^3.0.0",
+    "snazzy": "^7.1.1",
+    "standard": "^11.0.1"
+  },
+  "dependencies": {
+    "promise-polyfill": "^7.1.0"
+  },
+  "standard": {
+    "globals": [
+      "afterEach",
+      "before",
+      "beforeEach",
+      "describe",
+      "expect",
+      "it"
+    ],
+    "ignore": [
+      "dist/*"
+    ]
+  }
+}
