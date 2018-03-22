@@ -1,3 +1,5 @@
+'use strict'
+
 function ScryfallError (scryfallResponse) {
   this.message = scryfallResponse.message || scryfallResponse.details
   this.stack = Error().stack
