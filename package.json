@@ -3,6 +3,11 @@
   "version": "0.0.0",
   "description": "A module for making requests to scryfall",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "lib/*",
+    "models/*"
+  ],
   "scripts": {
     "lint": "standard --verbose | snazzy",
     "test": "npm run test:unit",
