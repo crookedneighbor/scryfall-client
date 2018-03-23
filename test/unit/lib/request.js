@@ -8,7 +8,7 @@ const GenericScryfallResponse = require('../../../models/generic-scryfall-respon
 describe('request', function () {
   beforeEach(function () {
     this.fakeResponseOn = this.sandbox.stub()
-    this.fakeResponseOn.withArgs('data').yieldsAsync('{"type": "foo"}')
+    this.fakeResponseOn.withArgs('data').yieldsAsync('{"object": "foo"}')
     this.fakeResponseOn.withArgs('end').yieldsAsync()
     this.fakeResponse = {
       on: this.fakeResponseOn
