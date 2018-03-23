@@ -3,11 +3,12 @@
 const https = require('https')
 const request = require('../../../lib/request')
 const ScryfallError = require('../../../models/scryfall-error')
+const GenericScryfallResponse = require('../../../models/generic-scryfall-response')
 
 describe('request', function () {
   beforeEach(function () {
     this.fakeResponseOn = this.sandbox.stub()
-    this.fakeResponseOn.withArgs('data').yieldsAsync('{}')
+    this.fakeResponseOn.withArgs('data').yieldsAsync('{"type": "foo"}')
     this.fakeResponseOn.withArgs('end').yieldsAsync()
     this.fakeResponse = {
       on: this.fakeResponseOn
@@ -26,6 +27,12 @@ describe('request', function () {
     it('makes a request to scryfall', function () {
       return request.rawRequest('foo').then(() => {
         expect(https.get).to.be.calledWith('https://api.scryfall.com/foo')
+      })
+    })
+
+    it('resolves with a Scryfall Response', function () {
+      return request.rawRequest('foo').then((response) => {
+        expect(response).to.be.an.instanceof(GenericScryfallResponse)
       })
     })
 
