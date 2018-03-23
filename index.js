@@ -1,5 +1,3 @@
 'use strict'
 
-module.exports = {
-  rawRequest: require('./lib/request').rawRequest
-}
+module.exports = require('./lib/request').rawRequest
