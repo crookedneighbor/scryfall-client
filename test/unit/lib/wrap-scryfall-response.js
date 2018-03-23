@@ -69,4 +69,3 @@ describe('wrapScryfallResponse', function () {
     expect(wrappedResponse.nested_thing.more_nesting[0]).to.be.an.instanceof(Card)
   })
 })
-
