@@ -1,10 +1,10 @@
 'use strict'
 
-var request = require('../lib/request')
+// based on http://perfectionkills.com/how-ecmascript-5-still-does-not-allow-to-subclass-an-array/
+/* eslint-disable no-proto, new-parens, no-array-constructor */
 
 function List (scryfallObject) {
   var arr = []
-  var entries = scryfallObject.data
 
   arr.push.apply(arr, scryfallObject.data)
   arr.__proto__ = List.prototype
