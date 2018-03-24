@@ -30,6 +30,18 @@ describe('request', function () {
       })
     })
 
+    it('strips out leading /', function () {
+      return request.rawRequest('/foo').then(() => {
+        expect(https.get).to.be.calledWith('https://api.scryfall.com/foo')
+      })
+    })
+
+    it('allows passing in the full domain', function () {
+      return request.rawRequest('https://api.scryfall.com/foo').then(() => {
+        expect(https.get).to.be.calledWith('https://api.scryfall.com/foo')
+      })
+    })
+
     it('resolves with a Scryfall Response', function () {
       return request.rawRequest('foo').then((response) => {
         expect(response).to.be.an.instanceof(GenericScryfallResponse)
