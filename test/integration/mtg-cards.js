@@ -1,15 +1,15 @@
-const mtgCards = require('../../')
+const scryfall = require('../../')
 
-describe('mtgCards', function () {
+describe('scryfallClient', function () {
   describe('rawRequest', function () {
     it('makes a request to scryfall', function () {
-      return mtgCards('cards/random').then((res) => {
+      return scryfall('cards/random').then((res) => {
         expect(res.object).to.equal('card')
       })
     })
 
     it('handles errors', function () {
-      return mtgCards('foo').then(this.expectToReject).catch((error) => {
+      return scryfall('foo').then(this.expectToReject).catch((error) => {
         expect(error.message).to.be.a('string')
         expect(error.httpStatus).to.equal(404)
       })

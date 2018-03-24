@@ -10,7 +10,7 @@ describe('built file (be patient, this can take a while)', function () {
 
     mkdirp.sync(distLocation)
 
-    let name = 'mtg-cards'
+    let name = 'scryfall-client'
     this.path = path.resolve(distLocation, `${name}.js`)
     let bundleFs = fs.createWriteStream(this.path)
     let b = browserify({standalone: name})
