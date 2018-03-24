@@ -2,5 +2,5 @@
 
 module.exports = {
   card: require('./card'),
-  rulings: require('./rulings')
+  listOfRulings: require('./list-of-rulings')
 }
