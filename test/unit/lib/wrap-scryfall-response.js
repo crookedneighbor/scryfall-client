@@ -21,6 +21,7 @@ describe('wrapScryfallResponse', function () {
     })
 
     expect(wrappedResponse).to.be.an.instanceof(Card)
+    expect(wrappedResponse.foo).to.equal('bar')
   })
 
   it('wraps nested properties', function () {

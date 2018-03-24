@@ -8,10 +8,16 @@ describe('Card', function () {
     this.sandbox.stub(request, 'rawRequest').resolves({})
   })
 
-  it('applies properties', function () {
-    let card = new Card(this.fixtures.card)
+  it('does not throw if object type is "card"', function () {
+    expect(() => {
+      new Card(this.fixtures.card)
+    }).to.not.throw()
+  })
 
-    expect(card.name).to.equal(this.fixtures.card.name)
+  it('throws if object type is not "card"', function () {
+    expect(() => {
+      new Card(this.fixtures.rulings)
+    }).to.throw('Object type must be "card"')
   })
 
   describe('getRulings', function () {

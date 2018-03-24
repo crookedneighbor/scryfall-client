@@ -15,4 +15,3 @@ module.exports = {
     comment: 'Budoka Gardener flips if you control ten or more lands when its ability resolves, even if you don’t use its ability to put a land onto the battlefield.'
   }]
 }
-

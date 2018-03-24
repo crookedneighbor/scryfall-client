@@ -3,7 +3,9 @@
 var request = require('../lib/request')
 
 function Card (scryfallObject) {
-  Object.assign(this, scryfallObject)
+  if (scryfallObject.object !== 'card') {
+    throw new Error('Object type must be "card"')
+  }
 }
 
 Card.prototype.getRulings = function () {
