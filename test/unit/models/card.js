@@ -10,13 +10,13 @@ describe('Card', function () {
 
   it('does not throw if object type is "card"', function () {
     expect(() => {
-      new Card(this.fixtures.card)
+      new Card(this.fixtures.card) // eslint-disable-line no-new
     }).to.not.throw()
   })
 
   it('throws if object type is not "card"', function () {
     expect(() => {
-      new Card(this.fixtures.listOfRulings)
+      new Card(this.fixtures.listOfRulings) // eslint-disable-line no-new
     }).to.throw('Object type must be "card"')
   })
 

@@ -2,6 +2,7 @@
 
 const wrapScryfallResponse = require('../../../lib/wrap-scryfall-response')
 const Card = require('../../../models/card')
+const List = require('../../../models/list')
 const GenericScryfallResponse = require('../../../models/generic-scryfall-response')
 
 describe('wrapScryfallResponse', function () {
@@ -22,6 +23,23 @@ describe('wrapScryfallResponse', function () {
 
     expect(wrappedResponse).to.be.an.instanceof(Card)
     expect(wrappedResponse.foo).to.equal('bar')
+  })
+
+  it('wraps list responses in List', function () {
+    let wrappedResponse = wrapScryfallResponse({
+      object: 'list',
+      data: [{
+        object: 'card',
+        foo: 'bar'
+      }, {
+        object: 'card',
+        foo: 'bar'
+      }]
+    })
+
+    expect(wrappedResponse).to.be.an.instanceof(List)
+    expect(wrappedResponse.length).to.equal(2)
+    expect(wrappedResponse[0]).to.be.an.instanceof(Card)
   })
 
   it('wraps nested properties', function () {
