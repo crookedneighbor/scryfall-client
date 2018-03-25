@@ -9,7 +9,7 @@ function Card (scryfallObject) {
 }
 
 Card.prototype.getRulings = function () {
-  return request.rawRequest('cards/' + this.id + '/rulings')
+  return request.rawRequest(this.rulings_uri)
 }
 
 module.exports = Card
