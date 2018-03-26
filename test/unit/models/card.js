@@ -66,4 +66,46 @@ describe('Card', function () {
       })
     })
   })
+
+  describe('isLegal', function () {
+    beforeEach(function () {
+      this.card = wrapScryfallResponse(this.fixtures.card)
+    })
+
+    it('throws an error if no format is provided', function () {
+      expect(() => {
+        this.card.isLegal()
+      }).to.throw('Must provide format for checking legality. Use one of `standard`, `future`, `frontier`, `modern`, `legacy`, `pauper`, `vintage`, `penny`, `commander`, `1v1`, `duel`, `brawl`.')
+    })
+
+    it('throws an error if an unrecognized format is provided', function () {
+      expect(() => {
+        this.card.isLegal('foo')
+      }).to.throw('Format "foo" is not recgonized. Use one of `standard`, `future`, `frontier`, `modern`, `legacy`, `pauper`, `vintage`, `penny`, `commander`, `1v1`, `duel`, `brawl`.')
+    })
+
+    it('returns true for legal card in provided format', function () {
+      this.card.legalities.commander = 'legal'
+
+      expect(this.card.isLegal('commander')).to.equal(true)
+    })
+
+    it('returns true for restricted card in provided format', function () {
+      this.card.legalities.vintage = 'restricted'
+
+      expect(this.card.isLegal('vintage')).to.equal(true)
+    })
+
+    it('returns false for illegal card in provided format', function () {
+      this.card.legalities.modern = 'not_legal'
+
+      expect(this.card.isLegal('modern')).to.equal(false)
+    })
+
+    it('returns false for banned card in provided format', function () {
+      this.card.legalities.legacy = 'banned'
+
+      expect(this.card.isLegal('legacy')).to.equal(false)
+    })
+  })
 })
