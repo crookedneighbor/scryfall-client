@@ -35,4 +35,35 @@ describe('Card', function () {
       })
     })
   })
+
+  describe('getSet', function () {
+    beforeEach(function () {
+      request.rawRequest.resolves(this.fixtures.set)
+      this.card = wrapScryfallResponse(this.fixtures.card)
+    })
+
+    it('gets set for card', function () {
+      return this.card.getSet().then((set) => {
+        expect(this.fixtures.card.set_uri).to.be.a('string')
+        expect(request.rawRequest).to.be.calledWith(this.fixtures.card.set_uri)
+        expect(set.code).to.equal(this.fixtures.set.code)
+      })
+    })
+  })
+
+  describe('getPrints', function () {
+    beforeEach(function () {
+      request.rawRequest.resolves(wrapScryfallResponse(this.fixtures.listOfPrints))
+      this.card = wrapScryfallResponse(this.fixtures.card)
+    })
+
+    it('gets prints for card', function () {
+      return this.card.getPrints().then((prints) => {
+        expect(this.fixtures.listOfPrints.data[0].name).to.be.a('string')
+        expect(request.rawRequest).to.be.calledWith(this.fixtures.card.prints_search_uri)
+        expect(prints[0].name).to.equal(this.fixtures.listOfPrints.data[0].name)
+        expect(prints.length).to.equal(this.fixtures.listOfPrints.data.length)
+      })
+    })
+  })
 })

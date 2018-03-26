@@ -3,5 +3,7 @@
 module.exports = {
   card: require('./card'),
   listOfCards: require('./list-of-cards'),
-  listOfRulings: require('./list-of-rulings')
+  listOfPrints: require('./list-of-prints'),
+  listOfRulings: require('./list-of-rulings'),
+  set: require('./set')
 }
