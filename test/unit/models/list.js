@@ -1,5 +1,6 @@
 'use strict'
 
+const wrapScryfallResponse = require('../../../lib/wrap-scryfall-response')
 const request = require('../../../lib/request')
 const List = require('../../../models/list')
 
@@ -56,5 +57,30 @@ describe('List', function () {
     let list = new List(this.fixtures.listOfCards)
 
     expect(list.data).to.equal(undefined)
+  })
+
+  describe('next', function () {
+    beforeEach(function () {
+      request.rawRequest.resolves(wrapScryfallResponse(this.fixtures.listOfCardsPage2))
+    })
+
+    it('makes a request for the next page', function () {
+      let list = new List(this.fixtures.listOfCards)
+
+      return list.next().then((list2) => {
+        expect(request.rawRequest).to.have.been.calledWith(this.fixtures.listOfCards.next_page)
+        expect(list2[0].name).to.equal(this.fixtures.listOfCardsPage2.data[0].name)
+      })
+    })
+
+    it('rejects promise if there are no additional results', function () {
+      let list = new List(this.fixtures.listOfCards)
+
+      list.has_more = false
+
+      return list.next().then(this.expectToReject).catch((err) => {
+        expect(err.message).to.equal('No additional pages.')
+      })
+    })
   })
 })

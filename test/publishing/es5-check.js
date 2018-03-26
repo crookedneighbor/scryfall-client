@@ -1,3 +1,5 @@
+'use strict'
+
 const browserify = require('browserify')
 const path = require('path')
 const fs = require('fs')
