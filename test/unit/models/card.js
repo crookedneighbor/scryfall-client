@@ -108,4 +108,74 @@ describe('Card', function () {
       expect(this.card.isLegal('legacy')).to.equal(false)
     })
   })
+
+  describe('getImage', function () {
+    it('resolves with the specified image format for normal layout cards', function () {
+      let card = wrapScryfallResponse(this.fixtures.card)
+
+      return card.getImage('normal').then((img) => {
+        expect(img).to.be.a('string')
+        expect(img).to.equal(this.fixtures.card.image_uris.normal)
+
+        return card.getImage('small')
+      }).then((img) => {
+        expect(img).to.be.a('string')
+        expect(img).to.equal(this.fixtures.card.image_uris.small)
+      })
+    })
+
+    it('defaults to normal layout', function () {
+      let card = wrapScryfallResponse(this.fixtures.card)
+
+      return card.getImage().then((img) => {
+        expect(img).to.be.a('string')
+        expect(img).to.equal(this.fixtures.card.image_uris.normal)
+      })
+    })
+
+    it('rejects with an error if image type does not exist', function () {
+      let card = wrapScryfallResponse(this.fixtures.card)
+
+      return card.getImage('foo').then(this.expectToReject).catch((err) => {
+        expect(err.message).to.equal('`foo` is not a valid type. Must be one of `small`, `normal`, `large`, `png`, `art_crop`, `border_crop`.')
+      })
+    })
+
+    it('uses default face for transform card', function () {
+      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout)
+
+      return card.getImage().then((img) => {
+        expect(img).to.be.a('string')
+        expect(img).to.equal(this.fixtures.cardWithTransformLayout.card_faces[0].image_uris.normal)
+      })
+    })
+
+    it('gets image for flip card', function () {
+      let card = wrapScryfallResponse(this.fixtures.cardWithFlipLayout)
+
+      return card.getImage().then((img) => {
+        expect(img).to.be.a('string')
+        expect(img).to.equal(this.fixtures.cardWithFlipLayout.image_uris.normal)
+      })
+    })
+
+    it('gets image for meld card', function () {
+      let card = wrapScryfallResponse(this.fixtures.cardWithMeldLayout)
+
+      return card.getImage().then((img) => {
+        expect(img).to.be.a('string')
+        expect(img).to.equal(this.fixtures.cardWithMeldLayout.image_uris.normal)
+      })
+    })
+
+    it('rejects with an error if image uris cannot be found', function () {
+      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout)
+
+      delete card.card_faces
+
+      return card.getImage().then(this.expectToReject).catch((err) => {
+        expect(err.message).to.equal('Could not find image uris for card.')
+      })
+    })
+  })
 })
