@@ -178,4 +178,106 @@ describe('Card', function () {
       })
     })
   })
+
+  describe('getBackImage', function () {
+    it('resolves with scryfall back image for normal layout cards', function () {
+      let card = wrapScryfallResponse(this.fixtures.card)
+
+      return card.getBackImage().then((imgs) => {
+        expect(imgs).to.be.a('array')
+        expect(imgs.length).to.equal(1)
+        expect(imgs[0]).to.equal('https://img.scryfall.com/errors/missing.jpg')
+      })
+    })
+
+    it('resolves with the same scryfall back image for normal layout cards regardless of type passed in', function () {
+      let card = wrapScryfallResponse(this.fixtures.card)
+
+      return card.getBackImage('normal').then((imgs) => {
+        expect(imgs).to.be.a('array')
+        expect(imgs.length).to.equal(1)
+        expect(imgs[0]).to.equal('https://img.scryfall.com/errors/missing.jpg')
+
+        return card.getBackImage('small')
+      }).then((imgs) => {
+        expect(imgs).to.be.a('array')
+        expect(imgs.length).to.equal(1)
+        expect(imgs[0]).to.equal('https://img.scryfall.com/errors/missing.jpg')
+      })
+    })
+
+    it('rejects with an error if image type does not exist', function () {
+      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout)
+
+      return card.getBackImage('foo').then(this.expectToReject).catch((err) => {
+        expect(err.message).to.equal('`foo` is not a valid type. Must be one of `small`, `normal`, `large`, `png`, `art_crop`, `border_crop`.')
+      })
+    })
+
+    it('rejects with an error if card does not have image uris or card faces', function () {
+      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout)
+
+      delete card.card_faces
+
+      return card.getBackImage().then(this.expectToReject).catch((err) => {
+        expect(err.message).to.equal('An unexpected error occured when attempting to show back side of card.')
+      })
+    })
+
+    it('uses back face for transform card', function () {
+      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout)
+
+      return card.getBackImage().then((imgs) => {
+        expect(imgs).to.be.a('array')
+        expect(imgs.length).to.equal(1)
+        expect(imgs[0]).to.equal(this.fixtures.cardWithTransformLayout.card_faces[1].image_uris.normal)
+      })
+    })
+
+    it('can specify size for back face for transform card', function () {
+      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout)
+
+      return card.getBackImage('small').then((imgs) => {
+        expect(imgs).to.be.a('array')
+        expect(imgs.length).to.equal(1)
+        expect(imgs[0]).to.equal(this.fixtures.cardWithTransformLayout.card_faces[1].image_uris.small)
+      })
+    })
+
+    it('gives the back card image for flip card', function () {
+      let card = wrapScryfallResponse(this.fixtures.cardWithFlipLayout)
+
+      return card.getBackImage().then((imgs) => {
+        expect(imgs).to.be.a('array')
+        expect(imgs.length).to.equal(1)
+        expect(imgs[0]).to.equal('https://img.scryfall.com/errors/missing.jpg')
+      })
+    })
+
+    it('gets melded card image for meld card', function () {
+      let card = wrapScryfallResponse(this.fixtures.cardWithMeldLayout)
+
+      request.rawRequest.resolves(wrapScryfallResponse(this.fixtures.cardBackWithMeldLayout))
+
+      return card.getBackImage().then((imgs) => {
+        expect(imgs).to.be.a('array')
+        expect(imgs.length).to.equal(1)
+        expect(imgs[0]).to.equal(this.fixtures.cardBackWithMeldLayout.image_uris.normal)
+      })
+    })
+
+    it('gets unmeleded card images for backside of meld card', function () {
+      let card = wrapScryfallResponse(this.fixtures.cardBackWithMeldLayout)
+
+      request.rawRequest.withArgs(this.fixtures.cardBackWithMeldLayout.all_parts[0].uri).resolves(wrapScryfallResponse(this.fixtures.cardWithMeldLayout))
+      request.rawRequest.withArgs(this.fixtures.cardBackWithMeldLayout.all_parts[2].uri).resolves(wrapScryfallResponse(this.fixtures.secondCardWithMeldLayout))
+
+      return card.getBackImage().then((imgs) => {
+        expect(imgs).to.be.a('array')
+        expect(imgs.length).to.equal(2)
+        expect(imgs[0]).to.equal(this.fixtures.cardWithMeldLayout.image_uris.normal)
+        expect(imgs[1]).to.equal(this.fixtures.secondCardWithMeldLayout.image_uris.normal)
+      })
+    })
+  })
 })
