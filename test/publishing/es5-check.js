@@ -24,8 +24,8 @@ describe('built file (be patient, this can take a while)', function () {
   })
 
   it('is es5 compliant', function (done) {
-    this.slow(30000)
-    this.timeout(35000)
+    this.slow(40000)
+    this.timeout(45000)
 
     checkES5(this.path, done)
   })
