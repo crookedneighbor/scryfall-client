@@ -1,7 +1,7 @@
 const scryfall = require('../../')
 
 describe('scryfallClient', function () {
-  this.slow(2000)
+  this.slow(3000)
   this.timeout(5000)
 
   describe('rawRequest', function () {
@@ -39,6 +39,33 @@ describe('scryfallClient', function () {
         expect(list.object).to.equal('list')
       })
     })
+
+    it('can recursively call next', function () {
+      let totalCards
+
+      function collectCards (list, allCards) {
+        allCards = allCards || []
+        allCards.push.apply(allCards, list)
+
+        if (!list.has_more) {
+          return allCards
+        }
+
+        return list.next().then(function (newList) {
+          return collectCards(newList, allCards)
+        })
+      }
+
+      return scryfall('cards/search', {
+        q: 'format:standard r:r'
+      }).then(function (list) {
+        totalCards = list.total_cards
+
+        return collectCards(list)
+      }).then(function (allRareCardsInStandard) {
+        expect(allRareCardsInStandard.length).to.equal(totalCards)
+      })
+    })
   })
 
   describe('Set object', function () {
@@ -54,7 +81,7 @@ describe('scryfallClient', function () {
     })
   })
 
-  describe.only('Card object', function () {
+  describe('Card object', function () {
     beforeEach(function () {
       this.budokaGardener = '49999b95-5e62-414c-b975-4191b9c1ab39'
       this.windfall = '357cf802-2d66-49a4-bf43-ab3bc30ab825'
