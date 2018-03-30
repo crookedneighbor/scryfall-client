@@ -1,7 +1,7 @@
 Scryfall Client
 ---------------
 
-A simple wrapper for the [Scryfall API](https://scryfall.com/docs/api).
+A simple (unofficial) wrapper for the [Scryfall API](https://scryfall.com/docs/api).
 
 # Installation
 
