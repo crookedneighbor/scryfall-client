@@ -7,6 +7,9 @@ var search = document.querySelector('#search-wrapper input')
 var autocompleteDatalist = document.querySelector('#search-wrapper datalist')
 var cardImage = document.querySelector('#card-wrapper img')
 
+var showCode = document.querySelector('#search-wrapper #show-code')
+var modal = document.querySelector('#code-modal')
+
 search.addEventListener('keyup', debounce(function (event) {
   scryfall('cards/autocomplete', {
     q: search.value
@@ -36,5 +39,12 @@ search.addEventListener('input', function (event) {
       })
     }
   }
+})
 
+showCode.addEventListener('click', function () {
+  modal.classList.add('is-active')
+})
+
+modal.querySelector('.modal-background').addEventListener('click', function () {
+  modal.classList.remove('is-active')
 })

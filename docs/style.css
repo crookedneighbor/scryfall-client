@@ -3,6 +3,14 @@
   align-items: center;
 }
 
+#search-wrapper .field {
+  width: 100%;
+}
+
+#search-wrapper #show-code {
+  cursor: pointer;
+}
+
 #card-wrapper {
   text-align: center;
 }

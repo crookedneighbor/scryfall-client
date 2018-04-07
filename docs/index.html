@@ -12,14 +12,12 @@
       <div class="container">
         <div class="columns">
           <div id="search-wrapper" class="column">
-            <input list="autocomplete-cards" class="input" id="search" type="text" placeholder="Enter Card Name" />
-            <datalist id="autocomplete-cards">
-              <option value="Internet Explorer">
-              <option value="Firefox">
-              <option value="Chrome">
-              <option value="Opera">
-              <option value="Safari">
-            </datalist>
+            <div class="field">
+              <input list="autocomplete-cards" class="input is-large" id="search" type="text" placeholder="Enter Card Name (Ex: Karn)" />
+              <datalist id="autocomplete-cards">
+              </datalist>
+              <p id="show-code" class="help is-link">Show Code</p>
+            </div>
           </div>
           <div id="card-wrapper" class="column">
             <img src="https://img.scryfall.com/errors/missing.jpg" />
@@ -27,6 +25,55 @@
         </div>
       </div>
     </section>
+
+    <div id="code-modal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <pre>
+          <code>
+'use strict'
+
+var scryfall = require('scryfall-client')
+var debounce = require('./path/to/your/debounce/function')
+
+var search = document.querySelector('#search-wrapper input')
+var autocompleteDatalist = document.querySelector('#search-wrapper datalist')
+var cardImage = document.querySelector('#card-wrapper img')
+
+search.addEventListener('keyup', debounce(function (event) {
+  scryfall('cards/autocomplete', {
+    q: search.value
+  }).then(function (list) {
+    autocompleteDatalist.innerHTML = ''
+    list.data.forEach(function (name) {
+      var option = document.createElement('option')
+      option.value = name
+      autocompleteDatalist.appendChild(option)
+    })
+  })
+}))
+
+search.addEventListener('input', function (event) {
+  var val = search.value
+  var options = autocompleteDatalist.querySelectorAll('option')
+
+  for (var i = 0; i < options.length; i++) {
+    if (options[i].value === val) {
+      return scryfall('cards/named', {
+        fuzzy: val
+      }).then(function (card) {
+        return card.getImage()
+      }).then(function (img) {
+        cardImage.src = img
+        autocompleteDatalist.innerHTML = ''
+      })
+    }
+  }
+})
+          </code>
+        </pre>
+      </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
