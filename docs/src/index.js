@@ -13,9 +13,9 @@ var modal = document.querySelector('#code-modal')
 search.addEventListener('keyup', debounce(function (event) {
   scryfall('cards/autocomplete', {
     q: search.value
-  }).then(function (list) {
+  }).then(function (catalog) {
     autocompleteDatalist.innerHTML = ''
-    list.data.forEach(function (name) {
+    catalog.forEach(function (name) {
       var option = document.createElement('option')
       option.value = name
       autocompleteDatalist.appendChild(option)

@@ -2,6 +2,7 @@
 
 const wrapScryfallResponse = require('../../../lib/wrap-scryfall-response')
 const Card = require('../../../models/card')
+const Catalog = require('../../../models/catalog')
 const List = require('../../../models/list')
 const Set = require('../../../models/set')
 const GenericScryfallResponse = require('../../../models/generic-scryfall-response')
@@ -41,6 +42,20 @@ describe('wrapScryfallResponse', function () {
     expect(wrappedResponse).to.be.an.instanceof(List)
     expect(wrappedResponse.length).to.equal(2)
     expect(wrappedResponse[0]).to.be.an.instanceof(Card)
+  })
+
+  it('wraps catalog responses in cist', function () {
+    let wrappedResponse = wrapScryfallResponse({
+      object: 'catalog',
+      data: [
+        'foo',
+        'bar'
+      ]
+    })
+
+    expect(wrappedResponse).to.be.an.instanceof(Catalog)
+    expect(wrappedResponse.length).to.equal(2)
+    expect(wrappedResponse[0]).to.equal('foo')
   })
 
   it('wraps set responses in Set', function () {
