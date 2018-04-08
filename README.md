@@ -238,6 +238,10 @@ scryfall('cards/named', {
 
 This is, admittedly, a bit of a wonky design pattern, but necessary to accomadate meld cards. If you have a better idea for it, suggestions and PRs are welcome!
 
+## Catalog
+
+An object representing a [catalog object](https://scryfall.com/docs/api/catalogs). This is an Array like object where the entries are the `data` attribute from the raw API. The rest of the properties are present on the `Catalog`.
+
 ## List
 
 An object representing a [list object](https://scryfall.com/docs/api/lists). This is an Array like object where the entries are the `data` attribute from the raw API. The rest of the properties are present on the `List`.
