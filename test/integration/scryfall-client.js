@@ -1,3 +1,5 @@
+'use strict'
+
 const scryfall = require('../../')
 
 describe('scryfallClient', function () {
