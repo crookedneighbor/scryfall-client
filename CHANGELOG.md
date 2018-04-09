@@ -1,3 +1,8 @@
+# unreleased
+
+_Breaking Changes_
+* Module is now instantiated as an instance
+
 # 0.1.0
 
 _Breaking Changes_

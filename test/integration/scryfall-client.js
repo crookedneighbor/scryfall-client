@@ -1,27 +1,31 @@
 'use strict'
 
-const scryfall = require('../../')
+const ScryfallClient = require('../../')
 
 describe('scryfallClient', function () {
   this.slow(3000)
   this.timeout(5000)
 
+  beforeEach(function () {
+    this.client = new ScryfallClient()
+  })
+
   describe('rawRequest', function () {
     it('makes a request to scryfall', function () {
-      return scryfall('cards/random').then((card) => {
+      return this.client.get('cards/random').then((card) => {
         expect(card.object).to.equal('card')
       })
     })
 
     it('handles errors', function () {
-      return scryfall('foo').then(this.expectToReject).catch((error) => {
+      return this.client.get('foo').then(this.expectToReject).catch((error) => {
         expect(error.message).to.be.a('string')
         expect(error.httpStatus).to.equal(404)
       })
     })
 
     it('can send query params', function () {
-      return scryfall('cards/search', {
+      return this.client.get('cards/search', {
         q: 'Budoka Gardener c:g'
       }).then((list) => {
         expect(list[0].object).to.equal('card')
@@ -31,7 +35,7 @@ describe('scryfallClient', function () {
 
   describe('List object', function () {
     it('can get the next page of results', function () {
-      return scryfall('cards/search', {
+      return this.client.get('cards/search', {
         q: 'set:rix'
       }).then((list) => {
         expect(list.object).to.equal('list')
@@ -58,7 +62,7 @@ describe('scryfallClient', function () {
         })
       }
 
-      return scryfall('cards/search', {
+      return this.client.get('cards/search', {
         q: 'format:standard r:r'
       }).then(function (list) {
         totalCards = list.total_cards
@@ -72,7 +76,7 @@ describe('scryfallClient', function () {
 
   describe('Set object', function () {
     it('can get cards from set', function () {
-      return scryfall('sets/dom').then((set) => {
+      return this.client.get('sets/dom').then((set) => {
         expect(set.object).to.equal('set')
 
         return set.getCards()
@@ -93,7 +97,7 @@ describe('scryfallClient', function () {
     })
 
     it('can get rulings for card', function () {
-      return scryfall(`cards/${this.budokaGardener}`).then((card) => {
+      return this.client.get(`cards/${this.budokaGardener}`).then((card) => {
         return card.getRulings()
       }).then((rulings) => {
         expect(rulings.object).to.equal('list')
@@ -102,7 +106,7 @@ describe('scryfallClient', function () {
     })
 
     it('can get set object for card', function () {
-      return scryfall(`cards/${this.budokaGardener}`).then((card) => {
+      return this.client.get(`cards/${this.budokaGardener}`).then((card) => {
         return card.getSet()
       }).then((set) => {
         expect(set.object).to.equal('set')
@@ -110,7 +114,7 @@ describe('scryfallClient', function () {
     })
 
     it('can get prints for card', function () {
-      return scryfall(`cards/${this.windfall}`).then((card) => {
+      return this.client.get(`cards/${this.windfall}`).then((card) => {
         return card.getPrints()
       }).then((prints) => {
         expect(prints.object).to.equal('list')
@@ -119,7 +123,7 @@ describe('scryfallClient', function () {
     })
 
     it('can check legality of a card', function () {
-      return scryfall('cards/search', {
+      return this.client.get('cards/search', {
         q: 'format:standard r:r'
       }).then((list) => {
         let card = list[0]
@@ -132,7 +136,7 @@ describe('scryfallClient', function () {
     it('can get the image of a card', function () {
       let collector
 
-      return scryfall(`cards/${this.windfall}`).then((card) => {
+      return this.client.get(`cards/${this.windfall}`).then((card) => {
         collector = card.collector_number
 
         return card.getImage()
@@ -145,7 +149,7 @@ describe('scryfallClient', function () {
     it('can get the image of a transform card', function () {
       let collector
 
-      return scryfall(`cards/${this.docentOfPerfection}`).then((card) => {
+      return this.client.get(`cards/${this.docentOfPerfection}`).then((card) => {
         collector = card.collector_number
 
         return card.getImage()
@@ -158,7 +162,7 @@ describe('scryfallClient', function () {
     it('can get the image of a meld card', function () {
       let collector
 
-      return scryfall(`cards/${this.brunaFadingLight}`).then((card) => {
+      return this.client.get(`cards/${this.brunaFadingLight}`).then((card) => {
         collector = card.collector_number
 
         return card.getImage()
@@ -171,7 +175,7 @@ describe('scryfallClient', function () {
     it('can get the image of a melded card', function () {
       let collector
 
-      return scryfall(`cards/${this.brisela}`).then((card) => {
+      return this.client.get(`cards/${this.brisela}`).then((card) => {
         collector = card.collector_number
 
         return card.getImage()
@@ -182,7 +186,7 @@ describe('scryfallClient', function () {
     })
 
     it('can get the backside image of a normal card', function () {
-      return scryfall(`cards/${this.windfall}`).then((card) => {
+      return this.client.get(`cards/${this.windfall}`).then((card) => {
         return card.getBackImage()
       }).then((images) => {
         expect(images).to.be.an('array')
@@ -195,7 +199,7 @@ describe('scryfallClient', function () {
     it('can get the backside image of a transform card', function () {
       let collector
 
-      return scryfall(`cards/${this.docentOfPerfection}`).then((card) => {
+      return this.client.get(`cards/${this.docentOfPerfection}`).then((card) => {
         collector = card.collector_number
 
         return card.getBackImage()
@@ -210,7 +214,7 @@ describe('scryfallClient', function () {
     it('can get the backside image of a meld card', function () {
       let collector
 
-      return scryfall(`cards/${this.brunaFadingLight}`).then((card) => {
+      return this.client.get(`cards/${this.brunaFadingLight}`).then((card) => {
         collector = card.collector_number.split('a')[0]
 
         return card.getBackImage()
@@ -225,7 +229,7 @@ describe('scryfallClient', function () {
     it('can get the backside image of a melded card', function () {
       let collector
 
-      return scryfall(`cards/${this.brisela}`).then((card) => {
+      return this.client.get(`cards/${this.brisela}`).then((card) => {
         collector = card.collector_number.split('b')[0]
 
         return card.getBackImage()

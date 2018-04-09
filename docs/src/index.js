@@ -1,7 +1,9 @@
 'use strict'
 
-var scryfall = require('../../')
+var ScryfallClient = require('../../')
 var debounce = require('./debounce')
+
+var scryfall = new ScryfallClient()
 
 var search = document.querySelector('#search-wrapper input')
 var autocompleteDatalist = document.querySelector('#search-wrapper datalist')
@@ -11,7 +13,7 @@ var showCode = document.querySelector('#search-wrapper #show-code')
 var modal = document.querySelector('#code-modal')
 
 search.addEventListener('keyup', debounce(function (event) {
-  scryfall('cards/autocomplete', {
+  scryfall.get('cards/autocomplete', {
     q: search.value
   }).then(function (catalog) {
     autocompleteDatalist.innerHTML = ''
@@ -29,7 +31,7 @@ search.addEventListener('input', function (event) {
 
   for (var i = 0; i < options.length; i++) {
     if (options[i].value === val) {
-      return scryfall('cards/named', {
+      return scryfall.get('cards/named', {
         fuzzy: val
       }).then(function (card) {
         return card.getImage()

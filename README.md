@@ -14,9 +14,10 @@ npm install --save scryfall-client
 You can make a get request to any of the [API endpoints](https://scryfall.com/docs/api). It will return a Promise that resolves with the result.
 
 ```js
-var scryfall = require('scryfall-client')
+var ScryfallClient = require('scryfall-client')
+var scryfall = new ScryfallClient()
 
-scryfall('cards/random').then(function (card) {
+scryfall.get('cards/random').then(function (card) {
   card // a random card
 })
 ```
@@ -24,7 +25,7 @@ scryfall('cards/random').then(function (card) {
 You can pass a second argument that will be converted to a query string:
 
 ```js
-scryfall('cards/search', {
+scryfall.get('cards/search', {
   q: 'o:vigilance t:equipment'
 }).then(function (list) {
   list.forEach(function (card) {
@@ -37,7 +38,7 @@ There is one key difference between the response objects returned from the raw A
 
 
 ```js
-scryfall('cards/search', {
+scryfall.get('cards/search', {
   q: 'o:vigilance t:equipment'
 }).then(function (list) {
   list.has_more // whether or not there is an additional page of results, `true` or `false`
@@ -53,7 +54,7 @@ scryfall('cards/search', {
 If your request returns no results or is otherwise unsuccessful, the Promise will reject.
 
 ```js
-scryfall('cards/search', {
+scryfall.get('cards/search', {
   q: 'foobarbaz'
 }).then(function (list) {
   // will never get here
@@ -75,7 +76,7 @@ Representing a [card object](https://scryfall.com/docs/api/cards)
 Returns a Promise that resolves with a list of [rulings objects](https://scryfall.com/docs/api/rulings)
 
 ```js
-scryfall('cards/named', {
+scryfall.get('cards/named', {
   fuzzy: 'aust com'
 }).then(function (card) {
   return card.getRulings()
@@ -92,7 +93,7 @@ scryfall('cards/named', {
 Returns a Promise that resolves with the [set object](https://scryfall.com/docs/api/sets) for the card.
 
 ```js
-scryfall('cards/named', {
+scryfall.get('cards/named', {
   exact: 'the Scarab God'
 }).then(function (card) {
   return card.getSet()
@@ -106,7 +107,7 @@ scryfall('cards/named', {
 Returns a Promise that resolves with a list of [card objects](https://scryfall.com/docs/api/cards) for each printing of the card.
 
 ```js
-scryfall('cards/named', {
+scryfall.get('cards/named', {
   exact: 'windfall'
 }).then(function (card) {
   return card.getPrints()
@@ -141,7 +142,7 @@ As more formats are added, `isLegal` will support them automatically (as it take
 `isLegal` will return `true` if Scryfall lists the card as `legal` or `restricted` and `false` otherwise.
 
 ```js
-scryfall('cards/search', {
+scryfall.get('cards/search', {
   q: 'format:standard r:r'
 }).then(function (list) {
   var aCard = list[0]
@@ -169,7 +170,7 @@ As of the writing of this documentation, the valid values are:
 If additional formats are added, `getImage` will support them automatically (as it takes its list of valid values from the API response itself).
 
 ```js
-scryfall('cards/named', {
+scryfall.get('cards/named', {
   exact: 'windfall'
 }).then(function (card) {
   return card.getImage()
@@ -199,7 +200,7 @@ If a non-transform or non-meld card is used with `getBackImage`, the size parame
 
 ```js
 // A Magic card without a back face
-scryfall('cards/named', {
+scryfall.get('cards/named', {
   exact: 'windfall'
 }).then(function (card) {
   return card.getBackImage()
@@ -208,7 +209,7 @@ scryfall('cards/named', {
 })
 
 // A transform card
-scryfall('cards/named', {
+scryfall.get('cards/named', {
   exact: 'docent of perfection'
 }).then(function (card) {
   return card.getBackImage()
@@ -217,7 +218,7 @@ scryfall('cards/named', {
 })
 
 // Front side of a meld card
-scryfall('cards/named', {
+scryfall.get('cards/named', {
   exact: 'Gisela, the Broken Blade'
 }).then(function (card) {
   return card.getBackImage()
@@ -226,7 +227,7 @@ scryfall('cards/named', {
 })
 
 // Back side of a meld card
-scryfall('cards/named', {
+scryfall.get('cards/named', {
   exact: 'Brisela, Voice of Nightmares'
 }).then(function (card) {
   return card.getBackImage()
@@ -254,7 +255,7 @@ If the `has_more` property is `true`, then `next()` can be called to get the nex
 function collectCards (list, allCards) {
   allCards = allCards || []
   allCards.push.apply(allCards, list)
-  
+
   if (!list.has_more) {
     return allCards
   }
@@ -264,7 +265,7 @@ function collectCards (list, allCards) {
   })
 }
 
-scryfall('cards/search', {
+scryfall.get('cards/search', {
   q: 'format:standard r:r'
 }).then(function (list) {
   return collectCards(list)
@@ -282,7 +283,7 @@ An object represnting a [set object](https://scryfall.com/docs/api/sets).
 Resolves with a list containing all the cards in the set.
 
 ```js
-scryfall('sets/dom').then(function (set) {
+scryfall.get('sets/dom').then(function (set) {
   return set.getCards()
 }).then(function (list) {
   list // a list of cards for the set
