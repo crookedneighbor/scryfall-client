@@ -60,7 +60,9 @@ describe('List', function () {
 
   describe('next', function () {
     beforeEach(function () {
-      this.fakeRequestMethod.resolves(wrapScryfallResponse(this.fixtures.listOfCardsPage2, this.fakeRequestMethod))
+      this.fakeRequestMethod.resolves(wrapScryfallResponse(this.fixtures.listOfCardsPage2, {
+        requestMethod: this.fakeRequestMethod
+      }))
     })
 
     it('makes a request for the next page', function () {

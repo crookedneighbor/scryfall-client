@@ -22,8 +22,12 @@ describe('Set', function () {
 
   describe('getCards', function () {
     beforeEach(function () {
-      this.fakeRequestMethod.resolves(wrapScryfallResponse(this.fixtures.listOfCards, this.fakeRequestMethod))
-      this.set = wrapScryfallResponse(this.fixtures.set, this.fakeRequestMethod)
+      this.fakeRequestMethod.resolves(wrapScryfallResponse(this.fixtures.listOfCards, {
+        requestMethod: this.fakeRequestMethod
+      }))
+      this.set = wrapScryfallResponse(this.fixtures.set, {
+        requestMethod: this.fakeRequestMethod
+      })
     })
 
     it('gets cards for set', function () {

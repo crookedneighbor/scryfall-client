@@ -10,13 +10,16 @@ const GenericScryfallResponse = require('../../../models/generic-scryfall-respon
 describe('wrapScryfallResponse', function () {
   beforeEach(function () {
     this.fakeRequestObject = {}
+    this.options = {
+      requestMethod: this.fakeRequestObject
+    }
   })
 
   it('wraps generic objects with GenericScryfallResponse', function () {
     let wrappedResponse = wrapScryfallResponse({
       object: 'foo',
       foo: 'bar'
-    }, this.fakeRequestObject)
+    }, this.options)
 
     expect(wrappedResponse).to.be.an.instanceof(GenericScryfallResponse)
   })
@@ -25,7 +28,7 @@ describe('wrapScryfallResponse', function () {
     let wrappedResponse = wrapScryfallResponse({
       object: 'card',
       foo: 'bar'
-    }, this.fakeRequestObject)
+    }, this.options)
 
     expect(wrappedResponse).to.be.an.instanceof(Card)
     expect(wrappedResponse.foo).to.equal('bar')
@@ -41,7 +44,7 @@ describe('wrapScryfallResponse', function () {
         object: 'card',
         foo: 'bar'
       }]
-    }, this.fakeRequestObject)
+    }, this.options)
 
     expect(wrappedResponse).to.be.an.instanceof(List)
     expect(wrappedResponse.length).to.equal(2)
@@ -55,7 +58,7 @@ describe('wrapScryfallResponse', function () {
         'foo',
         'bar'
       ]
-    }, this.fakeRequestObject)
+    }, this.options)
 
     expect(wrappedResponse).to.be.an.instanceof(Catalog)
     expect(wrappedResponse.length).to.equal(2)
@@ -66,7 +69,7 @@ describe('wrapScryfallResponse', function () {
     let wrappedResponse = wrapScryfallResponse({
       object: 'set',
       code: 'DOM'
-    }, this.fakeRequestObject)
+    }, this.options)
 
     expect(wrappedResponse).to.be.an.instanceof(Set)
     expect(wrappedResponse.code).to.equal('DOM')
@@ -86,7 +89,7 @@ describe('wrapScryfallResponse', function () {
           foo: 'bar'
         }
       }
-    }, this.fakeRequestObject)
+    }, this.options)
 
     expect(wrappedResponse).to.be.an.instanceof(GenericScryfallResponse)
     expect(wrappedResponse.related_card).to.be.an.instanceof(Card)
@@ -110,7 +113,7 @@ describe('wrapScryfallResponse', function () {
           foo: 'bar'
         }]
       }
-    }, this.fakeRequestObject)
+    }, this.options)
 
     expect(wrappedResponse).to.be.an.instanceof(GenericScryfallResponse)
     expect(wrappedResponse.related_cards[0]).to.be.an.instanceof(Card)
