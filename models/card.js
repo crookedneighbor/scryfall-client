@@ -1,6 +1,5 @@
 'use strict'
 
-var request = require('../lib/request')
 var Promise = require('../lib/promise')
 var basicGetMethods = {
   getRulings: 'rulings_uri',
@@ -10,15 +9,17 @@ var basicGetMethods = {
 
 var SCRYFALL_CARD_BACK_IMAGE_URL = 'https://img.scryfall.com/errors/missing.jpg'
 
-function Card (scryfallObject) {
+function Card (scryfallObject, requestMethod) {
   if (scryfallObject.object !== 'card') {
     throw new Error('Object type must be "card"')
   }
+
+  this._request = requestMethod
 }
 
 Object.keys(basicGetMethods).forEach(function (method) {
   Card.prototype[method] = function () {
-    return request.rawRequest(this[basicGetMethods[method]])
+    return this._request(this[basicGetMethods[method]])
   }
 })
 
@@ -54,12 +55,13 @@ Card.prototype.getImage = function (type) {
 
 Card.prototype.getBackImage = function (type) {
   var cardImage, imageObject
+  var self = this
 
   type = type || 'normal'
 
   if (this.layout === 'meld') {
     var promises = findMeldUrls(this).map(function (url) {
-      return request.rawRequest(url).then(function (card) {
+      return self._request(url).then(function (card) {
         return card.image_uris[type]
       })
     })

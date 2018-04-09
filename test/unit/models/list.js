@@ -1,23 +1,22 @@
 'use strict'
 
 const wrapScryfallResponse = require('../../../lib/wrap-scryfall-response')
-const request = require('../../../lib/request')
 const List = require('../../../models/list')
 
 describe('List', function () {
   beforeEach(function () {
-    this.sandbox.stub(request, 'rawRequest').resolves({})
+    this.fakeRequestMethod = this.sandbox.stub()
   })
 
   it('inherits from Array', function () {
-    let list = new List(this.fixtures.listOfCards)
+    let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
 
     expect(list).to.be.an.instanceof(Array)
     expect(list).to.be.an.instanceof(List)
   })
 
   it('its entries are defined by data properties', function () {
-    let list = new List(this.fixtures.listOfCards)
+    let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
 
     expect(list[0].name).to.be.a('string')
     expect(list[0].name).to.equal(this.fixtures.listOfCards.data[0].name)
@@ -26,7 +25,7 @@ describe('List', function () {
   })
 
   it('responds to Array methods', function () {
-    let list = new List(this.fixtures.listOfCards)
+    let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
 
     expect(list.length).to.equal(2)
 
@@ -45,7 +44,7 @@ describe('List', function () {
   })
 
   it('applies properties to object', function () {
-    let list = new List(this.fixtures.listOfCards)
+    let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
 
     expect(list.total_cards).to.be.a('number')
     expect(list.total_cards).to.equal(this.fixtures.listOfCards.total_cards)
@@ -54,27 +53,27 @@ describe('List', function () {
   })
 
   it('does not apply data property to object', function () {
-    let list = new List(this.fixtures.listOfCards)
+    let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
 
     expect(list.data).to.equal(undefined)
   })
 
   describe('next', function () {
     beforeEach(function () {
-      request.rawRequest.resolves(wrapScryfallResponse(this.fixtures.listOfCardsPage2))
+      this.fakeRequestMethod.resolves(wrapScryfallResponse(this.fixtures.listOfCardsPage2, this.fakeRequestMethod))
     })
 
     it('makes a request for the next page', function () {
-      let list = new List(this.fixtures.listOfCards)
+      let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
 
       return list.next().then((list2) => {
-        expect(request.rawRequest).to.have.been.calledWith(this.fixtures.listOfCards.next_page)
+        expect(this.fakeRequestMethod).to.have.been.calledWith(this.fixtures.listOfCards.next_page)
         expect(list2[0].name).to.equal(this.fixtures.listOfCardsPage2.data[0].name)
       })
     })
 
     it('rejects promise if there are no additional results', function () {
-      let list = new List(this.fixtures.listOfCards)
+      let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
 
       list.has_more = false
 

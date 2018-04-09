@@ -1,36 +1,35 @@
 'use strict'
 
-const request = require('../../../lib/request')
 const Card = require('../../../models/card')
 const wrapScryfallResponse = require('../../../lib/wrap-scryfall-response')
 
 describe('Card', function () {
   beforeEach(function () {
-    this.sandbox.stub(request, 'rawRequest').resolves({})
+    this.fakeRequestMethod = this.sandbox.stub()
   })
 
   it('does not throw if object type is "card"', function () {
     expect(() => {
-      new Card(this.fixtures.card) // eslint-disable-line no-new
+      new Card(this.fixtures.card, this.fakeRequestMethod) // eslint-disable-line no-new
     }).to.not.throw()
   })
 
   it('throws if object type is not "card"', function () {
     expect(() => {
-      new Card(this.fixtures.listOfRulings) // eslint-disable-line no-new
+      new Card(this.fixtures.listOfRulings, this.fakeRequestMethod) // eslint-disable-line no-new
     }).to.throw('Object type must be "card"')
   })
 
   describe('getRulings', function () {
     beforeEach(function () {
-      request.rawRequest.resolves(this.fixtures.listOfRulings)
-      this.card = wrapScryfallResponse(this.fixtures.card)
+      this.fakeRequestMethod.resolves(this.fixtures.listOfRulings)
+      this.card = wrapScryfallResponse(this.fixtures.card, this.fakeRequestMethod)
     })
 
     it('gets rulings for card', function () {
       return this.card.getRulings().then((rulings) => {
         expect(this.fixtures.card.rulings_uri).to.be.a('string')
-        expect(request.rawRequest).to.be.calledWith(this.fixtures.card.rulings_uri)
+        expect(this.fakeRequestMethod).to.be.calledWith(this.fixtures.card.rulings_uri)
         expect(rulings.data[0].comment).to.equal(this.fixtures.listOfRulings.data[0].comment)
       })
     })
@@ -38,14 +37,14 @@ describe('Card', function () {
 
   describe('getSet', function () {
     beforeEach(function () {
-      request.rawRequest.resolves(this.fixtures.set)
-      this.card = wrapScryfallResponse(this.fixtures.card)
+      this.fakeRequestMethod.resolves(this.fixtures.set)
+      this.card = wrapScryfallResponse(this.fixtures.card, this.fakeRequestMethod)
     })
 
     it('gets set for card', function () {
       return this.card.getSet().then((set) => {
         expect(this.fixtures.card.set_uri).to.be.a('string')
-        expect(request.rawRequest).to.be.calledWith(this.fixtures.card.set_uri)
+        expect(this.fakeRequestMethod).to.be.calledWith(this.fixtures.card.set_uri)
         expect(set.code).to.equal(this.fixtures.set.code)
       })
     })
@@ -53,14 +52,14 @@ describe('Card', function () {
 
   describe('getPrints', function () {
     beforeEach(function () {
-      request.rawRequest.resolves(wrapScryfallResponse(this.fixtures.listOfPrints))
-      this.card = wrapScryfallResponse(this.fixtures.card)
+      this.fakeRequestMethod.resolves(wrapScryfallResponse(this.fixtures.listOfPrints, this.fakeRequestMethod))
+      this.card = wrapScryfallResponse(this.fixtures.card, this.fakeRequestMethod)
     })
 
     it('gets prints for card', function () {
       return this.card.getPrints().then((prints) => {
         expect(this.fixtures.listOfPrints.data[0].name).to.be.a('string')
-        expect(request.rawRequest).to.be.calledWith(this.fixtures.card.prints_search_uri)
+        expect(this.fakeRequestMethod).to.be.calledWith(this.fixtures.card.prints_search_uri)
         expect(prints[0].name).to.equal(this.fixtures.listOfPrints.data[0].name)
         expect(prints.length).to.equal(this.fixtures.listOfPrints.data.length)
       })
@@ -69,7 +68,7 @@ describe('Card', function () {
 
   describe('isLegal', function () {
     beforeEach(function () {
-      this.card = wrapScryfallResponse(this.fixtures.card)
+      this.card = wrapScryfallResponse(this.fixtures.card, this.fakeRequestMethod)
     })
 
     it('throws an error if no format is provided', function () {
@@ -111,7 +110,7 @@ describe('Card', function () {
 
   describe('getImage', function () {
     it('resolves with the specified image format for normal layout cards', function () {
-      let card = wrapScryfallResponse(this.fixtures.card)
+      let card = wrapScryfallResponse(this.fixtures.card, this.fakeRequestMethod)
 
       return card.getImage('normal').then((img) => {
         expect(img).to.be.a('string')
@@ -125,7 +124,7 @@ describe('Card', function () {
     })
 
     it('defaults to normal layout', function () {
-      let card = wrapScryfallResponse(this.fixtures.card)
+      let card = wrapScryfallResponse(this.fixtures.card, this.fakeRequestMethod)
 
       return card.getImage().then((img) => {
         expect(img).to.be.a('string')
@@ -134,7 +133,7 @@ describe('Card', function () {
     })
 
     it('rejects with an error if image type does not exist', function () {
-      let card = wrapScryfallResponse(this.fixtures.card)
+      let card = wrapScryfallResponse(this.fixtures.card, this.fakeRequestMethod)
 
       return card.getImage('foo').then(this.expectToReject).catch((err) => {
         expect(err.message).to.equal('`foo` is not a valid type. Must be one of `small`, `normal`, `large`, `png`, `art_crop`, `border_crop`.')
@@ -142,7 +141,7 @@ describe('Card', function () {
     })
 
     it('uses default face for transform card', function () {
-      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout)
+      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout, this.fakeRequestMethod)
 
       return card.getImage().then((img) => {
         expect(img).to.be.a('string')
@@ -151,7 +150,7 @@ describe('Card', function () {
     })
 
     it('gets image for flip card', function () {
-      let card = wrapScryfallResponse(this.fixtures.cardWithFlipLayout)
+      let card = wrapScryfallResponse(this.fixtures.cardWithFlipLayout, this.fakeRequestMethod)
 
       return card.getImage().then((img) => {
         expect(img).to.be.a('string')
@@ -160,7 +159,7 @@ describe('Card', function () {
     })
 
     it('gets image for meld card', function () {
-      let card = wrapScryfallResponse(this.fixtures.cardWithMeldLayout)
+      let card = wrapScryfallResponse(this.fixtures.cardWithMeldLayout, this.fakeRequestMethod)
 
       return card.getImage().then((img) => {
         expect(img).to.be.a('string')
@@ -169,7 +168,7 @@ describe('Card', function () {
     })
 
     it('rejects with an error if image uris cannot be found', function () {
-      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout)
+      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout, this.fakeRequestMethod)
 
       delete card.card_faces
 
@@ -181,7 +180,7 @@ describe('Card', function () {
 
   describe('getBackImage', function () {
     it('resolves with scryfall back image for normal layout cards', function () {
-      let card = wrapScryfallResponse(this.fixtures.card)
+      let card = wrapScryfallResponse(this.fixtures.card, this.fakeRequestMethod)
 
       return card.getBackImage().then((imgs) => {
         expect(imgs).to.be.a('array')
@@ -191,7 +190,7 @@ describe('Card', function () {
     })
 
     it('resolves with the same scryfall back image for normal layout cards regardless of type passed in', function () {
-      let card = wrapScryfallResponse(this.fixtures.card)
+      let card = wrapScryfallResponse(this.fixtures.card, this.fakeRequestMethod)
 
       return card.getBackImage('normal').then((imgs) => {
         expect(imgs).to.be.a('array')
@@ -207,7 +206,7 @@ describe('Card', function () {
     })
 
     it('rejects with an error if image type does not exist', function () {
-      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout)
+      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout, this.fakeRequestMethod)
 
       return card.getBackImage('foo').then(this.expectToReject).catch((err) => {
         expect(err.message).to.equal('`foo` is not a valid type. Must be one of `small`, `normal`, `large`, `png`, `art_crop`, `border_crop`.')
@@ -215,7 +214,7 @@ describe('Card', function () {
     })
 
     it('rejects with an error if card does not have image uris or card faces', function () {
-      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout)
+      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout, this.fakeRequestMethod)
 
       delete card.card_faces
 
@@ -225,7 +224,7 @@ describe('Card', function () {
     })
 
     it('uses back face for transform card', function () {
-      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout)
+      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout, this.fakeRequestMethod)
 
       return card.getBackImage().then((imgs) => {
         expect(imgs).to.be.a('array')
@@ -235,7 +234,7 @@ describe('Card', function () {
     })
 
     it('can specify size for back face for transform card', function () {
-      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout)
+      let card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout, this.fakeRequestMethod)
 
       return card.getBackImage('small').then((imgs) => {
         expect(imgs).to.be.a('array')
@@ -245,7 +244,7 @@ describe('Card', function () {
     })
 
     it('gives the back card image for flip card', function () {
-      let card = wrapScryfallResponse(this.fixtures.cardWithFlipLayout)
+      let card = wrapScryfallResponse(this.fixtures.cardWithFlipLayout, this.fakeRequestMethod)
 
       return card.getBackImage().then((imgs) => {
         expect(imgs).to.be.a('array')
@@ -255,9 +254,9 @@ describe('Card', function () {
     })
 
     it('gets melded card image for meld card', function () {
-      let card = wrapScryfallResponse(this.fixtures.cardWithMeldLayout)
+      let card = wrapScryfallResponse(this.fixtures.cardWithMeldLayout, this.fakeRequestMethod)
 
-      request.rawRequest.resolves(wrapScryfallResponse(this.fixtures.cardBackWithMeldLayout))
+      this.fakeRequestMethod.resolves(wrapScryfallResponse(this.fixtures.cardBackWithMeldLayout, this.fakeRequestMethod))
 
       return card.getBackImage().then((imgs) => {
         expect(imgs).to.be.a('array')
@@ -267,10 +266,10 @@ describe('Card', function () {
     })
 
     it('gets unmeleded card images for backside of meld card', function () {
-      let card = wrapScryfallResponse(this.fixtures.cardBackWithMeldLayout)
+      let card = wrapScryfallResponse(this.fixtures.cardBackWithMeldLayout, this.fakeRequestMethod)
 
-      request.rawRequest.withArgs(this.fixtures.cardBackWithMeldLayout.all_parts[0].uri).resolves(wrapScryfallResponse(this.fixtures.cardWithMeldLayout))
-      request.rawRequest.withArgs(this.fixtures.cardBackWithMeldLayout.all_parts[2].uri).resolves(wrapScryfallResponse(this.fixtures.secondCardWithMeldLayout))
+      this.fakeRequestMethod.withArgs(this.fixtures.cardBackWithMeldLayout.all_parts[0].uri).resolves(wrapScryfallResponse(this.fixtures.cardWithMeldLayout, this.fakeRequestMethod))
+      this.fakeRequestMethod.withArgs(this.fixtures.cardBackWithMeldLayout.all_parts[2].uri).resolves(wrapScryfallResponse(this.fixtures.secondCardWithMeldLayout, this.fakeRequestMethod))
 
       return card.getBackImage().then((imgs) => {
         expect(imgs).to.be.a('array')
