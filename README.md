@@ -63,6 +63,25 @@ scryfall.get('cards/search', {
 })
 ```
 
+# Additional Options
+
+You can pass in an options object when creating your client.
+
+## `convertSymbolsToSlackEmoji`
+
+If using this module within Slack, you may want the mana symbols converted automatically to the [emoji that Scryfall provides](https://scryfall.com/docs/slack-bot#manamoji-support).
+
+```js
+var ScryfallClient = require('scryfall-client')
+var scryfall = new ScryfallClient({
+  convertSymbolsToSlackEmoji: true
+})
+
+scryfall.get('cards/random').then(function (card) {
+  card.mana_cost // ':mana-2::mana-G:
+})
+```
+
 # API Objects
 
 As a convenience, there are a number of API objects with special methods.

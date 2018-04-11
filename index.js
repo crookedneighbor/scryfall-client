@@ -1,11 +1,9 @@
 'use strict'
 
-var request = require('./lib/request').rawRequest
+var makeRequestFunction = require('./lib/request')
 
-function ScryfallClient () {
-  // What config options could we do?
+function ScryfallClient (options) {
+  this.get = makeRequestFunction(options)
 }
-
-ScryfallClient.prototype.get = request
 
 module.exports = ScryfallClient

@@ -120,4 +120,60 @@ describe('wrapScryfallResponse', function () {
     expect(wrappedResponse.related_cards[1]).to.be.an.instanceof(Card)
     expect(wrappedResponse.nested_thing.more_nesting[0]).to.be.an.instanceof(Card)
   })
+
+  it('can convert symbols to slack emoji', function () {
+    this.options.convertSymbolsToSlackEmoji = true
+
+    expect(wrapScryfallResponse('Foo {t} bar', this.options)).to.equal('Foo :mana-t: bar')
+  })
+
+  it('can convert symbols to slack emoji in nested objects', function () {
+    this.options.convertSymbolsToSlackEmoji = true
+
+    let wrappedResponse = wrapScryfallResponse({
+      object: 'foo',
+      foo: '{g/r} foo',
+      related_cards: [{
+        object: 'card',
+        foo: 'bar'
+      }, {
+        object: 'card',
+        foo: '{t} foo'
+      }],
+      nested_thing: {
+        more_nesting: [{
+          object: 'card',
+          foo: '{r} bar'
+        }]
+      }
+    }, this.options)
+
+    expect(wrappedResponse.foo).to.equal(':mana-gr: foo')
+    expect(wrappedResponse.related_cards[1].foo).to.equal(':mana-t: foo')
+    expect(wrappedResponse.nested_thing.more_nesting[0].foo).to.equal(':mana-r: bar')
+  })
+
+  it('does not convert symbols to slack emoji if not explicitly passed in', function () {
+    let wrappedResponse = wrapScryfallResponse({
+      object: 'foo',
+      foo: '{g/r} foo',
+      related_cards: [{
+        object: 'card',
+        foo: 'bar'
+      }, {
+        object: 'card',
+        foo: '{t} foo'
+      }],
+      nested_thing: {
+        more_nesting: [{
+          object: 'card',
+          foo: '{r} bar'
+        }]
+      }
+    }, this.options)
+
+    expect(wrappedResponse.foo).to.equal('{g/r} foo')
+    expect(wrappedResponse.related_cards[1].foo).to.equal('{t} foo')
+    expect(wrappedResponse.nested_thing.more_nesting[0].foo).to.equal('{r} bar')
+  })
 })

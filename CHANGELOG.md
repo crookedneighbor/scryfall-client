@@ -1,5 +1,7 @@
 # unreleased
 
+* Support strings converting mana symbols ({m}) to Slack emoji syntax (:mana-m:)
+
 _Breaking Changes_
 * Module is now instantiated as an instance
 
