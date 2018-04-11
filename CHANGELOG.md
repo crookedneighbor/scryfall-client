@@ -1,3 +1,7 @@
+# 1.2.1
+
+* Put get method on prototype of ScryfallClient for easier stubbing in testing
+
 # 1.2.0
 
 * Support strings converting mana symbols ({m}) to Slack emoji syntax (:mana-m:)
