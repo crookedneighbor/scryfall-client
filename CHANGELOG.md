@@ -1,4 +1,4 @@
-# unreleased
+# 1.2.0
 
 * Support strings converting mana symbols ({m}) to Slack emoji syntax (:mana-m:)
 * Support strings converting mana symbols ({m}) to Discord emoji syntax (:manam:)
