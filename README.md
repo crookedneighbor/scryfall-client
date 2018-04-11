@@ -82,6 +82,21 @@ scryfall.get('cards/random').then(function (card) {
 })
 ```
 
+## `convertSymbolsToDiscordEmoji`
+
+If using this module within Discord, you may want the mana symbols converted automatically to the [emoji that Scryfall provides](https://scryfall.com/docs/discord-bot#manamoji-usage).
+
+```js
+var ScryfallClient = require('scryfall-client')
+var scryfall = new ScryfallClient({
+  convertSymbolsToDiscordEmoji: true
+})
+
+scryfall.get('cards/random').then(function (card) {
+  card.mana_cost // ':mana2::manaG:
+})
+```
+
 # API Objects
 
 As a convenience, there are a number of API objects with special methods.

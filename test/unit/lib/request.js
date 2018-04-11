@@ -38,6 +38,18 @@ describe('makeRequestFunction', function () {
     })
   })
 
+  it('can pass in convertSymbolsToDiscordEmoji option', function () {
+    let request = makeRequestFunction({
+      convertSymbolsToDiscordEmoji: true
+    })
+
+    this.fakeResponseOn.withArgs('data').yields(JSON.stringify(this.fixtures.card))
+
+    return request('foo').then((card) => {
+      expect(card.mana_cost).to.equal(':mana2::manaU:')
+    })
+  })
+
   it('returns a promise', function () {
     expect(this.request('foo')).to.be.an.instanceof(Promise)
   })
