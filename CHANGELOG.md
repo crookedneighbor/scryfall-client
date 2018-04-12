@@ -1,15 +1,15 @@
-# unreleased
+# 0.3.0
 
 * All error properties are exposed on error object
 
 _Breaking Changes_
 * Error object now passes http status as `status` instead of `httpStatus`
 
-# 1.2.1
+# 0.2.1
 
 * Put get method on prototype of ScryfallClient for easier stubbing in testing
 
-# 1.2.0
+# 0.2.0
 
 * Support strings converting mana symbols ({m}) to Slack emoji syntax (:mana-m:)
 * Support strings converting mana symbols ({m}) to Discord emoji syntax (:manam:)
