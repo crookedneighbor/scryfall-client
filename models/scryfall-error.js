@@ -4,12 +4,11 @@ function ScryfallError (scryfallResponse) {
   this.message = scryfallResponse.message || scryfallResponse.details
   this.stack = Error().stack
 
-  if (scryfallResponse.originalError) {
-    this.originalError = scryfallResponse.originalError
-  }
-  if (scryfallResponse.status) {
-    this.httpStatus = scryfallResponse.status
-  }
+  Object.keys(scryfallResponse).forEach(function (key) {
+    if (!this[key]) {
+      this[key] = scryfallResponse[key]
+    }
+  }.bind(this))
 }
 
 ScryfallError.prototype = Object.create(Error.prototype)

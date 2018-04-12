@@ -20,7 +20,7 @@ describe('scryfallClient', function () {
     it('handles errors', function () {
       return this.client.get('foo').then(this.expectToReject).catch((error) => {
         expect(error.message).to.be.a('string')
-        expect(error.httpStatus).to.equal(404)
+        expect(error.status).to.equal(404)
       })
     })
 

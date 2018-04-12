@@ -40,24 +40,18 @@ describe('ScryfallError', function () {
     expect(error.message).to.equal('message')
   })
 
-  it('passes on status as httpStatus', function () {
+  it('passes on all properties', function () {
     let error = new ScryfallError({
       object: 'error',
       code: 'not_found',
+      type: 'ambiguous',
       status: 404,
-      details: 'Message'
+      details: 'Too many cards match ambiguous name “jace”. Add more words to refine your search.'
     })
 
-    expect(error.httpStatus).to.equal(404)
-  })
-
-  it('passes on original error', function () {
-    let originalError = new Error('foo')
-    let error = new ScryfallError({
-      message: 'custom message',
-      originalError: originalError
-    })
-
-    expect(error.originalError).to.equal(originalError)
+    expect(error.code).to.equal('not_found')
+    expect(error.status).to.equal(404)
+    expect(error.details).to.equal('Too many cards match ambiguous name “jace”. Add more words to refine your search.')
+    expect(error.type).to.equal('ambiguous')
   })
 })

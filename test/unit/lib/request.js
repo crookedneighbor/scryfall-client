@@ -136,7 +136,7 @@ describe('makeRequestFunction', function () {
     return this.request('foo').then(this.expectToReject).catch((err) => {
       expect(err).to.be.an.instanceof(ScryfallError)
       expect(err.message).to.equal('Failure')
-      expect(err.httpStatus).to.equal(404)
+      expect(err.status).to.equal(404)
     })
   })
 })

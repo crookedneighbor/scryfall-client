@@ -1,3 +1,10 @@
+# unreleased
+
+* All error properties are exposed on error object
+
+_Breaking Changes_
+* Error object now passes http status as `status` instead of `httpStatus`
+
 # 1.2.1
 
 * Put get method on prototype of ScryfallClient for easier stubbing in testing
