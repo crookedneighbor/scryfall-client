@@ -97,6 +97,24 @@ scryfall.get('cards/random').then(function (card) {
 })
 ```
 
+## `delayBetweenRequests`
+
+By default, there is about 50-100 milliseceond delay between requests ([as recomended by Scryfall](https://scryfall.com/docs/api#rate-limits-and-good-citizenship)). You can configure this value.
+
+var ScryfallClient = require('scryfall-client')
+var scryfall = new ScryfallClient({
+  delayBetweenRequests: 500
+})
+
+scryfall.get('cards/random').then(function (card) {
+  // do something with card
+
+  // will wait 500 milliseconds before initiating this request
+  return scryfall.get('cards/random')
+}).then(function (card) {
+  // do something with card
+})
+
 # API Objects
 
 As a convenience, there are a number of API objects with special methods.

@@ -1,3 +1,6 @@
+# unreleased
+* Add [Scryfall recomended delay between requests](https://scryfall.com/docs/api#rate-limits-and-good-citizenship)
+
 # 0.3.0
 
 * All error properties are exposed on error object

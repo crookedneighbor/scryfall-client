@@ -26,6 +26,92 @@ describe('makeRequestFunction', function () {
     expect(request).to.be.an.instanceof(Function)
   })
 
+  it('automatically rate limits according to Scryfall\'s recomendation for request frequency of no requests within 100 ms', function () {
+    let request = makeRequestFunction()
+    let count = 0
+    let intervalRef = setInterval(function () {
+      count++
+    }, 1)
+
+    return request('foo').then(() => {
+      return request('bar')
+    }).then(() => {
+      return request('baz')
+    }).then(() => {
+      clearInterval(intervalRef)
+
+      expect(count).to.be.greaterThan(300)
+      expect(count).to.be.lessThan(400)
+    })
+  })
+
+  it('can configure rate limit', function () {
+    let request = makeRequestFunction({
+      delayBetweenRequests: 200
+    })
+    let count = 0
+    let intervalRef = setInterval(function () {
+      count++
+    }, 1)
+
+    return request('foo').then(() => {
+      return request('bar')
+    }).then(() => {
+      return request('baz')
+    }).then(() => {
+      clearInterval(intervalRef)
+
+      expect(count).to.be.greaterThan(600)
+      expect(count).to.be.lessThan(700)
+    })
+  })
+
+  it('rate limits among multiple requests happening at once', function () {
+    let request = makeRequestFunction()
+    let count = 0
+    let intervalRef = setInterval(function () {
+      count++
+    }, 1)
+
+    return Promise.all([
+      request('foo'),
+      request('bar'),
+      request('baz'),
+      request('biz'),
+      request('buz')
+    ]).then(() => {
+      clearInterval(intervalRef)
+
+      expect(count).to.be.greaterThan(300)
+      expect(count).to.be.lessThan(400)
+    })
+  })
+
+  it('does not rate limite a request that occurs after rate limiting from initial request is done', function () {
+    let request = makeRequestFunction()
+    let count = 0
+    let intervalRef
+    let wait = function (time) {
+      return new Promise((resolve) => {
+        setTimeout(resolve, time)
+      })
+    }
+
+    return request('foo').then(() => {
+      return wait(100)
+    }).then(() => {
+      intervalRef = setInterval(function () {
+        count++
+      }, 1)
+
+      return request('bar')
+    }).then(() => {
+      clearInterval(intervalRef)
+
+      expect(count).to.be.lessThan(10)
+    })
+  })
+
   it('can pass in convertSymbolsToSlackEmoji option', function () {
     let request = makeRequestFunction({
       convertSymbolsToSlackEmoji: true
