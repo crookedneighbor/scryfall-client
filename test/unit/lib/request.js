@@ -62,7 +62,7 @@ describe('makeRequestFunction', function () {
       clearInterval(intervalRef)
 
       expect(count).to.be.greaterThan(600)
-      expect(count).to.be.lessThan(700)
+      expect(count).to.be.lessThan(800)
     })
   })
 
