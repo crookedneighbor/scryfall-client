@@ -3,8 +3,8 @@
 const ScryfallClient = require('../../')
 
 describe('scryfallClient', function () {
-  this.slow(3000)
-  this.timeout(5000)
+  this.slow(5000)
+  this.timeout(9000)
 
   beforeEach(function () {
     this.client = new ScryfallClient()
