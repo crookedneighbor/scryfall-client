@@ -1,3 +1,6 @@
+# unreleased
+* Add `wrap` method
+
 # 0.4.0
 * Add [Scryfall recomended delay between requests](https://scryfall.com/docs/api#rate-limits-and-good-citizenship)
 

@@ -346,6 +346,28 @@ scryfall.get('sets/dom').then(function (set) {
 
 Any other objects are wrapped in a `GenericScryfallResponse` object.
 
+# `wrap`
+
+The instance includes a `wrap` method which can be used to wrap a saved respone from Scryall into the API objects listed above. For instance, you may want to convert a Card object into a JSON string to save to your database; this method allows you to rebuild the Card object with all the helper methods without fetching it again from Scryfall.
+
+```js
+scryfall.get('cards/random').then(function (card) {
+  saveCardToDatabse(card)
+})
+
+// later
+
+lookUpCardInDatabase(someId).then(function (cardData) {
+  // cardData.getImage does not exist
+
+  let card = scryfall.wrap(cardData)
+
+  return card.getImage()
+}).then(function (img) {
+  // the image of the card saved in the database
+})
+```
+
 # Contributing Guidelines
 
 ## Code Style
