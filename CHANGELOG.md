@@ -1,4 +1,4 @@
-# unreleased
+# 0.5.0
 * Add `wrap` method
 
 # 0.4.0
