@@ -1,7 +1,6 @@
 'use strict'
 
 var makeRequestFunction = require('./lib/request')
-var wrapScryfallResponse = require('./lib/wrap-scryfall-response')
 
 function ScryfallClient (options) {
   this._request = makeRequestFunction(options)

@@ -52,6 +52,7 @@
       "before",
       "beforeEach",
       "describe",
+      "context",
       "expect",
       "it"
     ],
