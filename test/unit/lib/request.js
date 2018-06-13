@@ -20,6 +20,10 @@ describe('makeRequestFunction', function () {
     this.request = makeRequestFunction()
   })
 
+  afterEach(function () {
+    this.request.clearQueue()
+  })
+
   it('returns a request function', function () {
     let request = makeRequestFunction()
 
@@ -40,8 +44,8 @@ describe('makeRequestFunction', function () {
     }).then(() => {
       clearInterval(intervalRef)
 
-      expect(count).to.be.greaterThan(300)
-      expect(count).to.be.lessThan(400)
+      expect(count).to.be.greaterThan(280)
+      expect(count).to.be.lessThan(350)
     })
   })
 
@@ -61,8 +65,8 @@ describe('makeRequestFunction', function () {
     }).then(() => {
       clearInterval(intervalRef)
 
-      expect(count).to.be.greaterThan(600)
-      expect(count).to.be.lessThan(800)
+      expect(count).to.be.greaterThan(580)
+      expect(count).to.be.lessThan(650)
     })
   })
 
@@ -82,8 +86,8 @@ describe('makeRequestFunction', function () {
     ]).then(() => {
       clearInterval(intervalRef)
 
-      expect(count).to.be.greaterThan(300)
-      expect(count).to.be.lessThan(400)
+      expect(count).to.be.greaterThan(280)
+      expect(count).to.be.lessThan(350)
     })
   })
 
