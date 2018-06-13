@@ -116,6 +116,20 @@ describe('makeRequestFunction', function () {
     })
   })
 
+  it('can pass in textTransformer option', function () {
+    let request = makeRequestFunction({
+      textTransformer: function (text) {
+        return text.replace(/{(.)(\/(.))?}/g, '<img src="https://example.com/mana-$1$3.png" />')
+      }
+    })
+
+    this.fakeResponseOn.withArgs('data').yields(JSON.stringify(this.fixtures.card))
+
+    return request('foo').then((card) => {
+      expect(card.mana_cost).to.equal('<img src="https://example.com/mana-2.png" /><img src="https://example.com/mana-U.png" />')
+    })
+  })
+
   it('can pass in convertSymbolsToSlackEmoji option', function () {
     let request = makeRequestFunction({
       convertSymbolsToSlackEmoji: true
@@ -137,6 +151,34 @@ describe('makeRequestFunction', function () {
 
     return request('foo').then((card) => {
       expect(card.mana_cost).to.equal(':mana2::manaU:')
+    })
+  })
+
+  it('prefers textTransformer option over slack emoji option', function () {
+    let request = makeRequestFunction({
+      convertSymbolsToSlackEmoji: true,
+      textTransformer: function (text) {
+        return text.replace(/{(.)(\/(.))?}/g, '<img src="https://example.com/mana-$1$3.png" />')
+      }
+    })
+
+    this.fakeResponseOn.withArgs('data').yields(JSON.stringify(this.fixtures.card))
+
+    return request('foo').then((card) => {
+      expect(card.mana_cost).to.equal('<img src="https://example.com/mana-2.png" /><img src="https://example.com/mana-U.png" />')
+    })
+  })
+
+  it('prefers convertSymbolsToSlackEmoji over convertSymbolsToSlackEmoji option', function () {
+    let request = makeRequestFunction({
+      convertSymbolsToDiscordEmoji: true,
+      convertSymbolsToSlackEmoji: true
+    })
+
+    this.fakeResponseOn.withArgs('data').yields(JSON.stringify(this.fixtures.card))
+
+    return request('foo').then((card) => {
+      expect(card.mana_cost).to.equal(':mana-2::mana-U:')
     })
   })
 

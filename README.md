@@ -67,6 +67,30 @@ scryfall.get('cards/search', {
 
 You can pass in an options object when creating your client.
 
+## `textTransformer`
+
+A function that yields the text of the fields of the card, whatever the function returns will replace the text. The main use case is for transforming the mana symbol notation. For instance, here's an example that transforms the mana symbol notation to HTML image tags:
+
+```js
+var ScryfallClient = require('scryfall-client')
+var scryfall = new ScryfallClient({
+  textTransformer: function (text) {
+    return text.replace(/{(.)(\/(.))?}/g, '<img src="https://example.com/mana-symbols/mana-$1$3" />')
+  }
+})
+
+scryfall.get('cards/named', {
+  exact: 'River Hoopoe'
+}).then(function (card) {
+  card.oracle_text
+  // Flying\n<img src="https://example.com/mana-symbols/mana-3" /><img src="https://example.com/mana-symbols/mana-G" /><img src="https://example.com/mana-symbols/mana-U" />: You gain 2 life and draw a card.
+})
+```
+
+It is probably easiest to copy the function above as is, and replace the second argument in `text.replace` with your own string where `$1` is the first match and `$3` is the second match if the mana symbols is a split symbol (such as with hybrid mana).
+
+If a `textTransformer` option is provided, it will take precedence over `convertSymbolsToSlackEmoji` and `convertSymbolsToDiscordEmoji`.
+
 ## `convertSymbolsToSlackEmoji`
 
 If using this module within Slack, you may want the mana symbols converted automatically to the [emoji that Scryfall provides](https://scryfall.com/docs/slack-bot#manamoji-support).
@@ -81,6 +105,8 @@ scryfall.get('cards/random').then(function (card) {
   card.mana_cost // ':mana-2::mana-G:
 })
 ```
+
+If a `convertSymbolsToSlackEmoji` option is provided, it will take precedence over `convertSymbolsToDiscordEmoji`.
 
 ## `convertSymbolsToDiscordEmoji`
 

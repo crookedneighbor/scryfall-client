@@ -1,3 +1,6 @@
+# Unreleased
+* Add `textTransformer` option to constructor
+
 # 0.5.0
 * Add `wrap` method
 
