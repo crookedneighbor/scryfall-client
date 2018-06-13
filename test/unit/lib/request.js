@@ -45,7 +45,7 @@ describe('makeRequestFunction', function () {
       clearInterval(intervalRef)
 
       expect(count).to.be.greaterThan(280)
-      expect(count).to.be.lessThan(350)
+      expect(count).to.be.lessThan(400)
     })
   })
 
@@ -66,7 +66,7 @@ describe('makeRequestFunction', function () {
       clearInterval(intervalRef)
 
       expect(count).to.be.greaterThan(580)
-      expect(count).to.be.lessThan(650)
+      expect(count).to.be.lessThan(800)
     })
   })
 
@@ -87,7 +87,7 @@ describe('makeRequestFunction', function () {
       clearInterval(intervalRef)
 
       expect(count).to.be.greaterThan(280)
-      expect(count).to.be.lessThan(350)
+      expect(count).to.be.lessThan(400)
     })
   })
 
