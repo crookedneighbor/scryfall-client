@@ -1,4 +1,4 @@
-# Unreleased
+# 0.6.0
 * Add `textTransformer` option to constructor
 
 # 0.5.0
