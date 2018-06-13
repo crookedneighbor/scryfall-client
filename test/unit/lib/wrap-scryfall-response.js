@@ -121,27 +121,20 @@ describe('wrapScryfallResponse', function () {
     expect(wrappedResponse.nested_thing.more_nesting[0]).to.be.an.instanceof(Card)
   })
 
-  it('can convert symbols to slack emoji', function () {
-    this.options.convertSymbolsToSlackEmoji = true
+  it('can pass a text transformer function', function () {
+    this.options.textTransformer = function (text) {
+      return text.replace('{t}', 'TAP!')
+    }
 
-    expect(wrapScryfallResponse('Foo {t} bar', this.options)).to.equal('Foo :mana-t: bar')
+    expect(wrapScryfallResponse('Foo {t} bar', this.options)).to.equal('Foo TAP! bar')
   })
 
-  it('can convert symbols to dicscord emoji', function () {
-    this.options.convertSymbolsToDiscordEmoji = true
+  it('can use a text transformer in nested objects', function () {
+    this.options.textTransformer = function (text) {
+      var replacement = text.replace(/{(.*)}/, '<$1>')
 
-    expect(wrapScryfallResponse('Foo {t} bar', this.options)).to.equal('Foo :manat: bar')
-  })
-
-  it('prefers slack emoji over discord emoji', function () {
-    this.options.convertSymbolsToSlackEmoji = true
-    this.options.convertSymbolsToDiscordEmoji = true
-
-    expect(wrapScryfallResponse('Foo {t} bar', this.options)).to.equal('Foo :mana-t: bar')
-  })
-
-  it('can convert symbols to slack emoji in nested objects', function () {
-    this.options.convertSymbolsToSlackEmoji = true
+      return replacement.toUpperCase()
+    }
 
     let wrappedResponse = wrapScryfallResponse({
       object: 'foo',
@@ -161,9 +154,9 @@ describe('wrapScryfallResponse', function () {
       }
     }, this.options)
 
-    expect(wrappedResponse.foo).to.equal(':mana-gr: foo')
-    expect(wrappedResponse.related_cards[1].foo).to.equal(':mana-t: foo')
-    expect(wrappedResponse.nested_thing.more_nesting[0].foo).to.equal(':mana-r: bar')
+    expect(wrappedResponse.foo).to.equal('<G/R> FOO')
+    expect(wrappedResponse.related_cards[1].foo).to.equal('<T> FOO')
+    expect(wrappedResponse.nested_thing.more_nesting[0].foo).to.equal('<R> BAR')
   })
 
   it('does not convert symbols to slack emoji if not explicitly passed in', function () {
@@ -188,32 +181,6 @@ describe('wrapScryfallResponse', function () {
     expect(wrappedResponse.foo).to.equal('{g/r} foo')
     expect(wrappedResponse.related_cards[1].foo).to.equal('{t} foo')
     expect(wrappedResponse.nested_thing.more_nesting[0].foo).to.equal('{r} bar')
-  })
-
-  it('can convert symbols to discord emoji in nested objects', function () {
-    this.options.convertSymbolsToDiscordEmoji = true
-
-    let wrappedResponse = wrapScryfallResponse({
-      object: 'foo',
-      foo: '{g/r} foo',
-      related_cards: [{
-        object: 'card',
-        foo: 'bar'
-      }, {
-        object: 'card',
-        foo: '{t} foo'
-      }],
-      nested_thing: {
-        more_nesting: [{
-          object: 'card',
-          foo: '{r} bar'
-        }]
-      }
-    }, this.options)
-
-    expect(wrappedResponse.foo).to.equal(':managr: foo')
-    expect(wrappedResponse.related_cards[1].foo).to.equal(':manat: foo')
-    expect(wrappedResponse.nested_thing.more_nesting[0].foo).to.equal(':manar: bar')
   })
 
   it('does not convert symbols to discord emoji if not explicitly passed in', function () {
