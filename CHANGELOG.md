@@ -1,3 +1,6 @@
+# unreleased
+* Add thrown error property when wrapping scryfall response to illuminate the problem when parsing the response
+
 # 0.6.0
 * Add `textTransformer` option to constructor
 

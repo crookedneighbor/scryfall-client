@@ -130,6 +130,20 @@ describe('makeRequestFunction', function () {
     })
   })
 
+  it('surfaces error about textTransformer when function throws an error', function () {
+    let request = makeRequestFunction({
+      textTransformer: function () {
+        throw new Error('bad function')
+      }
+    })
+
+    this.fakeResponseOn.withArgs('data').yields(JSON.stringify(this.fixtures.card))
+
+    return request('foo').then(this.expectToReject).catch(function (err) {
+      expect(err.thrownError.message).to.equal('bad function')
+    })
+  })
+
   it('can pass in convertSymbolsToSlackEmoji option', function () {
     let request = makeRequestFunction({
       convertSymbolsToSlackEmoji: true
