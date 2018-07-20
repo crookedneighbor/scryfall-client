@@ -69,13 +69,27 @@ You can pass in an options object when creating your client.
 
 ## `textTransformer`
 
-A function that yields the text of the fields of the card, whatever the function returns will replace the text. The main use case is for transforming the mana symbol notation. For instance, here's an example that transforms the mana symbol notation to HTML image tags:
+A function that yields the text of the fields of the card, whatever the function returns will replace the text.
+
+The main use case is for transforming the mana symbol notation. The module has a symbols property which is an object with a key for [each mana symbol that Scryfall uses](https://scryfall.com/docs/api/card-symbols). You can use these symbols in conjunction with the textTransformer function to embed the mana symbols on a web page.
+
+You can use this in conjunction with the `symbols` property on the Object to display the symbols using the svgs for the symbols found on Scryfall's website.
 
 ```js
 var ScryfallClient = require('scryfall-client')
 var scryfall = new ScryfallClient({
   textTransformer: function (text) {
-    return text.replace(/{(.)(\/(.))?}/g, '<img src="https://example.com/mana-symbols/mana-$1$3" />')
+    var matches = text.match(/{(.)(\/(.))?}/g)
+
+    if (matches) {
+      matches.forEach(function (symbol) {
+        var key = symbol.slice(1, -1)
+
+        text = text.replace(symbol, '<img src="' + ScryfallClient.symbols[key] + '"/>')
+      })
+    }
+
+    return text
   }
 })
 
@@ -83,7 +97,7 @@ scryfall.get('cards/named', {
   exact: 'River Hoopoe'
 }).then(function (card) {
   card.oracle_text
-  // Flying\n<img src="https://example.com/mana-symbols/mana-3" /><img src="https://example.com/mana-symbols/mana-G" /><img src="https://example.com/mana-symbols/mana-U" />: You gain 2 life and draw a card.
+  // Flying\n<img src="a_long_string_of_characters_that_render_the_3_generic_mana_symbol" /><img src="a_long_string_of_characters_that_render_the_green_mana_symbol" /><img src="a_long_string_of_characters_that_render_the_blue_mana_symbol" />: You gain 2 life and draw a card.
 })
 ```
 

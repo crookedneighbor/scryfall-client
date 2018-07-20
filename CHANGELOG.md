@@ -1,5 +1,6 @@
 # unreleased
 * Add thrown error property when wrapping scryfall response to illuminate the problem when parsing the response
+* Add svg urls for mana symbols
 
 # 0.6.0
 * Add `textTransformer` option to constructor
