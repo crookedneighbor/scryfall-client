@@ -1,3 +1,6 @@
+# unreleased
+* Fix issue where `next` method was not available in browser contexts
+
 # 0.7.0
 * Add thrown error property when wrapping scryfall response to illuminate the problem when parsing the response
 * Add svg urls for mana symbols
