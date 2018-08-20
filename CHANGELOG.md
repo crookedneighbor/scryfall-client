@@ -1,4 +1,4 @@
-# unreleased
+# 0.8.0
 * Fix issue where `next` method was not available in browser contexts
 
 # 0.7.0
