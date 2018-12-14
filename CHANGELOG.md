@@ -1,3 +1,6 @@
+# 0.8.1
+* Fix issue where melded cards could not fetch the backside image
+
 # 0.8.0
 * Fix issue where `next` method was not available in browser contexts
 

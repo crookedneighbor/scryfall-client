@@ -88,8 +88,10 @@ Card.prototype.getBackImage = function (type) {
 }
 
 function findMeldUrls (card) {
-  var cardIsBackSide = card.collector_number.indexOf('b') > -1
   var cards
+  var cardIsBackSide = card.all_parts.find(function (part) {
+    return part.id === card.id
+  }).component === 'meld_result'
 
   if (cardIsBackSide) {
     cards = card.all_parts.filter(function (part) {
@@ -97,7 +99,7 @@ function findMeldUrls (card) {
     })
   } else {
     cards = [card.all_parts.find(function (part) {
-      return part.uri.match(/b$/)
+      return part.component === 'meld_result'
     })]
   }
 
