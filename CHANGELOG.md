@@ -1,3 +1,6 @@
+# 0.8.2
+* Fix issue where null values were not handled properly
+
 # 0.8.1
 * Fix issue where melded cards could not fetch the backside image
 
