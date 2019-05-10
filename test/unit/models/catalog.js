@@ -24,7 +24,7 @@ describe('Catalog', function () {
 
     expect(catalog.length).to.equal(20)
 
-    catalog.push({foo: 'bar'})
+    catalog.push({ foo: 'bar' })
     expect(catalog.length).to.equal(21)
 
     catalog.pop()

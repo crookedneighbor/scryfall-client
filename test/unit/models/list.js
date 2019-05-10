@@ -29,7 +29,7 @@ describe('List', function () {
 
     expect(list.length).to.equal(2)
 
-    list.push({foo: 'bar'})
+    list.push({ foo: 'bar' })
     expect(list.length).to.equal(3)
 
     list.pop()

@@ -15,7 +15,7 @@ describe('built file (be patient, this can take a while)', function () {
     let name = 'scryfall-client'
     this.path = path.resolve(distLocation, `${name}.js`)
     let bundleFs = fs.createWriteStream(this.path)
-    let b = browserify({standalone: name})
+    let b = browserify({ standalone: name })
 
     bundleFs.on('finish', done)
 
