@@ -1,5 +1,6 @@
 # unreleased
 * Add `getPrice` method
+* Add `getTokens` method
 
 # 0.8.2
 * Fix issue where null values were not handled properly

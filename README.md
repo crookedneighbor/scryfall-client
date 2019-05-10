@@ -347,6 +347,26 @@ scryfall.get('cards/named', {
 })
 ```
 
+### getTokens() -> Promise<List>
+
+Returns a Promise that resolves with a list of [card objects](https://scryfall.com/docs/api/cards) for each token associated with the card.
+
+```js
+scryfall.get('cards/named', {
+  exact: 'Bestial Menace'
+}).then(function (card) {
+  return card.getTokens()
+}).then(function (list) {
+  return Promise.all(list.map(function (card) {
+    return card.getImage()
+  }))
+}).then(function (imgs) {
+  imgs.forEach(function (img) {
+    // display image
+  })
+})
+```
+
 ## Catalog
 
 An object representing a [catalog object](https://scryfall.com/docs/api/catalogs). This is an Array like object where the entries are the `data` attribute from the raw API. The rest of the properties are present on the `Catalog`.

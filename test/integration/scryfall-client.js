@@ -253,6 +253,18 @@ describe('scryfallClient', function () {
           expect(price).to.be.greaterThan(0)
         })
       })
+
+      it('can get tokens for a card', function () {
+        return this.client.get(`cards/${this.beastialMenace}`).then((card) => {
+          return card.getTokens()
+        }).then((tokens) => {
+          expect(tokens.length).to.equal(3)
+
+          tokens.forEach((token) => {
+            expect(token.layout).to.equal('token')
+          })
+        })
+      })
     })
   })
 

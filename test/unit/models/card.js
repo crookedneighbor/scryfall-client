@@ -384,4 +384,35 @@ describe('Card', function () {
       expect(this.card.getPrice('usd_foil')).to.equal('')
     })
   })
+
+  describe('getTokens', function () {
+    beforeEach(function () {
+      this.fakeRequestMethod.onCall(0).resolves(wrapScryfallResponse(this.fixtures.tokens.elephant, {
+        requestMethod: this.fakeRequestMethod
+      }))
+      this.fakeRequestMethod.onCall(1).resolves(wrapScryfallResponse(this.fixtures.tokens.wolf, {
+        requestMethod: this.fakeRequestMethod
+      }))
+      this.fakeRequestMethod.onCall(2).resolves(wrapScryfallResponse(this.fixtures.tokens.snake, {
+        requestMethod: this.fakeRequestMethod
+      }))
+      this.card = wrapScryfallResponse(this.fixtures.cardWithMultipleTokens, {
+        requestMethod: this.fakeRequestMethod
+      })
+    })
+
+    it('requests card objects for each token', function () {
+      return this.card.getTokens().then((tokens) => {
+        expect(this.fakeRequestMethod.callCount).to.equal(3)
+        expect(this.fakeRequestMethod).to.be.calledWith('https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b')
+        expect(this.fakeRequestMethod).to.be.calledWith('https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830')
+        expect(this.fakeRequestMethod).to.be.calledWith('https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475')
+
+        tokens.forEach((token) => {
+          expect(token).to.be.an.instanceof(Card)
+          expect(token.layout).to.equal('token')
+        })
+      })
+    })
+  })
 })

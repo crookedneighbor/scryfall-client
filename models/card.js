@@ -97,6 +97,19 @@ Card.prototype.getPrice = function (type) {
   return prices[type] || ''
 }
 
+Card.prototype.getTokens = function () {
+  var self = this
+  var tokenRequests = this.all_parts.reduce(function (tokens, part) {
+    if (part.component === 'token') {
+      tokens.push(self._request(part.uri))
+    }
+
+    return tokens
+  }, [])
+
+  return Promise.all(tokenRequests)
+}
+
 function findMeldUrls (card) {
   var cards
   var cardIsBackSide = card.all_parts.find(function (part) {
