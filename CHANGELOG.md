@@ -1,4 +1,4 @@
-# unreleased
+# 0.9.0
 * Add `getPrice` method
 * Add `getTokens` method
 
