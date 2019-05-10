@@ -225,25 +225,25 @@ describe('makeRequestFunction', function () {
   })
 
   it('can pass object as query params', function () {
-    return this.request('foo', {q: 'my-query'}).then((response) => {
+    return this.request('foo', { q: 'my-query' }).then((response) => {
       expect(https.get).to.be.calledWith('https://api.scryfall.com/foo?q=my-query')
     })
   })
 
   it('can pass object as multiple query params', function () {
-    return this.request('foo', {q: 'my-query', bar: 'baz'}).then((response) => {
+    return this.request('foo', { q: 'my-query', bar: 'baz' }).then((response) => {
       expect(https.get).to.be.calledWith('https://api.scryfall.com/foo?q=my-query&bar=baz')
     })
   })
 
   it('can pass object as query params when url already has query params', function () {
-    return this.request('foo?firstQuery=bar', {q: 'my-query'}).then((response) => {
+    return this.request('foo?firstQuery=bar', { q: 'my-query' }).then((response) => {
       expect(https.get).to.be.calledWith('https://api.scryfall.com/foo?firstQuery=bar&q=my-query')
     })
   })
 
   it('uri encodes the query string params', function () {
-    return this.request('foo', {q: 'o:vigilance t:equipment o:"draw cards"'}).then((response) => {
+    return this.request('foo', { q: 'o:vigilance t:equipment o:"draw cards"' }).then((response) => {
       expect(https.get).to.be.calledWith('https://api.scryfall.com/foo?q=o%3Avigilance%20t%3Aequipment%20o%3A%22draw%20cards%22')
     })
   })
