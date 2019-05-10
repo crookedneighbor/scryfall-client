@@ -95,6 +95,7 @@ describe('scryfallClient', function () {
         this.docentOfPerfection = '30c3d4c1-dc3d-4529-9d6e-8c16149cf6da'
         this.brunaFadingLight = '27907985-b5f6-4098-ab43-15a0c2bf94d5'
         this.brisela = '5a7a212e-e0b6-4f12-a95c-173cae023f93'
+        this.beastialMenace = '73c16134-692d-4fd1-bffa-f9342113cbd8'
       })
 
       it('can get rulings for card', function () {
@@ -242,6 +243,14 @@ describe('scryfallClient', function () {
           expect(images[1]).to.be.a('string')
           expect(images[1]).to.not.equal(images[0])
           expect(images[1]).to.include(`a.jpg`)
+        })
+      })
+
+      it('can get price for a card', function () {
+        return this.client.get(`cards/${this.beastialMenace}`).then((card) => {
+          let price = Number(card.getPrice())
+
+          expect(price).to.be.greaterThan(0)
         })
       })
     })

@@ -244,7 +244,7 @@ scryfall.get('cards/search', {
 })
 ```
 
-### getImage(String size='normal') -> String
+### getImage(String size='normal') -> Promise<String>
 
 Returns a Promise that resolves with the image url of the specified size. Defaults to the `normal` size. 
 
@@ -330,6 +330,22 @@ scryfall.get('cards/named', {
 ```
 
 This is, admittedly, a bit of a wonky design pattern, but necessary to accomadate meld cards. If you have a better idea for it, suggestions and PRs are welcome!
+
+### getPrice(String type) -> String
+
+Returns a string with the specifed price. If the price is not available for the specified type, `''` will be returned.
+
+If no type is specified, it will return the price for `'usd'` if available. If `'usd'` is not available, `'usd_foil'` will be used. If `'usd_foil'` is not available, `'eur'` will be used. If `'eur'` is not available, `'tix'` will be used. If `'tix'` is not available, `''` will be returned.
+
+```js
+scryfall.get('cards/named', {
+  fuzzy: 'animar soul'
+}).then(function (card) {
+  card.getPrice() // '11.25'
+  card.getPrice('usd') // '11.25'
+  card.getPrice('usd_foil') // '52.51'
+})
+```
 
 ## Catalog
 

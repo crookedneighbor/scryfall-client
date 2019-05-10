@@ -68,9 +68,12 @@ module.exports = {
   colorshifted: false,
   futureshifted: false,
   edhrec_rank: 240,
-  usd: '0.69',
-  tix: '0.12',
-  eur: '0.22',
+  prices: {
+    usd: '11.25',
+    usd_foil: '52.51',
+    eur: '7.65',
+    tix: '0.89'
+  },
   related_uris: {
     gatherer: 'http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=438643',
     tcgplayer_decks: 'http://decks.tcgplayer.com/magic/deck/search?contains=Windfall&page=1&partner=Scryfall',

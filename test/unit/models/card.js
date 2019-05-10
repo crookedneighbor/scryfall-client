@@ -327,4 +327,61 @@ describe('Card', function () {
       })
     })
   })
+
+  describe('getPrice', function () {
+    beforeEach(function () {
+      this.card = wrapScryfallResponse(this.fixtures.card, {
+        requestMethod: this.fakeRequestMethod
+      })
+      this.originalPrices = Object.assign({}, this.fixtures.card.prices)
+    })
+
+    afterEach(function () {
+      this.fixtures.card.prices = this.originalPrices
+    })
+
+    it('returns the non-foil usd price when no arguments are given', function () {
+      expect(this.card.getPrice()).to.equal('11.25')
+    })
+
+    it('returns the specified version if given', function () {
+      expect(this.card.getPrice('eur')).to.equal('7.65')
+    })
+
+    it('returns the foil price if no usd price is available and no argument is given', function () {
+      this.card.prices.usd = null
+
+      expect(this.card.getPrice()).to.equal('52.51')
+    })
+
+    it('returns the eur price if no usd or foil price available', function () {
+      this.card.prices.usd = null
+      this.card.prices.usd_foil = null
+
+      expect(this.card.getPrice()).to.equal('7.65')
+    })
+
+    it('returns the tix price if no usd or foil or eur price available', function () {
+      this.card.prices.usd = null
+      this.card.prices.usd_foil = null
+      this.card.prices.eur = null
+
+      expect(this.card.getPrice()).to.equal('0.89')
+    })
+
+    it('returns an empty string if no pricing is available', function () {
+      this.card.prices.usd = null
+      this.card.prices.usd_foil = null
+      this.card.prices.eur = null
+      this.card.prices.tix = null
+
+      expect(this.card.getPrice()).to.equal('')
+    })
+
+    it('returns an empty string if the specified type is not available', function () {
+      this.card.prices.usd_foil = null
+
+      expect(this.card.getPrice('usd_foil')).to.equal('')
+    })
+  })
 })

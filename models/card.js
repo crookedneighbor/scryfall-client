@@ -87,6 +87,16 @@ Card.prototype.getBackImage = function (type) {
   return Promise.resolve([cardImage])
 }
 
+Card.prototype.getPrice = function (type) {
+  var prices = this.prices
+
+  if (!type) {
+    return prices.usd || prices.usd_foil || prices.eur || prices.tix || ''
+  }
+
+  return prices[type] || ''
+}
+
 function findMeldUrls (card) {
   var cards
   var cardIsBackSide = card.all_parts.find(function (part) {
