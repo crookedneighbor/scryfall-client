@@ -1,12 +1,14 @@
 'use strict'
 
-function Set (scryfallObject, requestMethod) {
-  if (scryfallObject.object !== 'set') {
-    throw new Error('Object type must be "set"')
-  }
+var BaseModel = require('./base-model')
 
-  this._request = requestMethod
+function Set (scryfallObject, requestMethod) {
+  BaseModel.call(this, scryfallObject, requestMethod)
 }
+
+Set.SCRYFALL_MODEL_NAME = 'set'
+Set.prototype = Object.create(BaseModel.prototype)
+Set.prototype.constructor = Set
 
 Set.prototype.getCards = function () {
   return this._request(this.search_uri)

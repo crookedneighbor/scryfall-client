@@ -1,5 +1,6 @@
 'use strict'
 
+var BaseModel = require('./base-model')
 var Promise = require('../lib/promise')
 var basicGetMethods = {
   getRulings: 'rulings_uri',
@@ -10,12 +11,12 @@ var basicGetMethods = {
 var SCRYFALL_CARD_BACK_IMAGE_URL = 'https://img.scryfall.com/errors/missing.jpg'
 
 function Card (scryfallObject, requestMethod) {
-  if (scryfallObject.object !== 'card') {
-    throw new Error('Object type must be "card"')
-  }
-
-  this._request = requestMethod
+  BaseModel.call(this, scryfallObject, requestMethod)
 }
+
+Card.SCRYFALL_MODEL_NAME = 'card'
+Card.prototype = Object.create(BaseModel.prototype)
+Card.prototype.constructor = Card
 
 Object.keys(basicGetMethods).forEach(function (method) {
   Card.prototype[method] = function () {
