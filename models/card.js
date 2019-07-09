@@ -14,9 +14,7 @@ function Card (scryfallObject, requestMethod) {
   BaseModel.call(this, scryfallObject, requestMethod)
 }
 
-Card.SCRYFALL_MODEL_NAME = 'card'
-Card.prototype = Object.create(BaseModel.prototype)
-Card.prototype.constructor = Card
+BaseModel.setModelName(Card, 'card')
 
 Object.keys(basicGetMethods).forEach(function (method) {
   Card.prototype[method] = function () {
