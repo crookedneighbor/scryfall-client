@@ -415,4 +415,16 @@ describe('Card', function () {
       })
     })
   })
+
+  describe('getTaggerUrl', function () {
+    it('returns the tagger url for the card', function () {
+      const card = wrapScryfallResponse(this.fixtures.card, {
+        requestMethod: this.fakeRequestMethod
+      })
+
+      const url = card.getTaggerUrl()
+
+      expect(url).to.equal('https://tagger.scryfall.com/card/ima/77')
+    })
+  })
 })

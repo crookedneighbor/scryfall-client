@@ -367,6 +367,20 @@ scryfall.get('cards/named', {
 })
 ```
 
+### getTaggerUrl() -> String (beta)
+
+Returns a url for the tagger page for the card. This is derived from the card attributes based on the structure of the current tagger urls. If the structure changes, this method will no longer point to the correct url.
+
+```js
+scryfall.get('cards/named', {
+  exact: 'Krenko, Mob Boss'
+}).then(function (card) {
+  return card.getTaggerUrl()
+}).then(function (url) {
+  url // https://tagger.scryfall.com/card/ddt/52
+})
+```
+
 ## Catalog
 
 An object representing a [catalog object](https://scryfall.com/docs/api/catalogs). This is an Array like object where the entries are the `data` attribute from the raw API. The rest of the properties are present on the `Catalog`.

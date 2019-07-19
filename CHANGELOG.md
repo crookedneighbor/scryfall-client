@@ -1,6 +1,9 @@
+# unreleased
+* add `getTaggerUrl` method to card object
+
 # 0.9.0
-* Add `getPrice` method
-* Add `getTokens` method
+* Add `getPrice` method to card object
+* Add `getTokens` method to card object
 
 # 0.8.2
 * Fix issue where null values were not handled properly

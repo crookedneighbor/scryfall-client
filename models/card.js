@@ -109,6 +109,10 @@ Card.prototype.getTokens = function () {
   return Promise.all(tokenRequests)
 }
 
+Card.prototype.getTaggerUrl = function () {
+  return 'https://tagger.scryfall.com/card/' + this.set + '/' + this.collector_number
+}
+
 function findMeldUrls (card) {
   var cards
   var cardIsBackSide = card.all_parts.find(function (part) {
