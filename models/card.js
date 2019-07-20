@@ -1,6 +1,6 @@
 'use strict'
 
-var BaseModel = require('./base-model')
+var SingularEntity = require('./singular-entity')
 var Promise = require('../lib/promise')
 var basicGetMethods = {
   getRulings: 'rulings_uri',
@@ -11,10 +11,10 @@ var basicGetMethods = {
 var SCRYFALL_CARD_BACK_IMAGE_URL = 'https://img.scryfall.com/errors/missing.jpg'
 
 function Card (scryfallObject, requestMethod) {
-  BaseModel.call(this, scryfallObject, requestMethod)
+  SingularEntity.call(this, scryfallObject, requestMethod)
 }
 
-BaseModel.setModelName(Card, 'card')
+SingularEntity.setModelName(Card, 'card')
 
 Object.keys(basicGetMethods).forEach(function (method) {
   Card.prototype[method] = function () {

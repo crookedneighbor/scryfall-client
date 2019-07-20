@@ -1,12 +1,12 @@
 'use strict'
 
-var BaseModel = require('./base-model')
+var SingularEntity = require('./singular-entity')
 
 function Set (scryfallObject, requestMethod) {
-  BaseModel.call(this, scryfallObject, requestMethod)
+  SingularEntity.call(this, scryfallObject, requestMethod)
 }
 
-BaseModel.setModelName(Set, 'set')
+SingularEntity.setModelName(Set, 'set')
 
 Set.prototype.getCards = function () {
   return this._request(this.search_uri)

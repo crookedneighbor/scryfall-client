@@ -1,4 +1,4 @@
-function BaseModel (scryfallObject, requestMethod) {
+function SingularEntity (scryfallObject, requestMethod) {
   var modelName = this.constructor.SCRYFALL_MODEL_NAME
 
   if (scryfallObject.object !== modelName) {
@@ -8,10 +8,10 @@ function BaseModel (scryfallObject, requestMethod) {
   this._request = requestMethod
 }
 
-BaseModel.setModelName = function (ChildModel, modelName) {
+SingularEntity.setModelName = function (ChildModel, modelName) {
   ChildModel.SCRYFALL_MODEL_NAME = modelName
-  ChildModel.prototype = Object.create(BaseModel.prototype)
+  ChildModel.prototype = Object.create(SingularEntity.prototype)
   ChildModel.prototype.constructor = ChildModel
 }
 
-module.exports = BaseModel
+module.exports = SingularEntity

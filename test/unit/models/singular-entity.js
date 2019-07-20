@@ -1,8 +1,8 @@
 'use strict'
 
-const BaseModel = require('../../../models/base-model')
+const SingularEntity = require('../../../models/singular-entity')
 
-describe('BaseModel', function () {
+describe('SingularEntity', function () {
   beforeEach(function () {
     this.fakeRequestMethod = this.sandbox.stub()
     this.fakeScryfallObject = {
@@ -10,10 +10,10 @@ describe('BaseModel', function () {
     }
 
     function ChildModel (scryfallObject, requestMethod) {
-      BaseModel.call(this, scryfallObject, requestMethod)
+      SingularEntity.call(this, scryfallObject, requestMethod)
     }
     ChildModel.SCRYFALL_MODEL_NAME = 'foo'
-    ChildModel.prototype = Object.create(BaseModel.prototype)
+    ChildModel.prototype = Object.create(SingularEntity.prototype)
     ChildModel.prototype.constructor = ChildModel
 
     this.ChildModel = ChildModel
