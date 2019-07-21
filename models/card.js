@@ -10,8 +10,8 @@ var basicGetMethods = {
 
 var SCRYFALL_CARD_BACK_IMAGE_URL = 'https://img.scryfall.com/errors/missing.jpg'
 
-function Card (scryfallObject, requestMethod) {
-  SingularEntity.call(this, scryfallObject, requestMethod)
+function Card (scryfallObject, config) {
+  SingularEntity.call(this, scryfallObject, config)
 }
 
 SingularEntity.setModelName(Card, 'card')

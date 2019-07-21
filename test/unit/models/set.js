@@ -6,17 +6,20 @@ const wrapScryfallResponse = require('../../../lib/wrap-scryfall-response')
 describe('Set', function () {
   beforeEach(function () {
     this.fakeRequestMethod = this.sandbox.stub()
+    this.config = {
+      requestMethod: this.fakeRequestMethod
+    }
   })
 
   it('does not throw if object type is "set"', function () {
     expect(() => {
-      new Set(this.fixtures.set, this.fakeRequestMethod) // eslint-disable-line no-new
+      new Set(this.fixtures.set, this.config) // eslint-disable-line no-new
     }).to.not.throw()
   })
 
   it('throws if object type is not "set"', function () {
     expect(() => {
-      new Set(this.fixtures.listOfRulings, this.fakeRequestMethod) // eslint-disable-line no-new
+      new Set(this.fixtures.listOfRulings, this.config) // eslint-disable-line no-new
     }).to.throw('Object type must be "set"')
   })
 

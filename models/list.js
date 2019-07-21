@@ -3,11 +3,11 @@
 var Promise = require('../lib/promise')
 var ArrayLike = require('./array-like')
 
-function List (scryfallObject, requestMethod) {
+function List (scryfallObject, config) {
   var arr = ArrayLike.call(this, scryfallObject)
 
   arr.__proto__ = List.prototype // eslint-disable-line no-proto
-  arr._request = requestMethod
+  arr._request = config.requestMethod
   arr.next = function () {
     if (!this.has_more) {
       return Promise.reject(new Error('No additional pages.'))

@@ -2,8 +2,8 @@
 
 var SingularEntity = require('./singular-entity')
 
-function Set (scryfallObject, requestMethod) {
-  SingularEntity.call(this, scryfallObject, requestMethod)
+function Set (scryfallObject, config) {
+  SingularEntity.call(this, scryfallObject, config)
 }
 
 SingularEntity.setModelName(Set, 'set')

@@ -6,17 +6,20 @@ const wrapScryfallResponse = require('../../../lib/wrap-scryfall-response')
 describe('Card', function () {
   beforeEach(function () {
     this.fakeRequestMethod = this.sandbox.stub()
+    this.config = {
+      requestMethod: this.fakeRequestMethod
+    }
   })
 
   it('does not throw if object type is "card"', function () {
     expect(() => {
-      new Card(this.fixtures.card, this.fakeRequestMethod) // eslint-disable-line no-new
+      new Card(this.fixtures.card, this.config) // eslint-disable-line no-new
     }).to.not.throw()
   })
 
   it('throws if object type is not "card"', function () {
     expect(() => {
-      new Card(this.fixtures.listOfRulings, this.fakeRequestMethod) // eslint-disable-line no-new
+      new Card(this.fixtures.listOfRulings, this.config) // eslint-disable-line no-new
     }).to.throw('Object type must be "card"')
   })
 

@@ -6,17 +6,20 @@ const List = require('../../../models/list')
 describe('List', function () {
   beforeEach(function () {
     this.fakeRequestMethod = this.sandbox.stub()
+    this.config = {
+      requestMethod: this.fakeRequestMethod
+    }
   })
 
   it('inherits from Array', function () {
-    let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
+    let list = new List(this.fixtures.listOfCards, this.config)
 
     expect(list).to.be.an.instanceof(Array)
     expect(list).to.be.an.instanceof(List)
   })
 
   it('its entries are defined by data properties', function () {
-    let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
+    let list = new List(this.fixtures.listOfCards, this.config)
 
     expect(list[0].name).to.be.a('string')
     expect(list[0].name).to.equal(this.fixtures.listOfCards.data[0].name)
@@ -25,7 +28,7 @@ describe('List', function () {
   })
 
   it('responds to Array methods', function () {
-    let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
+    let list = new List(this.fixtures.listOfCards, this.config)
 
     expect(list.length).to.equal(2)
 
@@ -44,7 +47,7 @@ describe('List', function () {
   })
 
   it('applies properties to object', function () {
-    let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
+    let list = new List(this.fixtures.listOfCards, this.config)
 
     expect(list.total_cards).to.be.a('number')
     expect(list.total_cards).to.equal(this.fixtures.listOfCards.total_cards)
@@ -53,7 +56,7 @@ describe('List', function () {
   })
 
   it('does not apply data property to object', function () {
-    let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
+    let list = new List(this.fixtures.listOfCards, this.config)
 
     expect(list.data).to.equal(undefined)
   })
@@ -66,7 +69,7 @@ describe('List', function () {
     })
 
     it('makes a request for the next page', function () {
-      let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
+      let list = new List(this.fixtures.listOfCards, this.config)
 
       return list.next().then((list2) => {
         expect(this.fakeRequestMethod).to.have.been.calledWith(this.fixtures.listOfCards.next_page)
@@ -75,7 +78,7 @@ describe('List', function () {
     })
 
     it('rejects promise if there are no additional results', function () {
-      let list = new List(this.fixtures.listOfCards, this.fakeRequestMethod)
+      let list = new List(this.fixtures.listOfCards, this.config)
 
       list.has_more = false
 

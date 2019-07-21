@@ -1,11 +1,11 @@
-function SingularEntity (scryfallObject, requestMethod) {
+function SingularEntity (scryfallObject, config) {
   var modelName = this.constructor.SCRYFALL_MODEL_NAME
 
   if (scryfallObject.object !== modelName) {
     throw new Error('Object type must be "' + modelName + '"')
   }
 
-  this._request = requestMethod
+  this._request = config.requestMethod
 }
 
 SingularEntity.setModelName = function (ChildModel, modelName) {
