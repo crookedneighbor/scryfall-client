@@ -84,13 +84,13 @@ describe('Card', function () {
     it('throws an error if no format is provided', function () {
       expect(() => {
         this.card.isLegal()
-      }).to.throw('Must provide format for checking legality. Use one of `standard`, `future`, `frontier`, `modern`, `legacy`, `pauper`, `vintage`, `penny`, `commander`, `1v1`, `duel`, `brawl`.')
+      }).to.throw('Must provide format for checking legality. Use one of `standard`, `future`, `frontier`, `modern`, `legacy`, `pauper`, `vintage`, `penny`, `commander`, `duel`, `oldschool`.')
     })
 
     it('throws an error if an unrecognized format is provided', function () {
       expect(() => {
         this.card.isLegal('foo')
-      }).to.throw('Format "foo" is not recgonized. Use one of `standard`, `future`, `frontier`, `modern`, `legacy`, `pauper`, `vintage`, `penny`, `commander`, `1v1`, `duel`, `brawl`.')
+      }).to.throw('Format "foo" is not recgonized. Use one of `standard`, `future`, `frontier`, `modern`, `legacy`, `pauper`, `vintage`, `penny`, `commander`, `duel`, `oldschool`.')
     })
 
     it('returns true for legal card in provided format', function () {
@@ -334,6 +334,11 @@ describe('Card', function () {
         requestMethod: this.fakeRequestMethod
       })
       this.originalPrices = Object.assign({}, this.fixtures.card.prices)
+
+      Object.keys(this.originalPrices).forEach((priceKind) => {
+        // ensure that each price type in fixture exists
+        expect(Boolean(this.originalPrices[priceKind])).to.equal(true)
+      })
     })
 
     afterEach(function () {
@@ -341,24 +346,24 @@ describe('Card', function () {
     })
 
     it('returns the non-foil usd price when no arguments are given', function () {
-      expect(this.card.getPrice()).to.equal('11.25')
+      expect(this.card.getPrice()).to.equal(this.originalPrices.usd)
     })
 
     it('returns the specified version if given', function () {
-      expect(this.card.getPrice('eur')).to.equal('7.65')
+      expect(this.card.getPrice('eur')).to.equal(this.originalPrices.eur)
     })
 
     it('returns the foil price if no usd price is available and no argument is given', function () {
       this.card.prices.usd = null
 
-      expect(this.card.getPrice()).to.equal('52.51')
+      expect(this.card.getPrice()).to.equal(this.originalPrices.usd_foil)
     })
 
     it('returns the eur price if no usd or foil price available', function () {
       this.card.prices.usd = null
       this.card.prices.usd_foil = null
 
-      expect(this.card.getPrice()).to.equal('7.65')
+      expect(this.card.getPrice()).to.equal(this.originalPrices.eur)
     })
 
     it('returns the tix price if no usd or foil or eur price available', function () {
@@ -366,7 +371,7 @@ describe('Card', function () {
       this.card.prices.usd_foil = null
       this.card.prices.eur = null
 
-      expect(this.card.getPrice()).to.equal('0.89')
+      expect(this.card.getPrice()).to.equal(this.originalPrices.tix)
     })
 
     it('returns an empty string if no pricing is available', function () {
