@@ -221,11 +221,7 @@ describe('scryfallClient', function () {
         })
 
         it('can get the backside image of a meld card', function () {
-          let collector
-
           return this.client.get(`cards/${this.brunaFadingLight}`).then((card) => {
-            collector = card.collector_number.split('a')[0]
-
             return card.getBackImage()
           }).then((images) => {
             expect(images).to.be.an('array')
@@ -237,11 +233,7 @@ describe('scryfallClient', function () {
         })
 
         it('can get the backside image of a melded card', function () {
-          let collector
-
           return this.client.get(`cards/${this.brisela}`).then((card) => {
-            collector = card.collector_number.split('b')[0]
-
             return card.getBackImage()
           }).then((images) => {
             expect(images).to.be.an('array')
