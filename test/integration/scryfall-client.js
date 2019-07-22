@@ -94,6 +94,7 @@ describe('scryfallClient', function () {
         this.windfall = '357cf802-2d66-49a4-bf43-ab3bc30ab825'
         this.docentOfPerfection = '30c3d4c1-dc3d-4529-9d6e-8c16149cf6da'
         this.brunaFadingLight = '27907985-b5f6-4098-ab43-15a0c2bf94d5'
+        this.giselaBrokenBlade = 'c75c035a-7da9-4b36-982d-fca8220b1797'
         this.brisela = '5a7a212e-e0b6-4f12-a95c-173cae023f93'
         this.beastialMenace = '73c16134-692d-4fd1-bffa-f9342113cbd8'
       })
@@ -135,114 +136,124 @@ describe('scryfallClient', function () {
         })
       })
 
-      it('can get the image of a card', function () {
-        let collector
+      context('card images', function () {
+        it('can get the image of a card', function () {
+          let id
 
-        return this.client.get(`cards/${this.windfall}`).then((card) => {
-          collector = card.collector_number
+          return this.client.get(`cards/${this.windfall}`).then((card) => {
+            id = card.id
 
-          return card.getImage()
-        }).then((image) => {
-          expect(image).to.be.a('string')
-          expect(image).to.include(`${collector}.jpg`)
+            return card.getImage()
+          }).then((image) => {
+            expect(image).to.be.a('string')
+            expect(image).to.include('img.scryfall.com')
+            expect(image).to.include(id)
+          })
         })
-      })
 
-      it('can get the image of a transform card', function () {
-        let collector
+        it('can get the image of a transform card', function () {
+          let id
 
-        return this.client.get(`cards/${this.docentOfPerfection}`).then((card) => {
-          collector = card.collector_number
+          return this.client.get(`cards/${this.docentOfPerfection}`).then((card) => {
+            id = card.id
 
-          return card.getImage()
-        }).then((image) => {
-          expect(image).to.be.a('string')
-          expect(image).to.include(`${collector}a.jpg`)
+            return card.getImage()
+          }).then((image) => {
+            expect(image).to.be.a('string')
+            expect(image).to.include('img.scryfall.com')
+            expect(image).to.include(id)
+          })
         })
-      })
 
-      it('can get the image of a meld card', function () {
-        let collector
+        it('can get the image of a meld card', function () {
+          let id
 
-        return this.client.get(`cards/${this.brunaFadingLight}`).then((card) => {
-          collector = card.collector_number
+          return this.client.get(`cards/${this.brunaFadingLight}`).then((card) => {
+            id = card.id
 
-          return card.getImage()
-        }).then((image) => {
-          expect(image).to.be.a('string')
-          expect(image).to.include(`${collector}.jpg`)
+            return card.getImage()
+          }).then((image) => {
+            expect(image).to.be.a('string')
+            expect(image).to.include('img.scryfall.com')
+            expect(image).to.include(id)
+          })
         })
-      })
 
-      it('can get the image of a melded card', function () {
-        let collector
+        it('can get the image of a melded card', function () {
+          let id
 
-        return this.client.get(`cards/${this.brisela}`).then((card) => {
-          collector = card.collector_number
+          return this.client.get(`cards/${this.brisela}`).then((card) => {
+            id = card.id
 
-          return card.getImage()
-        }).then((image) => {
-          expect(image).to.be.a('string')
-          expect(image).to.include(`${collector}.jpg`)
+            return card.getImage()
+          }).then((image) => {
+            expect(image).to.be.a('string')
+            expect(image).to.include('img.scryfall.com')
+            expect(image).to.include(id)
+          })
         })
-      })
 
-      it('can get the backside image of a normal card', function () {
-        return this.client.get(`cards/${this.windfall}`).then((card) => {
-          return card.getBackImage()
-        }).then((images) => {
-          expect(images).to.be.an('array')
-          expect(images.length).to.equal(1)
-          expect(images[0]).to.be.a('string')
-          expect(images[0]).to.equal('https://img.scryfall.com/errors/missing.jpg')
+        it('can get the backside image of a normal card', function () {
+          return this.client.get(`cards/${this.windfall}`).then((card) => {
+            return card.getBackImage()
+          }).then((images) => {
+            expect(images).to.be.an('array')
+            expect(images.length).to.equal(1)
+            expect(images[0]).to.be.a('string')
+            expect(images[0]).to.equal('https://img.scryfall.com/errors/missing.jpg')
+          })
         })
-      })
 
-      it('can get the backside image of a transform card', function () {
-        let collector
+        it('can get the backside image of a transform card', function () {
+          let id
 
-        return this.client.get(`cards/${this.docentOfPerfection}`).then((card) => {
-          collector = card.collector_number
+          return this.client.get(`cards/${this.docentOfPerfection}`).then((card) => {
+            id = card.id
 
-          return card.getBackImage()
-        }).then((images) => {
-          expect(images).to.be.an('array')
-          expect(images.length).to.equal(1)
-          expect(images[0]).to.be.a('string')
-          expect(images[0]).to.include(`${collector}b.jpg`)
+            return card.getBackImage()
+          }).then((images) => {
+            expect(images).to.be.an('array')
+            expect(images.length).to.equal(1)
+            expect(images[0]).to.be.a('string')
+            expect(images[0]).to.include('img.scryfall.com')
+            expect(images[0]).to.include(id)
+          })
         })
-      })
 
-      it('can get the backside image of a meld card', function () {
-        let collector
+        it('can get the backside image of a meld card', function () {
+          let collector
 
-        return this.client.get(`cards/${this.brunaFadingLight}`).then((card) => {
-          collector = card.collector_number.split('a')[0]
+          return this.client.get(`cards/${this.brunaFadingLight}`).then((card) => {
+            collector = card.collector_number.split('a')[0]
 
-          return card.getBackImage()
-        }).then((images) => {
-          expect(images).to.be.an('array')
-          expect(images.length).to.equal(1)
-          expect(images[0]).to.be.a('string')
-          expect(images[0]).to.include(`${collector}b.jpg`)
+            return card.getBackImage()
+          }).then((images) => {
+            expect(images).to.be.an('array')
+            expect(images.length).to.equal(1)
+            expect(images[0]).to.be.a('string')
+            expect(images[0]).to.include('img.scryfall.com')
+            expect(images[0]).to.include(this.brisela)
+          })
         })
-      })
 
-      it('can get the backside image of a melded card', function () {
-        let collector
+        it('can get the backside image of a melded card', function () {
+          let collector
 
-        return this.client.get(`cards/${this.brisela}`).then((card) => {
-          collector = card.collector_number.split('b')[0]
+          return this.client.get(`cards/${this.brisela}`).then((card) => {
+            collector = card.collector_number.split('b')[0]
 
-          return card.getBackImage()
-        }).then((images) => {
-          expect(images).to.be.an('array')
-          expect(images.length).to.equal(2)
-          expect(images[0]).to.be.a('string')
-          expect(images[0]).to.include(`${collector}a.jpg`)
-          expect(images[1]).to.be.a('string')
-          expect(images[1]).to.not.equal(images[0])
-          expect(images[1]).to.include(`a.jpg`)
+            return card.getBackImage()
+          }).then((images) => {
+            expect(images).to.be.an('array')
+            expect(images.length).to.equal(2)
+            expect(images[0]).to.be.a('string')
+            expect(images[0]).to.include('img.scryfall.com')
+            expect(images[0]).to.include(this.brunaFadingLight)
+            expect(images[1]).to.be.a('string')
+            expect(images[1]).to.not.equal(images[0])
+            expect(images[1]).to.include('img.scryfall.com')
+            expect(images[1]).to.include(this.giselaBrokenBlade)
+          })
         })
       })
 
