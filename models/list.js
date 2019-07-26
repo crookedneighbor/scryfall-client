@@ -1,6 +1,5 @@
 'use strict'
 
-var Promise = require('../lib/promise')
 var ArrayLike = require('./array-like')
 
 function List (scryfallObject, config) {

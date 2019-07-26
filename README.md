@@ -459,11 +459,15 @@ lookUpCardInDatabase(someId).then(function (cardData) {
 })
 ```
 
+# Browser Support
+
+This code is intentionally written in ES5 without any transpilers so that it can be built for the browser without the need to use transpilers such as Babel.
+
+The module does make use of the [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object, so if this SDK is used in a browser that does not support promises, it will need to be polyfilled in your script.
+
 # Contributing Guidelines
 
 ## Code Style
-
-This code is intentionally written in ES5 without any transpilers so that it can be built for the browser without the need to use transpilers such as Babel.
 
 The code base uses [Standard](https://www.npmjs.com/package/standard).
 

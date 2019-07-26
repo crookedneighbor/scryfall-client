@@ -1,7 +1,6 @@
 'use strict'
 
 var SingularEntity = require('./singular-entity')
-var Promise = require('../lib/promise')
 var basicGetMethods = {
   getRulings: 'rulings_uri',
   getSet: 'set_uri',

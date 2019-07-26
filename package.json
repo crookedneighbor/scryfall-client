@@ -43,8 +43,7 @@
     "watchify": "^3.11.1"
   },
   "dependencies": {
-    "superagent": "^5.1.0",
-    "promise-polyfill": "^8.1.0"
+    "superagent": "^5.1.0"
   },
   "standard": {
     "globals": [
