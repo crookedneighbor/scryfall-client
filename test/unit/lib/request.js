@@ -1,22 +1,19 @@
 'use strict'
 
-const https = require('https')
+const superagent = require('superagent')
 const makeRequestFunction = require('../../../lib/request')
 const ScryfallError = require('../../../models/scryfall-error')
 const GenericScryfallResponse = require('../../../models/generic-scryfall-response')
 
 describe('makeRequestFunction', function () {
   beforeEach(function () {
-    this.fakeResponseOn = this.sandbox.stub()
-    this.fakeResponseOn.withArgs('data').yieldsAsync('{"object": "foo"}')
-    this.fakeResponseOn.withArgs('end').yieldsAsync()
     this.fakeResponse = {
-      on: this.fakeResponseOn
+      text: JSON.stringify(this.fixtures.card)
     }
     this.fakeGet = {
-      on: this.sandbox.stub()
+      set: this.sandbox.stub().resolves(this.fakeResponse)
     }
-    this.sandbox.stub(https, 'get').returns(this.fakeGet).yields(this.fakeResponse)
+    this.sandbox.stub(superagent, 'get').returns(this.fakeGet)
     this.request = makeRequestFunction()
   })
 
@@ -44,8 +41,8 @@ describe('makeRequestFunction', function () {
     }).then(() => {
       clearInterval(intervalRef)
 
-      expect(count).to.be.greaterThan(280)
-      expect(count).to.be.lessThan(400)
+      expect(count).to.be.greaterThan(100)
+      expect(count).to.be.lessThan(300)
     })
   })
 
@@ -65,8 +62,8 @@ describe('makeRequestFunction', function () {
     }).then(() => {
       clearInterval(intervalRef)
 
-      expect(count).to.be.greaterThan(580)
-      expect(count).to.be.lessThan(800)
+      expect(count).to.be.greaterThan(200)
+      expect(count).to.be.lessThan(400)
     })
   })
 
@@ -123,8 +120,6 @@ describe('makeRequestFunction', function () {
       }
     })
 
-    this.fakeResponseOn.withArgs('data').yields(JSON.stringify(this.fixtures.card))
-
     return request('foo').then((card) => {
       expect(card.mana_cost).to.equal('<img src="https://example.com/mana-2.png" /><img src="https://example.com/mana-U.png" />')
     })
@@ -137,8 +132,6 @@ describe('makeRequestFunction', function () {
       }
     })
 
-    this.fakeResponseOn.withArgs('data').yields(JSON.stringify(this.fixtures.card))
-
     return request('foo').then(this.expectToReject).catch(function (err) {
       expect(err.thrownError.message).to.equal('bad function')
     })
@@ -149,8 +142,6 @@ describe('makeRequestFunction', function () {
       convertSymbolsToSlackEmoji: true
     })
 
-    this.fakeResponseOn.withArgs('data').yields(JSON.stringify(this.fixtures.card))
-
     return request('foo').then((card) => {
       expect(card.mana_cost).to.equal(':mana-2::mana-U:')
     })
@@ -160,8 +151,6 @@ describe('makeRequestFunction', function () {
     let request = makeRequestFunction({
       convertSymbolsToDiscordEmoji: true
     })
-
-    this.fakeResponseOn.withArgs('data').yields(JSON.stringify(this.fixtures.card))
 
     return request('foo').then((card) => {
       expect(card.mana_cost).to.equal(':mana2::manaU:')
@@ -176,8 +165,6 @@ describe('makeRequestFunction', function () {
       }
     })
 
-    this.fakeResponseOn.withArgs('data').yields(JSON.stringify(this.fixtures.card))
-
     return request('foo').then((card) => {
       expect(card.mana_cost).to.equal('<img src="https://example.com/mana-2.png" /><img src="https://example.com/mana-U.png" />')
     })
@@ -188,8 +175,6 @@ describe('makeRequestFunction', function () {
       convertSymbolsToDiscordEmoji: true,
       convertSymbolsToSlackEmoji: true
     })
-
-    this.fakeResponseOn.withArgs('data').yields(JSON.stringify(this.fixtures.card))
 
     return request('foo').then((card) => {
       expect(card.mana_cost).to.equal(':mana-2::mana-U:')
@@ -202,23 +187,27 @@ describe('makeRequestFunction', function () {
 
   it('makes a request to scryfall', function () {
     return this.request('foo').then(() => {
-      expect(https.get).to.be.calledWith('https://api.scryfall.com/foo')
+      expect(superagent.get).to.be.calledWith('https://api.scryfall.com/foo')
     })
   })
 
   it('strips out leading /', function () {
     return this.request('/foo').then(() => {
-      expect(https.get).to.be.calledWith('https://api.scryfall.com/foo')
+      expect(superagent.get).to.be.calledWith('https://api.scryfall.com/foo')
     })
   })
 
   it('allows passing in the full domain', function () {
     return this.request('https://api.scryfall.com/foo').then(() => {
-      expect(https.get).to.be.calledWith('https://api.scryfall.com/foo')
+      expect(superagent.get).to.be.calledWith('https://api.scryfall.com/foo')
     })
   })
 
   it('resolves with a Scryfall Response', function () {
+    this.fakeGet.set.resolves({
+      text: '{"object":"foo"}'
+    })
+
     return this.request('foo').then((response) => {
       expect(response).to.be.an.instanceof(GenericScryfallResponse)
     })
@@ -226,35 +215,32 @@ describe('makeRequestFunction', function () {
 
   it('can pass object as query params', function () {
     return this.request('foo', { q: 'my-query' }).then((response) => {
-      expect(https.get).to.be.calledWith('https://api.scryfall.com/foo?q=my-query')
+      expect(superagent.get).to.be.calledWith('https://api.scryfall.com/foo?q=my-query')
     })
   })
 
   it('can pass object as multiple query params', function () {
     return this.request('foo', { q: 'my-query', bar: 'baz' }).then((response) => {
-      expect(https.get).to.be.calledWith('https://api.scryfall.com/foo?q=my-query&bar=baz')
+      expect(superagent.get).to.be.calledWith('https://api.scryfall.com/foo?q=my-query&bar=baz')
     })
   })
 
   it('can pass object as query params when url already has query params', function () {
     return this.request('foo?firstQuery=bar', { q: 'my-query' }).then((response) => {
-      expect(https.get).to.be.calledWith('https://api.scryfall.com/foo?firstQuery=bar&q=my-query')
+      expect(superagent.get).to.be.calledWith('https://api.scryfall.com/foo?firstQuery=bar&q=my-query')
     })
   })
 
   it('uri encodes the query string params', function () {
     return this.request('foo', { q: 'o:vigilance t:equipment o:"draw cards"' }).then((response) => {
-      expect(https.get).to.be.calledWith('https://api.scryfall.com/foo?q=o%3Avigilance%20t%3Aequipment%20o%3A%22draw%20cards%22')
+      expect(superagent.get).to.be.calledWith('https://api.scryfall.com/foo?q=o%3Avigilance%20t%3Aequipment%20o%3A%22draw%20cards%22')
     })
   })
 
   it('rejects when https.get errors', function () {
     let error = new Error('https error')
 
-    https.get.restore()
-    this.sandbox.stub(https, 'get').returns({
-      on: this.sandbox.stub().withArgs('error').yieldsAsync(error)
-    })
+    this.fakeGet.set.rejects(error)
 
     return this.request('foo').then(this.expectToReject).catch((err) => {
       expect(err.originalError).to.equal(error)
@@ -263,7 +249,7 @@ describe('makeRequestFunction', function () {
   })
 
   it('rejects when JSON response is not parsable', function () {
-    this.fakeResponseOn.withArgs('data').yields('{')
+    this.fakeGet.set.resolves('{')
 
     return this.request('foo').then(this.expectToReject).catch((err) => {
       expect(err).to.be.an.instanceof(ScryfallError)
@@ -272,12 +258,14 @@ describe('makeRequestFunction', function () {
   })
 
   it('rejects when body is an error object', function () {
-    this.fakeResponseOn.withArgs('data').yields(JSON.stringify({
-      object: 'error',
-      code: 'not_found',
-      status: 404,
-      details: 'Failure'
-    }))
+    this.fakeGet.set.resolves({
+      text: JSON.stringify({
+        object: 'error',
+        code: 'not_found',
+        status: 404,
+        details: 'Failure'
+      })
+    })
 
     return this.request('foo').then(this.expectToReject).catch((err) => {
       expect(err).to.be.an.instanceof(ScryfallError)

@@ -1,5 +1,6 @@
 # unreleased
 * add `getTaggerUrl` method to card object
+* swap out request module for `superagent` for better browser support
 
 # 0.9.0
 * Add `getPrice` method to card object

@@ -1,5 +1,6 @@
 'use strict'
 
+const expect = require('chai').expect
 const browserify = require('browserify')
 const path = require('path')
 const fs = require('fs')
@@ -28,5 +29,19 @@ describe('built file (be patient, this can take a while)', function () {
     this.timeout(45000)
 
     checkES5(this.path, done)
+  })
+
+  it('is less then 90 KiB unminified', function (done) {
+    fs.stat(this.path, function (err, stats) {
+      if (err) {
+        done(err)
+
+        return
+      }
+
+      expect(stats.size).to.be.lessThan(90000)
+
+      done()
+    })
   })
 })
