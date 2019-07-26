@@ -4,13 +4,13 @@ const ScryfallError = require('../../../models/scryfall-error')
 
 describe('ScryfallError', function () {
   it('inherits from Error', function () {
-    let error = new ScryfallError({})
+    const error = new ScryfallError({})
 
     expect(error).to.be.an.instanceof(Error)
   })
 
   it('uses message from object', function () {
-    let error = new ScryfallError({
+    const error = new ScryfallError({
       message: 'custom message'
     })
 
@@ -18,7 +18,7 @@ describe('ScryfallError', function () {
   })
 
   it('uses details for message from object if no message exists', function () {
-    let error = new ScryfallError({
+    const error = new ScryfallError({
       object: 'error',
       code: 'not_found',
       status: 404,
@@ -29,7 +29,7 @@ describe('ScryfallError', function () {
   })
 
   it('prefers message over details', function () {
-    let error = new ScryfallError({
+    const error = new ScryfallError({
       object: 'error',
       code: 'not_found',
       status: 404,
@@ -41,7 +41,7 @@ describe('ScryfallError', function () {
   })
 
   it('passes on all properties', function () {
-    let error = new ScryfallError({
+    const error = new ScryfallError({
       object: 'error',
       code: 'not_found',
       type: 'ambiguous',

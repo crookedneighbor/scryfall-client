@@ -9,14 +9,14 @@ const checkES5 = require('check-ecmascript-version-compatibility')
 
 describe('built file (be patient, this can take a while)', function () {
   before(function (done) {
-    let distLocation = path.resolve(__dirname, '..', '..', 'dist')
+    const distLocation = path.resolve(__dirname, '..', '..', 'dist')
 
     mkdirp.sync(distLocation)
 
-    let name = 'scryfall-client'
+    const name = 'scryfall-client'
     this.path = path.resolve(distLocation, `${name}.js`)
-    let bundleFs = fs.createWriteStream(this.path)
-    let b = browserify({ standalone: name })
+    const bundleFs = fs.createWriteStream(this.path)
+    const b = browserify({ standalone: name })
 
     bundleFs.on('finish', done)
 

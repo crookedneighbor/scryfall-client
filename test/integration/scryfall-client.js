@@ -129,7 +129,7 @@ describe('scryfallClient', function () {
         return this.client.get('cards/search', {
           q: 'format:standard r:r'
         }).then((list) => {
-          let card = list[0]
+          const card = list[0]
 
           expect(card.isLegal('standard')).to.equal(true)
           expect(card.isLegal('pauper')).to.equal(false)
@@ -251,7 +251,7 @@ describe('scryfallClient', function () {
 
       it('can get price for a card', function () {
         return this.client.get(`cards/${this.beastialMenace}`).then((card) => {
-          let price = Number(card.getPrice())
+          const price = Number(card.getPrice())
 
           expect(price).to.be.greaterThan(0)
         })
@@ -273,7 +273,7 @@ describe('scryfallClient', function () {
 
   describe('wrap', function () {
     it('can wrap saved response object into scryfall response', function () {
-      let card = this.client.wrap(fakeCard)
+      const card = this.client.wrap(fakeCard)
 
       expect(card).to.be.an.instanceof(Card)
     })

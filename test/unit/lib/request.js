@@ -22,15 +22,15 @@ describe('makeRequestFunction', function () {
   })
 
   it('returns a request function', function () {
-    let request = makeRequestFunction()
+    const request = makeRequestFunction()
 
     expect(request).to.be.an.instanceof(Function)
   })
 
   it('automatically rate limits according to Scryfall\'s recomendation for request frequency of no requests within 100 ms', function () {
-    let request = makeRequestFunction()
+    const request = makeRequestFunction()
     let count = 0
-    let intervalRef = setInterval(function () {
+    const intervalRef = setInterval(function () {
       count++
     }, 1)
 
@@ -47,11 +47,11 @@ describe('makeRequestFunction', function () {
   })
 
   it('can configure rate limit', function () {
-    let request = makeRequestFunction({
+    const request = makeRequestFunction({
       delayBetweenRequests: 200
     })
     let count = 0
-    let intervalRef = setInterval(function () {
+    const intervalRef = setInterval(function () {
       count++
     }, 1)
 
@@ -68,9 +68,9 @@ describe('makeRequestFunction', function () {
   })
 
   it('rate limits among multiple requests happening at once', function () {
-    let request = makeRequestFunction()
+    const request = makeRequestFunction()
     let count = 0
-    let intervalRef = setInterval(function () {
+    const intervalRef = setInterval(function () {
       count++
     }, 1)
 
@@ -89,10 +89,10 @@ describe('makeRequestFunction', function () {
   })
 
   it('does not rate limite a request that occurs after rate limiting from initial request is done', function () {
-    let request = makeRequestFunction()
+    const request = makeRequestFunction()
     let count = 0
     let intervalRef
-    let wait = function (time) {
+    const wait = function (time) {
       return new Promise((resolve) => {
         setTimeout(resolve, time)
       })
@@ -114,7 +114,7 @@ describe('makeRequestFunction', function () {
   })
 
   it('can pass in textTransformer option', function () {
-    let request = makeRequestFunction({
+    const request = makeRequestFunction({
       textTransformer: function (text) {
         return text.replace(/{(.)(\/(.))?}/g, '<img src="https://example.com/mana-$1$3.png" />')
       }
@@ -126,7 +126,7 @@ describe('makeRequestFunction', function () {
   })
 
   it('surfaces error about textTransformer when function throws an error', function () {
-    let request = makeRequestFunction({
+    const request = makeRequestFunction({
       textTransformer: function () {
         throw new Error('bad function')
       }
@@ -138,7 +138,7 @@ describe('makeRequestFunction', function () {
   })
 
   it('can pass in convertSymbolsToSlackEmoji option', function () {
-    let request = makeRequestFunction({
+    const request = makeRequestFunction({
       convertSymbolsToSlackEmoji: true
     })
 
@@ -148,7 +148,7 @@ describe('makeRequestFunction', function () {
   })
 
   it('can pass in convertSymbolsToDiscordEmoji option', function () {
-    let request = makeRequestFunction({
+    const request = makeRequestFunction({
       convertSymbolsToDiscordEmoji: true
     })
 
@@ -158,7 +158,7 @@ describe('makeRequestFunction', function () {
   })
 
   it('prefers textTransformer option over slack emoji option', function () {
-    let request = makeRequestFunction({
+    const request = makeRequestFunction({
       convertSymbolsToSlackEmoji: true,
       textTransformer: function (text) {
         return text.replace(/{(.)(\/(.))?}/g, '<img src="https://example.com/mana-$1$3.png" />')
@@ -171,7 +171,7 @@ describe('makeRequestFunction', function () {
   })
 
   it('prefers convertSymbolsToSlackEmoji over convertSymbolsToSlackEmoji option', function () {
-    let request = makeRequestFunction({
+    const request = makeRequestFunction({
       convertSymbolsToDiscordEmoji: true,
       convertSymbolsToSlackEmoji: true
     })
@@ -238,7 +238,7 @@ describe('makeRequestFunction', function () {
   })
 
   it('rejects when https.get errors', function () {
-    let error = new Error('https error')
+    const error = new Error('https error')
 
     this.fakeGet.set.rejects(error)
 

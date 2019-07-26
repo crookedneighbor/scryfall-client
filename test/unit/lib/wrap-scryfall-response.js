@@ -16,7 +16,7 @@ describe('wrapScryfallResponse', function () {
   })
 
   it('wraps generic objects with GenericScryfallResponse', function () {
-    let wrappedResponse = wrapScryfallResponse({
+    const wrappedResponse = wrapScryfallResponse({
       object: 'foo',
       foo: 'bar'
     }, this.options)
@@ -25,7 +25,7 @@ describe('wrapScryfallResponse', function () {
   })
 
   it('wraps card responses in Card', function () {
-    let wrappedResponse = wrapScryfallResponse({
+    const wrappedResponse = wrapScryfallResponse({
       object: 'card',
       foo: 'bar'
     }, this.options)
@@ -35,7 +35,7 @@ describe('wrapScryfallResponse', function () {
   })
 
   it('wraps list responses in List', function () {
-    let wrappedResponse = wrapScryfallResponse({
+    const wrappedResponse = wrapScryfallResponse({
       object: 'list',
       data: [{
         object: 'card',
@@ -52,7 +52,7 @@ describe('wrapScryfallResponse', function () {
   })
 
   it('wraps catalog responses in cist', function () {
-    let wrappedResponse = wrapScryfallResponse({
+    const wrappedResponse = wrapScryfallResponse({
       object: 'catalog',
       data: [
         'foo',
@@ -66,7 +66,7 @@ describe('wrapScryfallResponse', function () {
   })
 
   it('wraps set responses in Set', function () {
-    let wrappedResponse = wrapScryfallResponse({
+    const wrappedResponse = wrapScryfallResponse({
       object: 'set',
       code: 'DOM'
     }, this.options)
@@ -76,7 +76,7 @@ describe('wrapScryfallResponse', function () {
   })
 
   it('wraps nested properties', function () {
-    let wrappedResponse = wrapScryfallResponse({
+    const wrappedResponse = wrapScryfallResponse({
       object: 'foo',
       foo: 'bar',
       related_card: {
@@ -97,7 +97,7 @@ describe('wrapScryfallResponse', function () {
   })
 
   it('wraps objects in an array', function () {
-    let wrappedResponse = wrapScryfallResponse({
+    const wrappedResponse = wrapScryfallResponse({
       object: 'foo',
       foo: 'bar',
       related_cards: [{
@@ -136,7 +136,7 @@ describe('wrapScryfallResponse', function () {
       return replacement.toUpperCase()
     }
 
-    let wrappedResponse = wrapScryfallResponse({
+    const wrappedResponse = wrapScryfallResponse({
       object: 'foo',
       foo: '{g/r} foo',
       related_cards: [{
@@ -160,7 +160,7 @@ describe('wrapScryfallResponse', function () {
   })
 
   it('does not convert symbols to slack emoji if not explicitly passed in', function () {
-    let wrappedResponse = wrapScryfallResponse({
+    const wrappedResponse = wrapScryfallResponse({
       object: 'foo',
       foo: '{g/r} foo',
       related_cards: [{
@@ -184,7 +184,7 @@ describe('wrapScryfallResponse', function () {
   })
 
   it('does not convert symbols to discord emoji if not explicitly passed in', function () {
-    let wrappedResponse = wrapScryfallResponse({
+    const wrappedResponse = wrapScryfallResponse({
       object: 'foo',
       foo: '{g/r} foo',
       related_cards: [{
