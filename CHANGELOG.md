@@ -1,6 +1,9 @@
-# unreleased
+# 0.10.0
 * add `getTaggerUrl` method to card object
 * swap out request module for `superagent` for better browser support
+
+_Breaking Changes_
+* move `symbols` off of the main Scryfall object and put it at the base level: `require('scryfall-client/symbols')`
 
 # 0.9.0
 * Add `getPrice` method to card object
