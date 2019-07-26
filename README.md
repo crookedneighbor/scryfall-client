@@ -73,10 +73,11 @@ A function that yields the text of the fields of the card, whatever the function
 
 The main use case is for transforming the mana symbol notation. The module has a symbols property which is an object with a key for [each mana symbol that Scryfall uses](https://scryfall.com/docs/api/card-symbols). You can use these symbols in conjunction with the textTransformer function to embed the mana symbols on a web page.
 
-You can use this in conjunction with the `symbols` property on the Object to display the symbols using the svgs for the symbols found on Scryfall's website.
+You can use this in conjunction with the `symbols` lib provided with the module to display the symbols using the svgs for the symbols found on Scryfall's website.
 
 ```js
 var ScryfallClient = require('scryfall-client')
+var symbols = require('scryfall-client/symbols')
 var scryfall = new ScryfallClient({
   textTransformer: function (text) {
     var matches = text.match(/{(.)(\/(.))?}/g)
@@ -85,7 +86,7 @@ var scryfall = new ScryfallClient({
       matches.forEach(function (symbol) {
         var key = symbol.slice(1, -1)
 
-        text = text.replace(symbol, '<img src="' + ScryfallClient.symbols[key] + '"/>')
+        text = text.replace(symbol, '<img src="' + symbols[key] + '"/>')
       })
     }
 
