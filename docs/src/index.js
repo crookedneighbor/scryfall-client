@@ -22,7 +22,9 @@ search.addEventListener('keyup', debounce(function (event) {
       option.value = name
       autocompleteDatalist.appendChild(option)
     })
-  })
+  }).catch(function (e) {
+    debugger;
+  });
 }))
 
 search.addEventListener('input', function (event) {

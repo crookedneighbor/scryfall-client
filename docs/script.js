@@ -49,7 +49,9 @@ search.addEventListener('keyup', debounce(function (event) {
       option.value = name
       autocompleteDatalist.appendChild(option)
     })
-  })
+  }).catch(function (e) {
+    debugger;
+  });
 }))
 
 search.addEventListener('input', function (event) {
@@ -126,7 +128,7 @@ var ScryfallError = require('../models/scryfall-error')
 function get (url) {
   return superagent
     .get(url)
-    .set('accept', 'json')
+    .set('Accept', 'application/json')
     .then(function (response) {
       var body
 

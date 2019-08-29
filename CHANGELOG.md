@@ -1,3 +1,6 @@
+# 0.10.1
+* Fix issue where request header was set incorrectly
+
 # 0.10.0
 * add `getTaggerUrl` method to card object
 * swap out request module for `superagent` for better browser support
