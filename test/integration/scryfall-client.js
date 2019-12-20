@@ -143,8 +143,7 @@ describe('scryfallClient', function () {
           return this.client.get(`cards/${this.windfall}`).then((card) => {
             id = card.id
 
-            return card.getImage()
-          }).then((image) => {
+            const image = card.getImage()
             expect(image).to.be.a('string')
             expect(image).to.include('img.scryfall.com')
             expect(image).to.include(id)
@@ -157,8 +156,7 @@ describe('scryfallClient', function () {
           return this.client.get(`cards/${this.docentOfPerfection}`).then((card) => {
             id = card.id
 
-            return card.getImage()
-          }).then((image) => {
+            const image = card.getImage()
             expect(image).to.be.a('string')
             expect(image).to.include('img.scryfall.com')
             expect(image).to.include(id)
@@ -171,8 +169,7 @@ describe('scryfallClient', function () {
           return this.client.get(`cards/${this.brunaFadingLight}`).then((card) => {
             id = card.id
 
-            return card.getImage()
-          }).then((image) => {
+            const image = card.getImage()
             expect(image).to.be.a('string')
             expect(image).to.include('img.scryfall.com')
             expect(image).to.include(id)
@@ -185,22 +182,24 @@ describe('scryfallClient', function () {
           return this.client.get(`cards/${this.brisela}`).then((card) => {
             id = card.id
 
-            return card.getImage()
-          }).then((image) => {
+            const image = card.getImage()
             expect(image).to.be.a('string')
             expect(image).to.include('img.scryfall.com')
             expect(image).to.include(id)
           })
         })
 
-        it('can get the backside image of a normal card', function () {
+        it('can get the backside image of a normal card (missing url)', function () {
           return this.client.get(`cards/${this.windfall}`).then((card) => {
-            return card.getBackImage()
-          }).then((images) => {
-            expect(images).to.be.an('array')
-            expect(images.length).to.equal(1)
-            expect(images[0]).to.be.a('string')
-            expect(images[0]).to.equal('https://img.scryfall.com/errors/missing.jpg')
+            const image = card.getBackImage()
+            expect(image).to.equal('https://img.scryfall.com/errors/missing.jpg')
+          })
+        })
+
+        it('can get the backside image of a meld card (missing url)', function () {
+          return this.client.get(`cards/${this.brunaFadingLight}`).then((card) => {
+            const image = card.getBackImage()
+            expect(image).to.equal('https://img.scryfall.com/errors/missing.jpg')
           })
         })
 
@@ -210,41 +209,9 @@ describe('scryfallClient', function () {
           return this.client.get(`cards/${this.docentOfPerfection}`).then((card) => {
             id = card.id
 
-            return card.getBackImage()
-          }).then((images) => {
-            expect(images).to.be.an('array')
-            expect(images.length).to.equal(1)
-            expect(images[0]).to.be.a('string')
-            expect(images[0]).to.include('img.scryfall.com')
-            expect(images[0]).to.include(id)
-          })
-        })
-
-        it('can get the backside image of a meld card', function () {
-          return this.client.get(`cards/${this.brunaFadingLight}`).then((card) => {
-            return card.getBackImage()
-          }).then((images) => {
-            expect(images).to.be.an('array')
-            expect(images.length).to.equal(1)
-            expect(images[0]).to.be.a('string')
-            expect(images[0]).to.include('img.scryfall.com')
-            expect(images[0]).to.include(this.brisela)
-          })
-        })
-
-        it('can get the backside image of a melded card', function () {
-          return this.client.get(`cards/${this.brisela}`).then((card) => {
-            return card.getBackImage()
-          }).then((images) => {
-            expect(images).to.be.an('array')
-            expect(images.length).to.equal(2)
-            expect(images[0]).to.be.a('string')
-            expect(images[0]).to.include('img.scryfall.com')
-            expect(images[0]).to.include(this.brunaFadingLight)
-            expect(images[1]).to.be.a('string')
-            expect(images[1]).to.not.equal(images[0])
-            expect(images[1]).to.include('img.scryfall.com')
-            expect(images[1]).to.include(this.giselaBrokenBlade)
+            const image = card.getBackImage()
+            expect(image).to.include('img.scryfall.com')
+            expect(image).to.include(id)
           })
         })
       })
