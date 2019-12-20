@@ -1,6 +1,10 @@
 # unreleased
 * Normalize card_faces so all card objects have a card_faces array
 
+_Breaking Changes_
+
+* meld cards are not considered double sided, and will not resolve in the `getBackImage` method
+
 # 0.10.1
 * Fix issue where request header was set incorrectly
 

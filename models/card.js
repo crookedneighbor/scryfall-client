@@ -87,20 +87,10 @@ Card.prototype.getImage = function (type) {
 }
 
 Card.prototype.getBackImage = function (type) {
+  var backFace = this.getBackFace()
   var cardImage, imageObject
-  var self = this
 
   type = type || 'normal'
-
-  if (this.layout === 'meld') {
-    var promises = findMeldUrls(this).map(function (url) {
-      return self._request(url).then(function (card) {
-        return card.image_uris[type]
-      })
-    })
-
-    return Promise.all(promises)
-  }
 
   if (this.image_uris) {
     cardImage = SCRYFALL_CARD_BACK_IMAGE_URL
@@ -145,27 +135,6 @@ Card.prototype.getTokens = function () {
 
 Card.prototype.getTaggerUrl = function () {
   return 'https://tagger.scryfall.com/card/' + this.set + '/' + this.collector_number
-}
-
-function findMeldUrls (card) {
-  var cards
-  var cardIsBackSide = card.all_parts.find(function (part) {
-    return part.id === card.id
-  }).component === 'meld_result'
-
-  if (cardIsBackSide) {
-    cards = card.all_parts.filter(function (part) {
-      return part.name !== card.name
-    })
-  } else {
-    cards = [card.all_parts.find(function (part) {
-      return part.component === 'meld_result'
-    })]
-  }
-
-  return cards.map(function (part) {
-    return part.uri
-  })
 }
 
 function formatKeysForError (obj) {

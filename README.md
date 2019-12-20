@@ -274,7 +274,7 @@ scryfall.get('cards/named', {
 
 ### getBackImage(String size='normal') -> Array<String>
 
-Returns a Promise that resolves with an Array of image urls of the back of the card. In almost all cases, this will resolve with an Array with 1entry that is [Scryfall's URL for the backside of a card](https://img.scryfall.com/errors/missing.jpg). For [transform cards](https://scryfall.com/search?q=layout%3Atransform), it will resolve with an Array with one entry that is the back face of the card. For the front side of [meld cards](https://scryfall.com/search?q=layout%3Ameld), it will resolve with an Array with 1 entry that is the melded version of the card. FOr the back side of [meld cards](https://scryfall.com/search?q=layout%3Ameld), it will resolve with an Array of two urls, which are the two front sides of the card.
+Returns a Promise that resolves with an Array of image urls of the back of the card. In almost all cases, this will resolve with an Array with 1entry that is [Scryfall's URL for the backside of a card](https://img.scryfall.com/errors/missing.jpg). For [transform cards](https://scryfall.com/search?q=layout%3Atransform), it will resolve with an Array with one entry that is the back face of the card.
 
 The default format parameter is `'normal'`. As of the writing of this documentation, the valid values are:
 
@@ -289,7 +289,7 @@ The default format parameter is `'normal'`. As of the writing of this documentat
 
 If additional formats are added, `getImage` will support them automatically (as it takes its list of valid values from the API response itself).
 
-If a non-transform or non-meld card is used with `getBackImage`, the size parameter will be ignored.
+If a non-doublesided card is used with `getBackImage`, the size parameter will be ignored.
 
 ```js
 // A Magic card without a back face
@@ -309,28 +309,7 @@ scryfall.get('cards/named', {
 }).then(function (imgs) {
   imgs[0] // the img url for Final Iteration
 })
-
-// Front side of a meld card
-scryfall.get('cards/named', {
-  exact: 'Gisela, the Broken Blade'
-}).then(function (card) {
-  return card.getBackImage()
-}).then(function (imgs) {
-  imgs[0] // the img url for Brisela, Voice of Nightmares
-})
-
-// Back side of a meld card
-scryfall.get('cards/named', {
-  exact: 'Brisela, Voice of Nightmares'
-}).then(function (card) {
-  return card.getBackImage()
-}).then(function (imgs) {
-  imgs[0] // the img url for Bruna, the Fading Light 
-  imgs[1] // the img url for Gisela, the Broken Blade
-})
 ```
-
-This is, admittedly, a bit of a wonky design pattern, but necessary to accomadate meld cards. If you have a better idea for it, suggestions and PRs are welcome!
 
 ### getPrice(String type) -> String
 

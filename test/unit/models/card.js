@@ -3,7 +3,7 @@
 const Card = require('../../../models/card')
 const wrapScryfallResponse = require('../../../lib/wrap-scryfall-response')
 
-describe('Card', function () {
+describe.only('Card', function () {
   beforeEach(function () {
     this.fakeRequestMethod = this.sandbox.stub()
     this.config = {
@@ -318,42 +318,6 @@ describe('Card', function () {
         expect(imgs).to.be.a('array')
         expect(imgs.length).to.equal(1)
         expect(imgs[0]).to.equal('https://img.scryfall.com/errors/missing.jpg')
-      })
-    })
-
-    it('gets melded card image for meld card', function () {
-      const card = wrapScryfallResponse(this.fixtures.cardWithMeldLayout, {
-        requestMethod: this.fakeRequestMethod
-      })
-
-      this.fakeRequestMethod.resolves(wrapScryfallResponse(this.fixtures.cardBackWithMeldLayout, {
-        requestMethod: this.fakeRequestMethod
-      }))
-
-      return card.getBackImage().then((imgs) => {
-        expect(imgs).to.be.a('array')
-        expect(imgs.length).to.equal(1)
-        expect(imgs[0]).to.equal(this.fixtures.cardBackWithMeldLayout.image_uris.normal)
-      })
-    })
-
-    it('gets unmeleded card images for backside of meld card', function () {
-      const card = wrapScryfallResponse(this.fixtures.cardBackWithMeldLayout, {
-        requestMethod: this.fakeRequestMethod
-      })
-
-      this.fakeRequestMethod.withArgs(this.fixtures.cardBackWithMeldLayout.all_parts[0].uri).resolves(wrapScryfallResponse(this.fixtures.cardWithMeldLayout, {
-        requestMethod: this.fakeRequestMethod
-      }))
-      this.fakeRequestMethod.withArgs(this.fixtures.cardBackWithMeldLayout.all_parts[2].uri).resolves(wrapScryfallResponse(this.fixtures.secondCardWithMeldLayout, {
-        requestMethod: this.fakeRequestMethod
-      }))
-
-      return card.getBackImage().then((imgs) => {
-        expect(imgs).to.be.a('array')
-        expect(imgs.length).to.equal(2)
-        expect(imgs[0]).to.equal(this.fixtures.cardWithMeldLayout.image_uris.normal)
-        expect(imgs[1]).to.equal(this.fixtures.secondCardWithMeldLayout.image_uris.normal)
       })
     })
   })
