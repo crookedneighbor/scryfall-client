@@ -23,6 +23,33 @@ describe('Card', function () {
     }).to.throw('Object type must be "card"')
   })
 
+  it('normalizes card faces', function () {
+    const cardWithoutFaces = wrapScryfallResponse(this.fixtures.card, {
+      requestMethod: this.fakeRequestMethod
+    })
+    const cardWithFaces = wrapScryfallResponse(this.fixtures.cardWithTransformLayout, {
+      requestMethod: this.fakeRequestMethod
+    })
+
+    expect(cardWithoutFaces.card_faces).to.not.equal(this.fixtures.card.card_faces)
+    expect(cardWithoutFaces.card_faces.length).to.equal(1)
+    expect(cardWithoutFaces.card_faces[0]).to.deep.equal({
+      object: 'card_face',
+      name: cardWithoutFaces.name,
+      mana_cost: cardWithoutFaces.mana_cost,
+      flavor_text: cardWithoutFaces.flavor_text,
+      colors: cardWithoutFaces.colors,
+      oracle_text: cardWithoutFaces.oracle_text,
+      type_line: cardWithoutFaces.type_line,
+      artist: cardWithoutFaces.artist,
+      image_uris: cardWithoutFaces.image_uris,
+      illustration_id: cardWithoutFaces.illustration_id
+    })
+
+    expect(cardWithFaces.card_faces.length).to.equal(2)
+    expect(cardWithFaces.card_faces).to.equal(this.fixtures.cardWithTransformLayout.card_faces)
+  })
+
   describe('getRulings', function () {
     beforeEach(function () {
       this.fakeRequestMethod.resolves(this.fixtures.listOfRulings)

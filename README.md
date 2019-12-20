@@ -162,7 +162,7 @@ As a convenience, there are a number of API objects with special methods.
 
 ## Card
 
-Representing a [card object](https://scryfall.com/docs/api/cards)
+Representing a [card object](https://scryfall.com/docs/api/cards). In additioan, all card objects will include a `card_faces` array, defaulting to the attributes from the card if the card does not have multiple faces.
 
 ### getRulings() -> Promise<List>
 

@@ -1,3 +1,6 @@
+# unreleased
+* Normalize card_faces so all card objects have a card_faces array
+
 # 0.10.1
 * Fix issue where request header was set incorrectly
 

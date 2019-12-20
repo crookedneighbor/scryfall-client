@@ -1,5 +1,27 @@
 'use strict'
 
+// Pulled from https://scryfall.com/docs/api/cards#card-face-objects
+// may need to be updated as attributes are added
+var CARD_FACE_ATTRIBUTES = [
+  'artist',
+  'color_indicator',
+  'colors',
+  'flavor_text',
+  'illustration_id',
+  'image_uris',
+  'loyalty',
+  'mana_cost',
+  'name',
+  'oracle_text',
+  'power',
+  'printed_name',
+  'printed_text',
+  'printed_type_line',
+  'toughness',
+  'type_line',
+  'watermark'
+]
+
 var SingularEntity = require('./singular-entity')
 var basicGetMethods = {
   getRulings: 'rulings_uri',
@@ -11,6 +33,19 @@ var SCRYFALL_CARD_BACK_IMAGE_URL = 'https://img.scryfall.com/errors/missing.jpg'
 
 function Card (scryfallObject, config) {
   SingularEntity.call(this, scryfallObject, config)
+
+  if (!this.card_faces) {
+    this.card_faces = [
+      CARD_FACE_ATTRIBUTES.reduce(function (obj, attribute) {
+        if (attribute in scryfallObject) {
+          obj[attribute] = scryfallObject[attribute]
+        }
+
+        return obj
+      }, {})
+    ]
+    this.card_faces[0].object = 'card_face'
+  }
 }
 
 SingularEntity.setModelName(Card, 'card')
