@@ -4,6 +4,8 @@
 _Breaking Changes_
 
 * meld cards are not considered double sided, and will not resolve in the `getBackImage` method
+* `getImage` returns syncronously and throws errors when image uris do not exist or an invalid image option is provided
+* `getBackImage` returns a single value syncrounsly and throws errors when image uris do not exist or an invalid image option is provided
 
 # 0.10.1
 * Fix issue where request header was set incorrectly

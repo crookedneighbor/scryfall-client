@@ -245,9 +245,9 @@ scryfall.get('cards/search', {
 })
 ```
 
-### getImage(String size='normal') -> Promise<String>
+### getImage(String size='normal') -> String
 
-Returns a Promise that resolves with the image url of the specified size. Defaults to the `normal` size. 
+Returns the image url of the specified size. Defaults to the `normal` size.
 
 As of the writing of this documentation, the valid values are:
 
@@ -266,15 +266,14 @@ If additional formats are added, `getImage` will support them automatically (as 
 scryfall.get('cards/named', {
   exact: 'windfall'
 }).then(function (card) {
-  return card.getImage()
-}).then(function (img) {
+  const img = card.getImage()
   img // set an img tag's src to this
 })
 ```
 
-### getBackImage(String size='normal') -> Array<String>
+### getBackImage(String size='normal') -> String
 
-Returns a Promise that resolves with an Array of image urls of the back of the card. In almost all cases, this will resolve with an Array with 1entry that is [Scryfall's URL for the backside of a card](https://img.scryfall.com/errors/missing.jpg). For [transform cards](https://scryfall.com/search?q=layout%3Atransform), it will resolve with an Array with one entry that is the back face of the card.
+Returns the image url of the back of the card. In almost all cases, this will return [Scryfall's URL for the backside of a card](https://img.scryfall.com/errors/missing.jpg). For [transform cards](https://scryfall.com/search?q=layout%3Atransform). It will return the image url for the back face of the card.
 
 The default format parameter is `'normal'`. As of the writing of this documentation, the valid values are:
 
@@ -287,7 +286,7 @@ The default format parameter is `'normal'`. As of the writing of this documentat
 'border_crop'
 ```
 
-If additional formats are added, `getImage` will support them automatically (as it takes its list of valid values from the API response itself).
+If additional formats are added, `getBackImage` will support them automatically (as it takes its list of valid values from the API response itself).
 
 If a non-doublesided card is used with `getBackImage`, the size parameter will be ignored.
 
@@ -296,18 +295,14 @@ If a non-doublesided card is used with `getBackImage`, the size parameter will b
 scryfall.get('cards/named', {
   exact: 'windfall'
 }).then(function (card) {
-  return card.getBackImage()
-}).then(function (imgs) {
-  imgs[0] // https://img.scryfall.com/errors/missing.jpg
+  const img = card.getBackImage() // https://img.scryfall.com/errors/missing.jpg
 })
 
 // A transform card
 scryfall.get('cards/named', {
   exact: 'docent of perfection'
 }).then(function (card) {
-  return card.getBackImage()
-}).then(function (imgs) {
-  imgs[0] // the img url for Final Iteration
+  const img = card.getBackImage() // the img url for Final Iteration
 })
 ```
 
@@ -337,10 +332,10 @@ scryfall.get('cards/named', {
 }).then(function (card) {
   return card.getTokens()
 }).then(function (list) {
-  return Promise.all(list.map(function (card) {
+  const imgs = list.map(function (card) {
     return card.getImage()
-  }))
-}).then(function (imgs) {
+  })
+
   imgs.forEach(function (img) {
     // display image
   })
@@ -430,11 +425,8 @@ scryfall.get('cards/random').then(function (card) {
 lookUpCardInDatabase(someId).then(function (cardData) {
   // cardData.getImage does not exist
 
-  let card = scryfall.wrap(cardData)
-
-  return card.getImage()
-}).then(function (img) {
-  // the image of the card saved in the database
+  const card = scryfall.wrap(cardData)
+  const img = card.getImage() // the image of the card saved in the database
 })
 ```
 

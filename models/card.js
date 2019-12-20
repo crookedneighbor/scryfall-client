@@ -79,38 +79,37 @@ Card.prototype.getImage = function (type) {
   var imageObject = this.card_faces[0].image_uris
 
   if (!imageObject) {
-    return Promise.reject(new Error('Could not find image uris for card.'))
+    throw new Error('Could not find image uris for card.')
   }
 
   type = type || 'normal'
 
   if (!(type in imageObject)) {
-    return Promise.reject(new Error('`' + type + '` is not a valid type. Must be one of ' + formatKeysForError(imageObject) + '.'))
+    throw new Error('`' + type + '` is not a valid type. Must be one of ' + formatKeysForError(imageObject) + '.')
   }
 
-  return Promise.resolve(imageObject[type])
+  return imageObject[type]
 }
 
 Card.prototype.getBackImage = function (type) {
-  var imageObject, cardImage
+  var imageObject
 
   if (!this._isDoublesided) {
-    return Promise.resolve([SCRYFALL_CARD_BACK_IMAGE_URL])
+    return SCRYFALL_CARD_BACK_IMAGE_URL
   }
 
   type = type || 'normal'
   imageObject = this.card_faces[1].image_uris
 
   if (!imageObject) {
-    return Promise.reject(new Error('An unexpected error occured when attempting to show back side of card.'))
+    throw new Error('An unexpected error occured when attempting to show back side of card.')
   }
 
   if (!imageObject[type]) {
-    return Promise.reject(new Error('`' + type + '` is not a valid type. Must be one of ' + formatKeysForError(imageObject) + '.'))
+    throw new Error('`' + type + '` is not a valid type. Must be one of ' + formatKeysForError(imageObject) + '.')
   }
-  cardImage = imageObject[type]
 
-  return Promise.resolve([cardImage])
+  return imageObject[type]
 }
 
 Card.prototype.getPrice = function (type) {
