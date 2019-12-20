@@ -34,18 +34,23 @@ var SCRYFALL_CARD_BACK_IMAGE_URL = 'https://img.scryfall.com/errors/missing.jpg'
 function Card (scryfallObject, config) {
   SingularEntity.call(this, scryfallObject, config)
 
-  if (!this.card_faces) {
-    this.card_faces = [
-      CARD_FACE_ATTRIBUTES.reduce(function (obj, attribute) {
-        if (attribute in scryfallObject) {
-          obj[attribute] = scryfallObject[attribute]
-        }
+  this.card_faces = scryfallObject.card_faces || [{
+    object: 'card_face'
+  }]
 
-        return obj
-      }, {})
-    ]
-    this.card_faces[0].object = 'card_face'
-  }
+  this.card_faces.forEach(function (face) {
+    CARD_FACE_ATTRIBUTES.forEach(function (attribute) {
+      if (attribute in face) {
+        return
+      }
+
+      if (attribute in scryfallObject) {
+        face[attribute] = scryfallObject[attribute]
+      }
+    })
+  })
+
+  this._isDoublesided = scryfallObject.layout === 'transform' || scryfallObject.layout === 'double_faced_token'
 }
 
 SingularEntity.setModelName(Card, 'card')
@@ -71,7 +76,7 @@ Card.prototype.isLegal = function (format) {
 }
 
 Card.prototype.getImage = function (type) {
-  var imageObject = this.image_uris || (this.card_faces && this.card_faces[0].image_uris)
+  var imageObject = this.card_faces[0].image_uris
 
   if (!imageObject) {
     return Promise.reject(new Error('Could not find image uris for card.'))
@@ -87,25 +92,23 @@ Card.prototype.getImage = function (type) {
 }
 
 Card.prototype.getBackImage = function (type) {
-  var backFace = this.getBackFace()
-  var cardImage, imageObject
+  var imageObject, cardImage
+
+  if (!this._isDoublesided) {
+    return Promise.resolve([SCRYFALL_CARD_BACK_IMAGE_URL])
+  }
 
   type = type || 'normal'
+  imageObject = this.card_faces[1].image_uris
 
-  if (this.image_uris) {
-    cardImage = SCRYFALL_CARD_BACK_IMAGE_URL
-  } else if (this.card_faces) {
-    imageObject = this.card_faces[1].image_uris
-
-    if (!imageObject[type]) {
-      return Promise.reject(new Error('`' + type + '` is not a valid type. Must be one of ' + formatKeysForError(imageObject) + '.'))
-    }
-    cardImage = imageObject[type]
-  }
-
-  if (!cardImage) {
+  if (!imageObject) {
     return Promise.reject(new Error('An unexpected error occured when attempting to show back side of card.'))
   }
+
+  if (!imageObject[type]) {
+    return Promise.reject(new Error('`' + type + '` is not a valid type. Must be one of ' + formatKeysForError(imageObject) + '.'))
+  }
+  cardImage = imageObject[type]
 
   return Promise.resolve([cardImage])
 }

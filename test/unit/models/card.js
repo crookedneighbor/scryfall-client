@@ -3,7 +3,7 @@
 const Card = require('../../../models/card')
 const wrapScryfallResponse = require('../../../lib/wrap-scryfall-response')
 
-describe.only('Card', function () {
+describe('Card', function () {
   beforeEach(function () {
     this.fakeRequestMethod = this.sandbox.stub()
     this.config = {
@@ -224,7 +224,7 @@ describe.only('Card', function () {
         requestMethod: this.fakeRequestMethod
       })
 
-      delete card.card_faces
+      delete card.card_faces[0].image_uris
 
       return card.getImage().then(this.expectToReject).catch((err) => {
         expect(err.message).to.equal('Could not find image uris for card.')
@@ -273,15 +273,18 @@ describe.only('Card', function () {
       })
     })
 
-    it('rejects with an error if card does not have image uris or card faces', function () {
+    it('rejects with an error if card does not have image uris', function () {
       const card = wrapScryfallResponse(this.fixtures.cardWithTransformLayout, {
         requestMethod: this.fakeRequestMethod
       })
+      const oldImageUris = card.card_faces[1].image_uris
 
-      delete card.card_faces
+      delete card.card_faces[1].image_uris
 
       return card.getBackImage().then(this.expectToReject).catch((err) => {
         expect(err.message).to.equal('An unexpected error occured when attempting to show back side of card.')
+
+        card.card_faces[1].image_uris = oldImageUris
       })
     })
 
