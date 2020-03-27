@@ -33,17 +33,17 @@
     "browserify": "^16.5.0",
     "chai": "^4.2.0",
     "check-ecmascript-version-compatibility": "^0.1.1",
-    "http-server": "^0.11.1",
-    "mkdirp": "^0.5.1",
-    "mocha": "^6.2.0",
-    "sinon": "^7.4.1",
-    "sinon-chai": "^3.3.0",
+    "http-server": "^0.12.1",
+    "mkdirp": "^1.0.3",
+    "mocha": "^7.1.1",
+    "sinon": "^9.0.1",
+    "sinon-chai": "^3.5.0",
     "snazzy": "^8.0.0",
-    "standard": "^14.1.0",
+    "standard": "^14.3.3",
     "watchify": "^3.11.1"
   },
   "dependencies": {
-    "superagent": "^5.1.0"
+    "superagent": "^5.2.2"
   },
   "standard": {
     "globals": [

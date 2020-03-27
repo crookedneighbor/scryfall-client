@@ -49,9 +49,7 @@ search.addEventListener('keyup', debounce(function (event) {
       option.value = name
       autocompleteDatalist.appendChild(option)
     })
-  }).catch(function (e) {
-    debugger;
-  });
+  })
 }))
 
 search.addEventListener('input', function (event) {
@@ -89,8 +87,24 @@ function ScryfallClient (options) {
   this._request = makeRequestFunction(options)
 }
 
-ScryfallClient.prototype.get = function () {
-  return this._request.apply(this, arguments)
+ScryfallClient.prototype.get = function (url, query) {
+  return this._request(url, {
+    method: 'get',
+    query: query
+  })
+}
+
+ScryfallClient.prototype.post = function (url, body) {
+  return this._request(url, {
+    body: body,
+    method: 'post'
+  })
+}
+
+ScryfallClient.prototype.getSymbolUrl = function (symbol) {
+  var character = symbol.match(/{?(.)}?/)[1]
+
+  return 'https://img.scryfall.com/symbology/' + character + '.svg'
 }
 
 ScryfallClient.prototype.wrap = function (body) {
@@ -125,9 +139,14 @@ var wrapScryfallResponse = require('./wrap-scryfall-response')
 var convertSymbolsToEmoji = require('../lib/convert-symbols-to-emoji')
 var ScryfallError = require('../models/scryfall-error')
 
-function get (url) {
-  return superagent
-    .get(url)
+function sendRequest (url, options) {
+  var method
+
+  options = options || {}
+  method = options.method || 'get'
+
+  return superagent[method](url)
+    .send(options.body)
     .set('Accept', 'application/json')
     .then(function (response) {
       var body
@@ -194,7 +213,7 @@ function makeRequestFunction (options) {
     }
   }
 
-  function prepareRequest (request, queryUrl) {
+  function prepareRequest (request, url, options) {
     var pendingResolveFunction, pendingRejectFunction
 
     return {
@@ -205,7 +224,7 @@ function makeRequestFunction (options) {
         })
       },
       start: function () {
-        return get(queryUrl).then(function (body) {
+        return sendRequest(url, options).then(function (body) {
           try {
             pendingResolveFunction(wrapFunction(body))
           } catch (err) {
@@ -231,31 +250,33 @@ function makeRequestFunction (options) {
     }
   }
 
-  requestFunction = function request (endpoint, query) {
-    var queryUrl, queryParams, pendingRequest, pendingRequestHandler
+  requestFunction = function request (endpoint, options) {
+    var url, queryParams, pendingRequest, pendingRequestHandler
+
+    options = options || {}
 
     if (isFullScryfallUrl(endpoint)) {
-      queryUrl = endpoint
+      url = endpoint
     } else {
       if (endpointBeginsWithSlash(endpoint)) {
         endpoint = endpoint.substring(1)
       }
-      queryUrl = SCRYFALL_API_ENDPOINT + endpoint
+      url = SCRYFALL_API_ENDPOINT + endpoint
     }
 
-    if (query) {
-      queryParams = querystring.stringify(query)
+    if (options.query) {
+      queryParams = querystring.stringify(options.query)
 
-      if (queryUrl.indexOf('?') > -1) {
-        queryUrl += '&'
+      if (url.indexOf('?') > -1) {
+        url += '&'
       } else {
-        queryUrl += '?'
+        url += '?'
       }
 
-      queryUrl += queryParams
+      url += queryParams
     }
 
-    pendingRequestHandler = prepareRequest(request, queryUrl)
+    pendingRequestHandler = prepareRequest(request, url, options)
     pendingRequest = pendingRequestHandler.pending()
 
     if (!requestInProgress) {
@@ -368,6 +389,28 @@ module.exports = ArrayLike
 },{}],8:[function(require,module,exports){
 'use strict'
 
+// Pulled from https://scryfall.com/docs/api/cards#card-face-objects
+// may need to be updated as attributes are added
+var CARD_FACE_ATTRIBUTES = [
+  'artist',
+  'color_indicator',
+  'colors',
+  'flavor_text',
+  'illustration_id',
+  'image_uris',
+  'loyalty',
+  'mana_cost',
+  'name',
+  'oracle_text',
+  'power',
+  'printed_name',
+  'printed_text',
+  'printed_type_line',
+  'toughness',
+  'type_line',
+  'watermark'
+]
+
 var SingularEntity = require('./singular-entity')
 var basicGetMethods = {
   getRulings: 'rulings_uri',
@@ -379,6 +422,24 @@ var SCRYFALL_CARD_BACK_IMAGE_URL = 'https://img.scryfall.com/errors/missing.jpg'
 
 function Card (scryfallObject, config) {
   SingularEntity.call(this, scryfallObject, config)
+
+  this.card_faces = scryfallObject.card_faces || [{
+    object: 'card_face'
+  }]
+
+  this.card_faces.forEach(function (face) {
+    CARD_FACE_ATTRIBUTES.forEach(function (attribute) {
+      if (attribute in face) {
+        return
+      }
+
+      if (attribute in scryfallObject) {
+        face[attribute] = scryfallObject[attribute]
+      }
+    })
+  })
+
+  this._isDoublesided = scryfallObject.layout === 'transform' || scryfallObject.layout === 'double_faced_token'
 }
 
 SingularEntity.setModelName(Card, 'card')
@@ -404,53 +465,40 @@ Card.prototype.isLegal = function (format) {
 }
 
 Card.prototype.getImage = function (type) {
-  var imageObject = this.image_uris || (this.card_faces && this.card_faces[0].image_uris)
+  var imageObject = this.card_faces[0].image_uris
 
   if (!imageObject) {
-    return Promise.reject(new Error('Could not find image uris for card.'))
+    throw new Error('Could not find image uris for card.')
   }
 
   type = type || 'normal'
 
   if (!(type in imageObject)) {
-    return Promise.reject(new Error('`' + type + '` is not a valid type. Must be one of ' + formatKeysForError(imageObject) + '.'))
+    throw new Error('`' + type + '` is not a valid type. Must be one of ' + formatKeysForError(imageObject) + '.')
   }
 
-  return Promise.resolve(imageObject[type])
+  return imageObject[type]
 }
 
 Card.prototype.getBackImage = function (type) {
-  var cardImage, imageObject
-  var self = this
+  var imageObject
+
+  if (!this._isDoublesided) {
+    return SCRYFALL_CARD_BACK_IMAGE_URL
+  }
 
   type = type || 'normal'
+  imageObject = this.card_faces[1].image_uris
 
-  if (this.layout === 'meld') {
-    var promises = findMeldUrls(this).map(function (url) {
-      return self._request(url).then(function (card) {
-        return card.image_uris[type]
-      })
-    })
-
-    return Promise.all(promises)
+  if (!imageObject) {
+    throw new Error('An unexpected error occured when attempting to show back side of card.')
   }
 
-  if (this.image_uris) {
-    cardImage = SCRYFALL_CARD_BACK_IMAGE_URL
-  } else if (this.card_faces) {
-    imageObject = this.card_faces[1].image_uris
-
-    if (!imageObject[type]) {
-      return Promise.reject(new Error('`' + type + '` is not a valid type. Must be one of ' + formatKeysForError(imageObject) + '.'))
-    }
-    cardImage = imageObject[type]
+  if (!imageObject[type]) {
+    throw new Error('`' + type + '` is not a valid type. Must be one of ' + formatKeysForError(imageObject) + '.')
   }
 
-  if (!cardImage) {
-    return Promise.reject(new Error('An unexpected error occured when attempting to show back side of card.'))
-  }
-
-  return Promise.resolve([cardImage])
+  return imageObject[type]
 }
 
 Card.prototype.getPrice = function (type) {
@@ -465,7 +513,13 @@ Card.prototype.getPrice = function (type) {
 
 Card.prototype.getTokens = function () {
   var self = this
-  var tokenRequests = this.all_parts.reduce(function (tokens, part) {
+  var tokenRequests
+
+  if (!this.all_parts) {
+    return Promise.resolve([])
+  }
+
+  tokenRequests = this.all_parts.reduce(function (tokens, part) {
     if (part.component === 'token') {
       tokens.push(self._request(part.uri))
     }
@@ -478,27 +532,6 @@ Card.prototype.getTokens = function () {
 
 Card.prototype.getTaggerUrl = function () {
   return 'https://tagger.scryfall.com/card/' + this.set + '/' + this.collector_number
-}
-
-function findMeldUrls (card) {
-  var cards
-  var cardIsBackSide = card.all_parts.find(function (part) {
-    return part.id === card.id
-  }).component === 'meld_result'
-
-  if (cardIsBackSide) {
-    cards = card.all_parts.filter(function (part) {
-      return part.name !== card.name
-    })
-  } else {
-    cards = [card.all_parts.find(function (part) {
-      return part.component === 'meld_result'
-    })]
-  }
-
-  return cards.map(function (part) {
-    return part.uri
-  })
 }
 
 function formatKeysForError (obj) {
@@ -804,14 +837,24 @@ stringify.stable = deterministicStringify
 stringify.stableStringify = deterministicStringify
 
 var arr = []
+var replacerStack = []
 
 // Regular stringify
 function stringify (obj, replacer, spacer) {
   decirc(obj, '', [], undefined)
-  var res = JSON.stringify(obj, replacer, spacer)
+  var res
+  if (replacerStack.length === 0) {
+    res = JSON.stringify(obj, replacer, spacer)
+  } else {
+    res = JSON.stringify(obj, replaceGetterValues(replacer), spacer)
+  }
   while (arr.length !== 0) {
     var part = arr.pop()
-    part[0][part[1]] = part[2]
+    if (part.length === 4) {
+      Object.defineProperty(part[0], part[1], part[3])
+    } else {
+      part[0][part[1]] = part[2]
+    }
   }
   return res
 }
@@ -820,8 +863,18 @@ function decirc (val, k, stack, parent) {
   if (typeof val === 'object' && val !== null) {
     for (i = 0; i < stack.length; i++) {
       if (stack[i] === val) {
-        parent[k] = '[Circular]'
-        arr.push([parent, k, val])
+        var propertyDescriptor = Object.getOwnPropertyDescriptor(parent, k)
+        if (propertyDescriptor.get !== undefined) {
+          if (propertyDescriptor.configurable) {
+            Object.defineProperty(parent, k, { value: '[Circular]' })
+            arr.push([parent, k, val, propertyDescriptor])
+          } else {
+            replacerStack.push([val, k])
+          }
+        } else {
+          parent[k] = '[Circular]'
+          arr.push([parent, k, val])
+        }
         return
       }
     }
@@ -855,10 +908,19 @@ function compareFunction (a, b) {
 
 function deterministicStringify (obj, replacer, spacer) {
   var tmp = deterministicDecirc(obj, '', [], undefined) || obj
-  var res = JSON.stringify(tmp, replacer, spacer)
+  var res
+  if (replacerStack.length === 0) {
+    res = JSON.stringify(tmp, replacer, spacer)
+  } else {
+    res = JSON.stringify(tmp, replaceGetterValues(replacer), spacer)
+  }
   while (arr.length !== 0) {
     var part = arr.pop()
-    part[0][part[1]] = part[2]
+    if (part.length === 4) {
+      Object.defineProperty(part[0], part[1], part[3])
+    } else {
+      part[0][part[1]] = part[2]
+    }
   }
   return res
 }
@@ -868,8 +930,18 @@ function deterministicDecirc (val, k, stack, parent) {
   if (typeof val === 'object' && val !== null) {
     for (i = 0; i < stack.length; i++) {
       if (stack[i] === val) {
-        parent[k] = '[Circular]'
-        arr.push([parent, k, val])
+        var propertyDescriptor = Object.getOwnPropertyDescriptor(parent, k)
+        if (propertyDescriptor.get !== undefined) {
+          if (propertyDescriptor.configurable) {
+            Object.defineProperty(parent, k, { value: '[Circular]' })
+            arr.push([parent, k, val, propertyDescriptor])
+          } else {
+            replacerStack.push([val, k])
+          }
+        } else {
+          parent[k] = '[Circular]'
+          arr.push([parent, k, val])
+        }
         return
       }
     }
@@ -899,6 +971,25 @@ function deterministicDecirc (val, k, stack, parent) {
       }
     }
     stack.pop()
+  }
+}
+
+// wraps replacer function to handle values we couldn't replace
+// and mark them as [Circular]
+function replaceGetterValues (replacer) {
+  replacer = replacer !== undefined ? replacer : function (k, v) { return v }
+  return function (key, val) {
+    if (replacerStack.length > 0) {
+      for (var i = 0; i < replacerStack.length; i++) {
+        var part = replacerStack[i]
+        if (part[1] === key && part[0] === val) {
+          val = '[Circular]'
+          replacerStack.splice(i, 1)
+          break
+        }
+      }
+    }
+    return replacer.call(this, key, val)
   }
 }
 
@@ -1096,7 +1187,7 @@ function Agent() {
   this._defaults = [];
 }
 
-['use', 'on', 'once', 'set', 'query', 'type', 'accept', 'auth', 'withCredentials', 'sortQuery', 'retry', 'ok', 'redirects', 'timeout', 'buffer', 'serialize', 'parse', 'ca', 'key', 'pfx', 'cert'].forEach(function (fn) {
+['use', 'on', 'once', 'set', 'query', 'type', 'accept', 'auth', 'withCredentials', 'sortQuery', 'retry', 'ok', 'redirects', 'timeout', 'buffer', 'serialize', 'parse', 'ca', 'key', 'pfx', 'cert', 'disableTLSCerts'].forEach(function (fn) {
   // Default setting for all requests from this agent
   Agent.prototype[fn] = function () {
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
@@ -1119,6 +1210,7 @@ Agent.prototype._setDefaults = function (req) {
 };
 
 module.exports = Agent;
+
 },{}],21:[function(require,module,exports){
 "use strict";
 
@@ -1191,19 +1283,19 @@ request.getXHR = function () {
 
   try {
     return new ActiveXObject('Microsoft.XMLHTTP');
-  } catch (err) {}
+  } catch (_unused) {}
 
   try {
     return new ActiveXObject('Msxml2.XMLHTTP.6.0');
-  } catch (err) {}
+  } catch (_unused2) {}
 
   try {
     return new ActiveXObject('Msxml2.XMLHTTP.3.0');
-  } catch (err) {}
+  } catch (_unused3) {}
 
   try {
     return new ActiveXObject('Msxml2.XMLHTTP');
-  } catch (err) {}
+  } catch (_unused4) {}
 
   throw new Error('Browser-only version of superagent could not find XHR');
 };
@@ -1253,7 +1345,7 @@ function pushEncodedKeyValuePair(pairs, key, val) {
   if (val === undefined) return;
 
   if (val === null) {
-    pairs.push(encodeURIComponent(key));
+    pairs.push(encodeURI(key));
     return;
   }
 
@@ -1266,7 +1358,7 @@ function pushEncodedKeyValuePair(pairs, key, val) {
       if (Object.prototype.hasOwnProperty.call(val, subkey)) pushEncodedKeyValuePair(pairs, "".concat(key, "[").concat(subkey, "]"), val[subkey]);
     }
   } else {
-    pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(val));
+    pairs.push(encodeURI(key) + '=' + encodeURIComponent(val));
   }
 }
 /**
@@ -1547,10 +1639,10 @@ function Request(method, url) {
 
     try {
       res = new Response(self);
-    } catch (err2) {
+    } catch (err_) {
       err = new Error('Parser is unable to parse the response');
       err.parse = true;
-      err.original = err2; // issue #675: return the raw response if the response parsing fails
+      err.original = err_; // issue #675: return the raw response if the response parsing fails
 
       if (self.xhr) {
         // ie9 doesn't have 'response' property
@@ -1571,10 +1663,10 @@ function Request(method, url) {
 
     try {
       if (!self._isResponseOK(res)) {
-        new_err = new Error(res.statusText || 'Unsuccessful HTTP response');
+        new_err = new Error(res.statusText || res.text || 'Unsuccessful HTTP response');
       }
-    } catch (err2) {
-      new_err = err2; // ok() callback can throw
+    } catch (err_) {
+      new_err = err_; // ok() callback can throw
     } // #1000 don't catch errors from the callback to avoid double calling it
 
 
@@ -1788,8 +1880,8 @@ Request.prototype.agent = function () {
   return this;
 };
 
-Request.prototype.buffer = Request.prototype.ca;
-Request.prototype.ca = Request.prototype.agent; // This throws, because it can't send/receive data as expected
+Request.prototype.ca = Request.prototype.agent;
+Request.prototype.buffer = Request.prototype.ca; // This throws, because it can't send/receive data as expected
 
 Request.prototype.write = function () {
   throw new Error('Streaming is not supported in browser version of superagent');
@@ -1871,7 +1963,7 @@ Request.prototype._end = function () {
 
     try {
       status = xhr.status;
-    } catch (err) {
+    } catch (_unused5) {
       status = 0;
     }
 
@@ -1904,7 +1996,7 @@ Request.prototype._end = function () {
       if (xhr.upload) {
         xhr.upload.addEventListener('progress', handleProgress.bind(null, 'upload'));
       }
-    } catch (err) {// Accessing xhr.upload fails in IE from a web worker, so just pretend it doesn't exist.
+    } catch (_unused6) {// Accessing xhr.upload fails in IE from a web worker, so just pretend it doesn't exist.
       // Reported here:
       // https://connect.microsoft.com/IE/feedback/details/837245/xmlhttprequest-upload-throws-invalid-argument-when-used-from-web-worker-context
     }
@@ -2139,6 +2231,7 @@ request.put = function (url, data, fn) {
   if (fn) req.end(fn);
   return req;
 };
+
 },{"./agent-base":20,"./is-object":22,"./request-base":23,"./response-base":24,"component-emitter":15,"fast-safe-stringify":16}],22:[function(require,module,exports){
 "use strict";
 
@@ -2156,6 +2249,7 @@ function isObject(obj) {
 }
 
 module.exports = isObject;
+
 },{}],23:[function(require,module,exports){
 "use strict";
 
@@ -2353,15 +2447,15 @@ RequestBase.prototype._shouldRetry = function (err, res) {
 
       if (override === true) return true;
       if (override === false) return false; // undefined falls back to defaults
-    } catch (err2) {
-      console.error(err2);
+    } catch (err_) {
+      console.error(err_);
     }
   }
 
   if (res && res.status && res.status >= 500 && res.status !== 501) return true;
 
   if (err) {
-    if (err.code && ERROR_CODES.indexOf(err.code) !== -1) return true; // Superagent timeout
+    if (err.code && ERROR_CODES.includes(err.code)) return true; // Superagent timeout
 
     if (err.timeout && err.code === 'ECONNABORTED') return true;
     if (err.crossDomain) return true;
@@ -2387,6 +2481,7 @@ RequestBase.prototype._retry = function () {
 
   this._aborted = false;
   this.timedout = false;
+  this.timedoutError = null;
   return this._end();
 };
 /**
@@ -2410,6 +2505,11 @@ RequestBase.prototype.then = function (resolve, reject) {
 
     this._fullfilledPromise = new Promise(function (resolve, reject) {
       self.on('abort', function () {
+        if (_this.timedout && _this.timedoutError) {
+          reject(_this.timedoutError);
+          return;
+        }
+
         var err = new Error('Aborted');
         err.code = 'ABORTED';
         err.status = _this.status;
@@ -2516,8 +2616,7 @@ RequestBase.prototype.set = function (field, val) {
   this._header[field.toLowerCase()] = val;
   this.header[field] = val;
   return this;
-}; // eslint-disable-next-line valid-jsdoc
-
+};
 /**
  * Remove header `field`.
  * Case-insensitive.
@@ -2840,7 +2939,7 @@ RequestBase.prototype._finalizeQueryString = function () {
   var query = this._query.join('&');
 
   if (query) {
-    this.url += (this.url.indexOf('?') >= 0 ? '&' : '?') + query;
+    this.url += (this.url.includes('?') ? '&' : '?') + query;
   }
 
   this._query.length = 0; // Makes the call idempotent
@@ -2849,7 +2948,7 @@ RequestBase.prototype._finalizeQueryString = function () {
     var index = this.url.indexOf('?');
 
     if (index >= 0) {
-      var queryArr = this.url.substring(index + 1).split('&');
+      var queryArr = this.url.slice(index + 1).split('&');
 
       if (typeof this._sort === 'function') {
         queryArr.sort(this._sort);
@@ -2857,7 +2956,7 @@ RequestBase.prototype._finalizeQueryString = function () {
         queryArr.sort();
       }
 
-      this.url = this.url.substring(0, index) + '?' + queryArr.join('&');
+      this.url = this.url.slice(0, index) + '?' + queryArr.join('&');
     }
   }
 }; // For backwards compat only
@@ -2883,6 +2982,7 @@ RequestBase.prototype._timeoutError = function (reason, timeout, errno) {
   err.code = 'ECONNABORTED';
   err.errno = errno;
   this.timedout = true;
+  this.timedoutError = err;
   this.abort();
   this.callback(err);
 };
@@ -2903,6 +3003,7 @@ RequestBase.prototype._setTimeouts = function () {
     }, this._responseTimeout);
   }
 };
+
 },{"./is-object":22}],24:[function(require,module,exports){
 "use strict";
 
@@ -2985,7 +3086,7 @@ ResponseBase.prototype._setHeaderProperties = function (header) {
     if (header.link) {
       this.links = utils.parseLinks(header.link);
     }
-  } catch (err) {// ignore
+  } catch (_unused) {// ignore
   }
 };
 /**
@@ -3034,6 +3135,7 @@ ResponseBase.prototype._setStatusProperties = function (status) {
   this.notFound = status === 404;
   this.unprocessableEntity = status === 422;
 };
+
 },{"./utils":25}],25:[function(require,module,exports){
 "use strict";
 
@@ -3105,4 +3207,5 @@ exports.cleanHeader = function (header, changesOrigin) {
 
   return header;
 };
+
 },{}]},{},[2]);
