@@ -10,10 +10,12 @@ describe('makeRequestFunction', function () {
     this.fakeResponse = {
       text: JSON.stringify(this.fixtures.card)
     }
-    this.fakeGet = {
+    this.fakeRequest = {
+      send: this.sandbox.stub().returnsThis(),
       set: this.sandbox.stub().resolves(this.fakeResponse)
     }
-    this.sandbox.stub(superagent, 'get').returns(this.fakeGet)
+    this.sandbox.stub(superagent, 'get').returns(this.fakeRequest)
+    this.sandbox.stub(superagent, 'post').returns(this.fakeRequest)
     this.request = makeRequestFunction()
   })
 
@@ -25,6 +27,29 @@ describe('makeRequestFunction', function () {
     const request = makeRequestFunction()
 
     expect(request).to.be.an.instanceof(Function)
+  })
+
+  it('defaults request to get', function () {
+    const request = makeRequestFunction()
+
+    expect(request).to.be.an.instanceof(Function)
+
+    return request('foo').then(() => {
+      expect(superagent.get.callCount).to.equal(1)
+    })
+  })
+
+  it('can specify request as post', function () {
+    const request = makeRequestFunction()
+
+    expect(request).to.be.an.instanceof(Function)
+
+    return request('foo', {
+      method: 'post'
+    }).then(() => {
+      expect(superagent.get.callCount).to.equal(0)
+      expect(superagent.post.callCount).to.equal(1)
+    })
   })
 
   it('automatically rate limits according to Scryfall\'s recomendation for request frequency of no requests within 100 ms', function () {
@@ -204,7 +229,7 @@ describe('makeRequestFunction', function () {
   })
 
   it('resolves with a Scryfall Response', function () {
-    this.fakeGet.set.resolves({
+    this.fakeRequest.set.resolves({
       text: '{"object":"foo"}'
     })
 
@@ -213,26 +238,51 @@ describe('makeRequestFunction', function () {
     })
   })
 
-  it('can pass object as query params', function () {
-    return this.request('foo', { q: 'my-query' }).then((response) => {
+  it('can pass request body', function () {
+    return this.request('foo', {
+      method: 'post',
+      body: { data: 'bar' }
+    }).then(response => {
+      expect(superagent.post).to.be.calledWith('https://api.scryfall.com/foo')
+      expect(this.fakeRequest.send).to.be.calledWith({
+        data: 'bar'
+      })
+    })
+  })
+
+  it('can pass query params', function () {
+    return this.request('foo', {
+      query: { q: 'my-query' }
+    }).then((response) => {
       expect(superagent.get).to.be.calledWith('https://api.scryfall.com/foo?q=my-query')
     })
   })
 
   it('can pass object as multiple query params', function () {
-    return this.request('foo', { q: 'my-query', bar: 'baz' }).then((response) => {
+    return this.request('foo', {
+      query: {
+        q: 'my-query',
+        bar: 'baz'
+      }
+    }).then((response) => {
       expect(superagent.get).to.be.calledWith('https://api.scryfall.com/foo?q=my-query&bar=baz')
     })
   })
 
   it('can pass object as query params when url already has query params', function () {
-    return this.request('foo?firstQuery=bar', { q: 'my-query' }).then((response) => {
+    return this.request('foo?firstQuery=bar', {
+      query: { q: 'my-query' }
+    }).then((response) => {
       expect(superagent.get).to.be.calledWith('https://api.scryfall.com/foo?firstQuery=bar&q=my-query')
     })
   })
 
   it('uri encodes the query string params', function () {
-    return this.request('foo', { q: 'o:vigilance t:equipment o:"draw cards"' }).then((response) => {
+    return this.request('foo', {
+      query: {
+        q: 'o:vigilance t:equipment o:"draw cards"'
+      }
+    }).then((response) => {
       expect(superagent.get).to.be.calledWith('https://api.scryfall.com/foo?q=o%3Avigilance%20t%3Aequipment%20o%3A%22draw%20cards%22')
     })
   })
@@ -240,7 +290,7 @@ describe('makeRequestFunction', function () {
   it('rejects when https.get errors', function () {
     const error = new Error('https error')
 
-    this.fakeGet.set.rejects(error)
+    this.fakeRequest.set.rejects(error)
 
     return this.request('foo').then(this.expectToReject).catch((err) => {
       expect(err.originalError).to.equal(error)
@@ -249,7 +299,7 @@ describe('makeRequestFunction', function () {
   })
 
   it('rejects when JSON response is not parsable', function () {
-    this.fakeGet.set.resolves('{')
+    this.fakeRequest.set.resolves('{')
 
     return this.request('foo').then(this.expectToReject).catch((err) => {
       expect(err).to.be.an.instanceof(ScryfallError)
@@ -258,7 +308,7 @@ describe('makeRequestFunction', function () {
   })
 
   it('rejects when body is an error object', function () {
-    this.fakeGet.set.resolves({
+    this.fakeRequest.set.resolves({
       text: JSON.stringify({
         object: 'error',
         code: 'not_found',

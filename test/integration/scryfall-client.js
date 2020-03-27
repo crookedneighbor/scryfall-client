@@ -238,6 +238,23 @@ describe('scryfallClient', function () {
     })
   })
 
+  describe('post', function () {
+    it('can post to the collections endpoint', function () {
+      return this.client.post('cards/collection', {
+        identifiers: [{
+          set: 'c16',
+          collector_number: '49'
+        }, {
+          set: 'zen',
+          collector_number: '47'
+        }]
+      }).then(cards => {
+        expect(cards[0].name).to.equal('Vial Smasher the Fierce')
+        expect(cards[1].name).to.equal('Hedron Crab')
+      })
+    })
+  })
+
   describe('wrap', function () {
     it('can wrap saved response object into scryfall response', function () {
       const card = this.client.wrap(fakeCard)

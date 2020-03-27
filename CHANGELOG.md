@@ -1,3 +1,6 @@
+# unreleased
+* Add `post` method (closes #9)
+
 # 1.11.0
 * Normalize card_faces so all card objects have a card_faces array
 
