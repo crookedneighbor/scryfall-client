@@ -20,6 +20,12 @@ ScryfallClient.prototype.post = function (url, body) {
   })
 }
 
+ScryfallClient.prototype.getSymbolUrl = function (symbol) {
+  var character = symbol.match(/{?(.)}?/)[1]
+
+  return 'https://img.scryfall.com/symbology/' + character + '.svg'
+}
+
 ScryfallClient.prototype.wrap = function (body) {
   return this._request.wrapFunction(body)
 }

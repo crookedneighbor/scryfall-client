@@ -1,6 +1,10 @@
 # unreleased
 * Add `post` method (closes #9)
+* Add `getSymbolUrl` method to client (closes #11)
 * Fix error when calling `getTokens` on a card without multiple parts (closes #10)
+
+_Breaking Changes_
+* Remove `symbols` file in favor of `getSymbolUrl`
 
 # 1.11.0
 * Normalize card_faces so all card objects have a card_faces array

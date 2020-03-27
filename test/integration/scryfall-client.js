@@ -255,6 +255,16 @@ describe('scryfallClient', function () {
     })
   })
 
+  describe('getSymbolUrl', function () {
+    it('returns the url for a character representing a symbol', function () {
+      expect(this.client.getSymbolUrl('W')).to.equal('https://img.scryfall.com/symbology/W.svg')
+    })
+
+    it('returns the url for symbol in curly braces', function () {
+      expect(this.client.getSymbolUrl('{U}')).to.equal('https://img.scryfall.com/symbology/U.svg')
+    })
+  })
+
   describe('wrap', function () {
     it('can wrap saved response object into scryfall response', function () {
       const card = this.client.wrap(fakeCard)
