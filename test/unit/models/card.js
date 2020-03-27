@@ -376,13 +376,14 @@ describe('Card', function () {
       this.fakeRequestMethod.onCall(2).resolves(wrapScryfallResponse(this.fixtures.tokens.snake, {
         requestMethod: this.fakeRequestMethod
       }))
-      this.card = wrapScryfallResponse(this.fixtures.cardWithMultipleTokens, {
-        requestMethod: this.fakeRequestMethod
-      })
     })
 
     it('requests card objects for each token', function () {
-      return this.card.getTokens().then((tokens) => {
+      const card = wrapScryfallResponse(this.fixtures.cardWithMultipleTokens, {
+        requestMethod: this.fakeRequestMethod
+      })
+
+      return card.getTokens().then((tokens) => {
         expect(this.fakeRequestMethod.callCount).to.equal(3)
         expect(this.fakeRequestMethod).to.be.calledWith('https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b')
         expect(this.fakeRequestMethod).to.be.calledWith('https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830')
@@ -392,6 +393,16 @@ describe('Card', function () {
           expect(token).to.be.an.instanceof(Card)
           expect(token.layout).to.equal('token')
         })
+      })
+    })
+
+    it('resolves with an empty array when card has no `all_parts` attribute', function () {
+      const card = wrapScryfallResponse(this.fixtures.card, {
+        requestMethod: this.fakeRequestMethod
+      })
+
+      return card.getTokens().then(tokens => {
+        expect(tokens).to.deep.equal([])
       })
     })
   })

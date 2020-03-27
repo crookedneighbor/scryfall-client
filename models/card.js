@@ -124,7 +124,13 @@ Card.prototype.getPrice = function (type) {
 
 Card.prototype.getTokens = function () {
   var self = this
-  var tokenRequests = this.all_parts.reduce(function (tokens, part) {
+  var tokenRequests
+
+  if (!this.all_parts) {
+    return Promise.resolve([])
+  }
+
+  tokenRequests = this.all_parts.reduce(function (tokens, part) {
     if (part.component === 'token') {
       tokens.push(self._request(part.uri))
     }

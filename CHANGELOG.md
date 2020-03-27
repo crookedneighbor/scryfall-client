@@ -1,5 +1,6 @@
 # unreleased
 * Add `post` method (closes #9)
+* Fix error when calling `getTokens` on a card without multiple parts (closes #10)
 
 # 1.11.0
 * Normalize card_faces so all card objects have a card_faces array
