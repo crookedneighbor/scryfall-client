@@ -34,6 +34,23 @@ scryfall.get('cards/search', {
 })
 ```
 
+Yoy can also call `post` with a post body:
+
+```js
+scryfall.post('cards/collection', {
+  identifiers: [{
+    id: 'some-id',
+  }, {
+    set: 'some-set-code',
+    collector_number: 'some-collector-number'
+  }]
+}).then(function (list) {
+  list.forEach(function (card) {
+    console.log(card.name)
+  })
+})
+```
+
 There is one key difference between the response objects returned from the raw API and this module. For endpoints that return the [list object](https://scryfall.com/docs/api/lists), the raw API returns an object with some properties about the list (`has_more`, `next_page`, `total_cards`) and a `data` property that is an array of other API objects (cards, prints, rulings, etc). This module returns an Array-like object of the data directly, with the properties attached to the object.
 
 
@@ -50,7 +67,6 @@ scryfall.get('cards/search', {
 })
 ```
 
-
 If your request returns no results or is otherwise unsuccessful, the Promise will reject.
 
 ```js
@@ -61,6 +77,16 @@ scryfall.get('cards/search', {
 }).catch(function (err) {
   err // a 404 error
 })
+```
+
+# getSymbolUrl
+
+As a convenience, you can call `getSymbolUrl` with a symbol character to generate the Scryfall url for the symbols svg:
+
+```js
+scryfall.getSymbolUrl('W') // 'https://img.scryfall.com/symbology/W.svg'
+
+scryfall.getSymbolUrl('{U}') // 'https://img.scryfall.com/symbology/U.svg'
 ```
 
 # Additional Options
