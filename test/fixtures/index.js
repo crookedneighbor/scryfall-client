@@ -7,6 +7,7 @@ module.exports = {
   cardWithMeldLayout: require('./card-with-meld-layout'),
   secondCardWithMeldLayout: require('./second-card-with-meld-layout'),
   cardBackWithMeldLayout: require('./card-back-with-meld-layout'),
+  cardWithTokenButNoParts: require('./card-with-token-but-no-parts'),
   cardWithMultipleTokens: require('./card-with-multiple-tokens'),
   catalogOfCardNames: require('./catalog-of-card-names'),
   listOfCards: require('./list-of-cards'),

@@ -32,7 +32,15 @@ var basicGetMethods = {
 var SCRYFALL_CARD_BACK_IMAGE_URL = 'https://img.scryfall.com/errors/missing.jpg'
 
 function Card (scryfallObject, config) {
+  var self = this
+
   SingularEntity.call(this, scryfallObject, config)
+
+  this._tokens = (scryfallObject.all_parts || []).filter(function (part) {
+    return part.component === 'token'
+  })
+
+  this._hasTokens = Boolean(this._tokens.length)
 
   this.card_faces = scryfallObject.card_faces || [{
     object: 'card_face'
@@ -48,6 +56,14 @@ function Card (scryfallObject, config) {
         face[attribute] = scryfallObject[attribute]
       }
     })
+
+    if (face.oracle_text && face.oracle_text.toLowerCase().indexOf('token') > -1) {
+      // if the tokens are missing from the all_parts attribute
+      // we still want to check the oracle text, it may only
+      // be missing in the particular printing and can be found
+      // by looking for another printing
+      self._hasTokens = true
+    }
   })
 
   this._isDoublesided = scryfallObject.layout === 'transform' || scryfallObject.layout === 'double_faced_token'
@@ -124,21 +140,30 @@ Card.prototype.getPrice = function (type) {
 
 Card.prototype.getTokens = function () {
   var self = this
-  var tokenRequests
 
-  if (!this.all_parts) {
+  if (!this._hasTokens) {
     return Promise.resolve([])
   }
 
-  tokenRequests = this.all_parts.reduce(function (tokens, part) {
-    if (part.component === 'token') {
-      tokens.push(self._request(part.uri))
+  return Promise.all(this._tokens.map(function (token) {
+    return self._request(token.uri)
+  })).then(function (tokens) {
+    if (tokens.length > 0) {
+      return tokens
     }
 
-    return tokens
-  }, [])
+    return self.getPrints().then(function (prints) {
+      var printWithTokens = prints.find(function (print) {
+        return print._tokens.length > 0
+      })
 
-  return Promise.all(tokenRequests)
+      if (printWithTokens) {
+        return printWithTokens.getTokens()
+      }
+
+      return []
+    })
+  })
 }
 
 Card.prototype.getTaggerUrl = function () {

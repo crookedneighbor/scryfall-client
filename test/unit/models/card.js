@@ -3,7 +3,7 @@
 const Card = require('../../../models/card')
 const wrapScryfallResponse = require('../../../lib/wrap-scryfall-response')
 
-describe('Card', function () {
+describe.only('Card', function () {
   beforeEach(function () {
     this.fakeRequestMethod = this.sandbox.stub()
     this.config = {
@@ -396,12 +396,63 @@ describe('Card', function () {
       })
     })
 
-    it('resolves with an empty array when card has no `all_parts` attribute', function () {
+    it('resolves with an empty array when card has no `all_parts` attribute and no tokens in rules text', function () {
       const card = wrapScryfallResponse(this.fixtures.card, {
         requestMethod: this.fakeRequestMethod
       })
 
       return card.getTokens().then(tokens => {
+        expect(tokens).to.deep.equal([])
+      })
+    })
+
+    it('looks up tokens from prints for card when card has no `all_parts` attribute, but rules text mentions token', function () {
+      const card = wrapScryfallResponse(this.fixtures.cardWithTokenButNoParts, {
+        requestMethod: this.fakeRequestMethod
+      })
+
+      this.sandbox.stub(card, 'getPrints').resolves([
+        wrapScryfallResponse(this.fixtures.cardWithTokenButNoParts, {
+          requestMethod: this.fakeRequestMethod
+        }),
+        wrapScryfallResponse(this.fixtures.cardWithMultipleTokens, {
+          requestMethod: this.fakeRequestMethod
+        })
+      ])
+
+      return card.getTokens().then(tokens => {
+        expect(card.getPrints.callCount).to.equal(1)
+
+        expect(this.fakeRequestMethod.callCount).to.equal(3)
+        expect(this.fakeRequestMethod).to.be.calledWith('https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b')
+        expect(this.fakeRequestMethod).to.be.calledWith('https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830')
+        expect(this.fakeRequestMethod).to.be.calledWith('https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475')
+
+        tokens.forEach((token) => {
+          expect(token).to.be.an.instanceof(Card)
+          expect(token.layout).to.equal('token')
+        })
+      })
+    })
+
+    it('resolves with empty array when rules text mentions tokens but no prints have them', function () {
+      const card = wrapScryfallResponse(this.fixtures.cardWithTokenButNoParts, {
+        requestMethod: this.fakeRequestMethod
+      })
+
+      this.sandbox.stub(card, 'getPrints').resolves([
+        wrapScryfallResponse(this.fixtures.cardWithTokenButNoParts, {
+          requestMethod: this.fakeRequestMethod
+        }),
+        wrapScryfallResponse(this.fixtures.card, {
+          requestMethod: this.fakeRequestMethod
+        })
+      ])
+
+      return card.getTokens().then(tokens => {
+        expect(card.getPrints.callCount).to.equal(1)
+
+        expect(this.fakeRequestMethod.callCount).to.equal(0)
         expect(tokens).to.deep.equal([])
       })
     })

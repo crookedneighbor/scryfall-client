@@ -97,6 +97,7 @@ describe('scryfallClient', function () {
         this.giselaBrokenBlade = 'c75c035a-7da9-4b36-982d-fca8220b1797'
         this.brisela = '5a7a212e-e0b6-4f12-a95c-173cae023f93'
         this.beastialMenace = '73c16134-692d-4fd1-bffa-f9342113cbd8'
+        this.originalProsh = 'fc411c52-3ee2-4fe4-983d-3fa43b516237'
       })
 
       it('can get rulings for card', function () {
@@ -233,6 +234,15 @@ describe('scryfallClient', function () {
           tokens.forEach((token) => {
             expect(token.layout).to.equal('token')
           })
+        })
+      })
+
+      it('can get tokens for a card where the print does not have tokens', function () {
+        return this.client.get(`cards/${this.originalProsh}`).then((card) => {
+          return card.getTokens()
+        }).then((tokens) => {
+          expect(tokens.length).to.equal(1)
+          expect(tokens[0].layout).to.equal('token')
         })
       })
     })
