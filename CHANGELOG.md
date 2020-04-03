@@ -1,4 +1,4 @@
-# unreleased
+# 0.13.0
 * Fallback to lookup tokens from other prints when card has no tokens but rules text mentions tokens
 
 # 0.12.0
