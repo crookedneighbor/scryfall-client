@@ -1,5 +1,4 @@
-Scryfall Client
----------------
+## Scryfall Client
 
 A simple (unofficial) wrapper for the [Scryfall API](https://scryfall.com/docs/api).
 
@@ -14,69 +13,81 @@ npm install --save scryfall-client
 You can make a get request to any of the [API endpoints](https://scryfall.com/docs/api). It will return a Promise that resolves with the result.
 
 ```js
-var ScryfallClient = require('scryfall-client')
-var scryfall = new ScryfallClient()
+var ScryfallClient = require("scryfall-client");
+var scryfall = new ScryfallClient();
 
-scryfall.get('cards/random').then(function (card) {
-  card // a random card
-})
+scryfall.get("cards/random").then(function (card) {
+  card; // a random card
+});
 ```
 
 You can pass a second argument that will be converted to a query string:
 
 ```js
-scryfall.get('cards/search', {
-  q: 'o:vigilance t:equipment'
-}).then(function (list) {
-  list.forEach(function (card) {
-    console.log(card.name)
+scryfall
+  .get("cards/search", {
+    q: "o:vigilance t:equipment",
   })
-})
+  .then(function (list) {
+    list.forEach(function (card) {
+      console.log(card.name);
+    });
+  });
 ```
 
 Yoy can also call `post` with a post body:
 
 ```js
-scryfall.post('cards/collection', {
-  identifiers: [{
-    id: 'some-id',
-  }, {
-    set: 'some-set-code',
-    collector_number: 'some-collector-number'
-  }]
-}).then(function (list) {
-  list.forEach(function (card) {
-    console.log(card.name)
+scryfall
+  .post("cards/collection", {
+    identifiers: [
+      {
+        id: "some-id",
+      },
+      {
+        set: "some-set-code",
+        collector_number: "some-collector-number",
+      },
+    ],
   })
-})
+  .then(function (list) {
+    list.forEach(function (card) {
+      console.log(card.name);
+    });
+  });
 ```
 
 There is one key difference between the response objects returned from the raw API and this module. For endpoints that return the [list object](https://scryfall.com/docs/api/lists), the raw API returns an object with some properties about the list (`has_more`, `next_page`, `total_cards`) and a `data` property that is an array of other API objects (cards, prints, rulings, etc). This module returns an Array-like object of the data directly, with the properties attached to the object.
 
-
 ```js
-scryfall.get('cards/search', {
-  q: 'o:vigilance t:equipment'
-}).then(function (list) {
-  list.has_more // whether or not there is an additional page of results, `true` or `false`
-  list.total_cards // the total number of cards returned from search
-
-  var names = list.map(function (card) { // the list object can use any Array method
-    return card.name
+scryfall
+  .get("cards/search", {
+    q: "o:vigilance t:equipment",
   })
-})
+  .then(function (list) {
+    list.has_more; // whether or not there is an additional page of results, `true` or `false`
+    list.total_cards; // the total number of cards returned from search
+
+    var names = list.map(function (card) {
+      // the list object can use any Array method
+      return card.name;
+    });
+  });
 ```
 
 If your request returns no results or is otherwise unsuccessful, the Promise will reject.
 
 ```js
-scryfall.get('cards/search', {
-  q: 'foobarbaz'
-}).then(function (list) {
-  // will never get here
-}).catch(function (err) {
-  err // a 404 error
-})
+scryfall
+  .get("cards/search", {
+    q: "foobarbaz",
+  })
+  .then(function (list) {
+    // will never get here
+  })
+  .catch(function (err) {
+    err; // a 404 error
+  });
 ```
 
 # getSymbolUrl
@@ -84,9 +95,9 @@ scryfall.get('cards/search', {
 As a convenience, you can call `getSymbolUrl` with a symbol character to generate the Scryfall url for the symbols svg:
 
 ```js
-scryfall.getSymbolUrl('W') // 'https://img.scryfall.com/symbology/W.svg'
+scryfall.getSymbolUrl("W"); // 'https://img.scryfall.com/symbology/W.svg'
 
-scryfall.getSymbolUrl('{U}') // 'https://img.scryfall.com/symbology/U.svg'
+scryfall.getSymbolUrl("{U}"); // 'https://img.scryfall.com/symbology/U.svg'
 ```
 
 # Additional Options
@@ -102,30 +113,32 @@ The main use case is for transforming the mana symbol notation. The module has a
 You can use this in conjunction with the `symbols` lib provided with the module to display the symbols using the svgs for the symbols found on Scryfall's website.
 
 ```js
-var ScryfallClient = require('scryfall-client')
-var symbols = require('scryfall-client/symbols')
+var ScryfallClient = require("scryfall-client");
+var symbols = require("scryfall-client/symbols");
 var scryfall = new ScryfallClient({
   textTransformer: function (text) {
-    var matches = text.match(/{(.)(\/(.))?}/g)
+    var matches = text.match(/{(.)(\/(.))?}/g);
 
     if (matches) {
       matches.forEach(function (symbol) {
-        var key = symbol.slice(1, -1)
+        var key = symbol.slice(1, -1);
 
-        text = text.replace(symbol, '<img src="' + symbols[key] + '"/>')
-      })
+        text = text.replace(symbol, '<img src="' + symbols[key] + '"/>');
+      });
     }
 
-    return text
-  }
-})
+    return text;
+  },
+});
 
-scryfall.get('cards/named', {
-  exact: 'River Hoopoe'
-}).then(function (card) {
-  card.oracle_text
-  // Flying\n<img src="a_long_string_of_characters_that_render_the_3_generic_mana_symbol" /><img src="a_long_string_of_characters_that_render_the_green_mana_symbol" /><img src="a_long_string_of_characters_that_render_the_blue_mana_symbol" />: You gain 2 life and draw a card.
-})
+scryfall
+  .get("cards/named", {
+    exact: "River Hoopoe",
+  })
+  .then(function (card) {
+    card.oracle_text;
+    // Flying\n<img src="a_long_string_of_characters_that_render_the_3_generic_mana_symbol" /><img src="a_long_string_of_characters_that_render_the_green_mana_symbol" /><img src="a_long_string_of_characters_that_render_the_blue_mana_symbol" />: You gain 2 life and draw a card.
+  });
 ```
 
 It is probably easiest to copy the function above as is, and replace the second argument in `text.replace` with your own string where `$1` is the first match and `$3` is the second match if the mana symbols is a split symbol (such as with hybrid mana).
@@ -137,14 +150,14 @@ If a `textTransformer` option is provided, it will take precedence over `convert
 If using this module within Slack, you may want the mana symbols converted automatically to the [emoji that Scryfall provides](https://scryfall.com/docs/slack-bot#manamoji-support).
 
 ```js
-var ScryfallClient = require('scryfall-client')
+var ScryfallClient = require("scryfall-client");
 var scryfall = new ScryfallClient({
-  convertSymbolsToSlackEmoji: true
-})
+  convertSymbolsToSlackEmoji: true,
+});
 
-scryfall.get('cards/random').then(function (card) {
-  card.mana_cost // ':mana-2::mana-G:
-})
+scryfall.get("cards/random").then(function (card) {
+  card.mana_cost; // ':mana-2::mana-G:
+});
 ```
 
 If a `convertSymbolsToSlackEmoji` option is provided, it will take precedence over `convertSymbolsToDiscordEmoji`.
@@ -154,14 +167,14 @@ If a `convertSymbolsToSlackEmoji` option is provided, it will take precedence ov
 If using this module within Discord, you may want the mana symbols converted automatically to the [emoji that Scryfall provides](https://scryfall.com/docs/discord-bot#manamoji-usage).
 
 ```js
-var ScryfallClient = require('scryfall-client')
+var ScryfallClient = require("scryfall-client");
 var scryfall = new ScryfallClient({
-  convertSymbolsToDiscordEmoji: true
-})
+  convertSymbolsToDiscordEmoji: true,
+});
 
-scryfall.get('cards/random').then(function (card) {
-  card.mana_cost // ':mana2::manaG:
-})
+scryfall.get("cards/random").then(function (card) {
+  card.mana_cost; // ':mana2::manaG:
+});
 ```
 
 ## `delayBetweenRequests`
@@ -170,16 +183,16 @@ By default, there is about 50-100 milliseceond delay between requests ([as recom
 
 var ScryfallClient = require('scryfall-client')
 var scryfall = new ScryfallClient({
-  delayBetweenRequests: 500
+delayBetweenRequests: 500
 })
 
 scryfall.get('cards/random').then(function (card) {
-  // do something with card
+// do something with card
 
-  // will wait 500 milliseconds before initiating this request
-  return scryfall.get('cards/random')
+// will wait 500 milliseconds before initiating this request
+return scryfall.get('cards/random')
 }).then(function (card) {
-  // do something with card
+// do something with card
 })
 
 # API Objects
@@ -195,16 +208,19 @@ Representing a [card object](https://scryfall.com/docs/api/cards). In additioan,
 Returns a Promise that resolves with a list of [rulings objects](https://scryfall.com/docs/api/rulings)
 
 ```js
-scryfall.get('cards/named', {
-  fuzzy: 'aust com'
-}).then(function (card) {
-  return card.getRulings()
-}).then(function (list) {
-  list.forEach(function (ruling) {
-    console.log(ruling.published_at)
-    console.log(ruling.comment)
+scryfall
+  .get("cards/named", {
+    fuzzy: "aust com",
   })
-})
+  .then(function (card) {
+    return card.getRulings();
+  })
+  .then(function (list) {
+    list.forEach(function (ruling) {
+      console.log(ruling.published_at);
+      console.log(ruling.comment);
+    });
+  });
 ```
 
 ### getSet() -> Promise<Set>
@@ -212,13 +228,16 @@ scryfall.get('cards/named', {
 Returns a Promise that resolves with the [set object](https://scryfall.com/docs/api/sets) for the card.
 
 ```js
-scryfall.get('cards/named', {
-  exact: 'the Scarab God'
-}).then(function (card) {
-  return card.getSet()
-}).then(function (set) {
-  set.name // the name of the set
-})
+scryfall
+  .get("cards/named", {
+    exact: "the Scarab God",
+  })
+  .then(function (card) {
+    return card.getSet();
+  })
+  .then(function (set) {
+    set.name; // the name of the set
+  });
 ```
 
 ### getPrints() -> Promise<List>
@@ -226,15 +245,18 @@ scryfall.get('cards/named', {
 Returns a Promise that resolves with a list of [card objects](https://scryfall.com/docs/api/cards) for each printing of the card.
 
 ```js
-scryfall.get('cards/named', {
-  exact: 'windfall'
-}).then(function (card) {
-  return card.getPrints()
-}).then(function (list) {
-  var sets = list.map(function (card) {
-    return card.set
+scryfall
+  .get("cards/named", {
+    exact: "windfall",
   })
-})
+  .then(function (card) {
+    return card.getPrints();
+  })
+  .then(function (list) {
+    var sets = list.map(function (card) {
+      return card.set;
+    });
+  });
 ```
 
 ### isLegal(String format) -> Boolean
@@ -261,14 +283,16 @@ As more formats are added, `isLegal` will support them automatically (as it take
 `isLegal` will return `true` if Scryfall lists the card as `legal` or `restricted` and `false` otherwise.
 
 ```js
-scryfall.get('cards/search', {
-  q: 'format:standard r:r'
-}).then(function (list) {
-  var aCard = list[0]
+scryfall
+  .get("cards/search", {
+    q: "format:standard r:r",
+  })
+  .then(function (list) {
+    var aCard = list[0];
 
-  aCard.isLegal('standard') // true
-  aCard.isLegal('pauper') // false
-})
+    aCard.isLegal("standard"); // true
+    aCard.isLegal("pauper"); // false
+  });
 ```
 
 ### getImage(String size='normal') -> String
@@ -289,12 +313,14 @@ As of the writing of this documentation, the valid values are:
 If additional formats are added, `getImage` will support them automatically (as it takes its list of valid values from the API response itself).
 
 ```js
-scryfall.get('cards/named', {
-  exact: 'windfall'
-}).then(function (card) {
-  const img = card.getImage()
-  img // set an img tag's src to this
-})
+scryfall
+  .get("cards/named", {
+    exact: "windfall",
+  })
+  .then(function (card) {
+    const img = card.getImage();
+    img; // set an img tag's src to this
+  });
 ```
 
 ### getBackImage(String size='normal') -> String
@@ -318,18 +344,22 @@ If a non-doublesided card is used with `getBackImage`, the size parameter will b
 
 ```js
 // A Magic card without a back face
-scryfall.get('cards/named', {
-  exact: 'windfall'
-}).then(function (card) {
-  const img = card.getBackImage() // https://img.scryfall.com/errors/missing.jpg
-})
+scryfall
+  .get("cards/named", {
+    exact: "windfall",
+  })
+  .then(function (card) {
+    const img = card.getBackImage(); // https://img.scryfall.com/errors/missing.jpg
+  });
 
 // A transform card
-scryfall.get('cards/named', {
-  exact: 'docent of perfection'
-}).then(function (card) {
-  const img = card.getBackImage() // the img url for Final Iteration
-})
+scryfall
+  .get("cards/named", {
+    exact: "docent of perfection",
+  })
+  .then(function (card) {
+    const img = card.getBackImage(); // the img url for Final Iteration
+  });
 ```
 
 ### getPrice(String type) -> String
@@ -339,13 +369,15 @@ Returns a string with the specifed price. If the price is not available for the 
 If no type is specified, it will return the price for `'usd'` if available. If `'usd'` is not available, `'usd_foil'` will be used. If `'usd_foil'` is not available, `'eur'` will be used. If `'eur'` is not available, `'tix'` will be used. If `'tix'` is not available, `''` will be returned.
 
 ```js
-scryfall.get('cards/named', {
-  fuzzy: 'animar soul'
-}).then(function (card) {
-  card.getPrice() // '11.25'
-  card.getPrice('usd') // '11.25'
-  card.getPrice('usd_foil') // '52.51'
-})
+scryfall
+  .get("cards/named", {
+    fuzzy: "animar soul",
+  })
+  .then(function (card) {
+    card.getPrice(); // '11.25'
+    card.getPrice("usd"); // '11.25'
+    card.getPrice("usd_foil"); // '52.51'
+  });
 ```
 
 ### getTokens() -> Promise<List>
@@ -353,19 +385,22 @@ scryfall.get('cards/named', {
 Returns a Promise that resolves with a list of [card objects](https://scryfall.com/docs/api/cards) for each token associated with the card.
 
 ```js
-scryfall.get('cards/named', {
-  exact: 'Bestial Menace'
-}).then(function (card) {
-  return card.getTokens()
-}).then(function (list) {
-  const imgs = list.map(function (card) {
-    return card.getImage()
+scryfall
+  .get("cards/named", {
+    exact: "Bestial Menace",
   })
+  .then(function (card) {
+    return card.getTokens();
+  })
+  .then(function (list) {
+    const imgs = list.map(function (card) {
+      return card.getImage();
+    });
 
-  imgs.forEach(function (img) {
-    // display image
-  })
-})
+    imgs.forEach(function (img) {
+      // display image
+    });
+  });
 ```
 
 ### getTaggerUrl() -> String (beta)
@@ -373,13 +408,16 @@ scryfall.get('cards/named', {
 Returns a url for the tagger page for the card. This is derived from the card attributes based on the structure of the current tagger urls. If the structure changes, this method will no longer point to the correct url.
 
 ```js
-scryfall.get('cards/named', {
-  exact: 'Krenko, Mob Boss'
-}).then(function (card) {
-  return card.getTaggerUrl()
-}).then(function (url) {
-  url // https://tagger.scryfall.com/card/ddt/52
-})
+scryfall
+  .get("cards/named", {
+    exact: "Krenko, Mob Boss",
+  })
+  .then(function (card) {
+    return card.getTaggerUrl();
+  })
+  .then(function (url) {
+    url; // https://tagger.scryfall.com/card/ddt/52
+  });
 ```
 
 ## Catalog
@@ -395,26 +433,29 @@ An object representing a [list object](https://scryfall.com/docs/api/lists). Thi
 If the `has_more` property is `true`, then `next()` can be called to get the next page of results.
 
 ```js
-function collectCards (list, allCards) {
-  allCards = allCards || []
-  allCards.push.apply(allCards, list)
+function collectCards(list, allCards) {
+  allCards = allCards || [];
+  allCards.push.apply(allCards, list);
 
   if (!list.has_more) {
-    return allCards
+    return allCards;
   }
 
   return list.next().then(function (newList) {
-    return collectCards(newList, allCards)
-  })
+    return collectCards(newList, allCards);
+  });
 }
 
-scryfall.get('cards/search', {
-  q: 'format:standard r:r'
-}).then(function (list) {
-  return collectCards(list)
-}).then(function (allRareCardsInStandard) {
-  // do something!!
-})
+scryfall
+  .get("cards/search", {
+    q: "format:standard r:r",
+  })
+  .then(function (list) {
+    return collectCards(list);
+  })
+  .then(function (allRareCardsInStandard) {
+    // do something!!
+  });
 ```
 
 ## Set
@@ -426,11 +467,14 @@ An object represnting a [set object](https://scryfall.com/docs/api/sets).
 Resolves with a list containing all the cards in the set.
 
 ```js
-scryfall.get('sets/dom').then(function (set) {
-  return set.getCards()
-}).then(function (list) {
-  list // a list of cards for the set
-})
+scryfall
+  .get("sets/dom")
+  .then(function (set) {
+    return set.getCards();
+  })
+  .then(function (list) {
+    list; // a list of cards for the set
+  });
 ```
 
 ## Other Objects
@@ -442,18 +486,18 @@ Any other objects are wrapped in a `GenericScryfallResponse` object.
 The instance includes a `wrap` method which can be used to wrap a saved respone from Scryall into the API objects listed above. For instance, you may want to convert a Card object into a JSON string to save to your database; this method allows you to rebuild the Card object with all the helper methods without fetching it again from Scryfall.
 
 ```js
-scryfall.get('cards/random').then(function (card) {
-  saveCardToDatabse(card)
-})
+scryfall.get("cards/random").then(function (card) {
+  saveCardToDatabse(card);
+});
 
 // later
 
 lookUpCardInDatabase(someId).then(function (cardData) {
   // cardData.getImage does not exist
 
-  const card = scryfall.wrap(cardData)
-  const img = card.getImage() // the image of the card saved in the database
-})
+  const card = scryfall.wrap(cardData);
+  const img = card.getImage(); // the image of the card saved in the database
+});
 ```
 
 # Browser Support
@@ -485,6 +529,7 @@ npm run test:unit
 To run just the linting command, run:
 
 ```
+
 npm run lint
 ``
 

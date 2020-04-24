@@ -14,8 +14,9 @@
     "predemo": "npm run build",
     "demo": "http-server docs -p 4567",
     "demo:dev": "npm run demo & npm run build:watch",
-    "lint": "standard --verbose | snazzy",
-    "pretest": "npm run lint",
+    "lint": "eslint .",
+    "pretty": "prettier --write .",
+    "posttest": "npm run lint",
     "test": "npm run test:unit",
     "test:unit": "mocha test/unit/**/*.js",
     "test:integration": "mocha test/integration/**/*.js",
@@ -33,33 +34,18 @@
     "browserify": "^16.5.0",
     "chai": "^4.2.0",
     "check-ecmascript-version-compatibility": "^0.1.1",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
     "http-server": "^0.12.1",
     "mkdirp": "^1.0.3",
     "mocha": "^7.1.1",
+    "prettier": "^2.0.5",
     "sinon": "^9.0.1",
     "sinon-chai": "^3.5.0",
-    "snazzy": "^8.0.0",
-    "standard": "^14.3.3",
     "watchify": "^3.11.1"
   },
   "dependencies": {
     "superagent": "^5.2.2"
-  },
-  "standard": {
-    "globals": [
-      "afterEach",
-      "before",
-      "beforeEach",
-      "describe",
-      "context",
-      "expect",
-      "it"
-    ],
-    "ignore": [
-      "symbols.js",
-      "test/fixtures/*",
-      "dist/*",
-      "docs/script.js"
-    ]
   }
 }

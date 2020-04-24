@@ -1,0 +1,9 @@
+{
+  "env": {
+    "es2020": true,
+    "mocha": true
+  },
+  "globals": {
+    "expect": false
+  }
+}
