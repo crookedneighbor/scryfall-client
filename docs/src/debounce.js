@@ -1,24 +1,24 @@
-module.exports = function debounce (cb, time) {
-  var wait = false
+module.exports = function debounce(cb, time) {
+  var wait = false;
 
-  time = time || 1000
+  time = time || 1000;
 
   return function (event) {
     if (wait) {
-      return
+      return;
     }
 
-    var val = event.target.value
+    var val = event.target.value;
 
-    wait = true
+    wait = true;
 
-    cb(event)
+    cb(event);
 
     setTimeout(function () {
       if (val !== event.target.value) {
-        cb(event)
+        cb(event);
       }
-      wait = false
-    }, time)
-  }
-}
+      wait = false;
+    }, time);
+  };
+};

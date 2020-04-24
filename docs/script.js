@@ -1,657 +1,740 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-module.exports = function debounce (cb, time) {
-  var wait = false
+module.exports = function debounce(cb, time) {
+  var wait = false;
 
-  time = time || 1000
+  time = time || 1000;
 
   return function (event) {
     if (wait) {
-      return
+      return;
     }
 
-    var val = event.target.value
+    var val = event.target.value;
 
-    wait = true
+    wait = true;
 
-    cb(event)
+    cb(event);
 
     setTimeout(function () {
       if (val !== event.target.value) {
-        cb(event)
+        cb(event);
       }
-      wait = false
-    }, time)
-  }
-}
+      wait = false;
+    }, time);
+  };
+};
 
 },{}],2:[function(require,module,exports){
-'use strict'
+"use strict";
 
-var ScryfallClient = require('../../')
-var debounce = require('./debounce')
+var ScryfallClient = require("../../");
+var debounce = require("./debounce");
 
-var scryfall = new ScryfallClient()
+var scryfall = new ScryfallClient();
 
-var search = document.querySelector('#search-wrapper input')
-var autocompleteDatalist = document.querySelector('#search-wrapper datalist')
-var cardImage = document.querySelector('#card-wrapper img')
+var search = document.querySelector("#search-wrapper input");
+var autocompleteDatalist = document.querySelector("#search-wrapper datalist");
+var cardImage = document.querySelector("#card-wrapper img");
 
-var showCode = document.querySelector('#search-wrapper #show-code')
-var modal = document.querySelector('#code-modal')
+var showCode = document.querySelector("#search-wrapper #show-code");
+var modal = document.querySelector("#code-modal");
 
-search.addEventListener('keyup', debounce(function (event) {
-  scryfall.get('cards/autocomplete', {
-    q: search.value
-  }).then(function (catalog) {
-    autocompleteDatalist.innerHTML = ''
-    catalog.forEach(function (name) {
-      var option = document.createElement('option')
-      option.value = name
-      autocompleteDatalist.appendChild(option)
-    })
+search.addEventListener(
+  "keyup",
+  debounce(function () {
+    scryfall
+      .get("cards/autocomplete", {
+        q: search.value,
+      })
+      .then(function (catalog) {
+        autocompleteDatalist.innerHTML = "";
+        catalog.forEach(function (name) {
+          var option = document.createElement("option");
+          option.value = name;
+          autocompleteDatalist.appendChild(option);
+        });
+      });
   })
-}))
+);
 
-search.addEventListener('input', function (event) {
-  var val = search.value
-  var options = autocompleteDatalist.querySelectorAll('option')
+search.addEventListener("input", function () {
+  var val = search.value;
+  var options = autocompleteDatalist.querySelectorAll("option");
 
   for (var i = 0; i < options.length; i++) {
     if (options[i].value === val) {
-      return scryfall.get('cards/named', {
-        fuzzy: val
-      }).then(function (card) {
-        return card.getImage()
-      }).then(function (img) {
-        cardImage.src = img
-        autocompleteDatalist.innerHTML = ''
-      })
+      return scryfall
+        .get("cards/named", {
+          fuzzy: val,
+        })
+        .then(function (card) {
+          return card.getImage();
+        })
+        .then(function (img) {
+          cardImage.src = img;
+          autocompleteDatalist.innerHTML = "";
+        });
     }
   }
-})
+});
 
-showCode.addEventListener('click', function () {
-  modal.classList.add('is-active')
-})
+showCode.addEventListener("click", function () {
+  modal.classList.add("is-active");
+});
 
-modal.querySelector('.modal-background').addEventListener('click', function () {
-  modal.classList.remove('is-active')
-})
+modal.querySelector(".modal-background").addEventListener("click", function () {
+  modal.classList.remove("is-active");
+});
 
 },{"../../":3,"./debounce":1}],3:[function(require,module,exports){
-'use strict'
+"use strict";
 
-var makeRequestFunction = require('./lib/request')
+var makeRequestFunction = require("./lib/request");
 
-function ScryfallClient (options) {
-  this._request = makeRequestFunction(options)
+function ScryfallClient(options) {
+  this._request = makeRequestFunction(options);
 }
 
 ScryfallClient.prototype.get = function (url, query) {
   return this._request(url, {
-    method: 'get',
-    query: query
-  })
-}
+    method: "get",
+    query: query,
+  });
+};
 
 ScryfallClient.prototype.post = function (url, body) {
   return this._request(url, {
     body: body,
-    method: 'post'
-  })
-}
+    method: "post",
+  });
+};
 
 ScryfallClient.prototype.getSymbolUrl = function (symbol) {
-  var character = symbol.match(/{?(.)}?/)[1]
+  var character = symbol.match(/{?(.)}?/)[1];
 
-  return 'https://img.scryfall.com/symbology/' + character + '.svg'
-}
+  return "https://img.scryfall.com/symbology/" + character + ".svg";
+};
 
 ScryfallClient.prototype.wrap = function (body) {
-  return this._request.wrapFunction(body)
-}
+  return this._request.wrapFunction(body);
+};
 
-module.exports = ScryfallClient
+module.exports = ScryfallClient;
 
 },{"./lib/request":5}],4:[function(require,module,exports){
-'use strict'
+"use strict";
 
-function createEmojiFunction (converter) {
+function createEmojiFunction(converter) {
   return function (text) {
-    return text.replace(/{(.)(\/(.))?}/g, converter)
-  }
+    return text.replace(/{(.)(\/(.))?}/g, converter);
+  };
 }
 
 module.exports = {
-  slack: createEmojiFunction(':mana-$1$3:'),
-  discord: createEmojiFunction(':mana$1$3:')
-}
+  slack: createEmojiFunction(":mana-$1$3:"),
+  discord: createEmojiFunction(":mana$1$3:"),
+};
 
 },{}],5:[function(require,module,exports){
-'use strict'
+"use strict";
 
-var SCRYFALL_API_ENDPOINT = 'https://api.scryfall.com/'
-var DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME = 100
+var SCRYFALL_API_ENDPOINT = "https://api.scryfall.com/";
+var DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME = 100;
 
-var superagent = require('superagent')
-var querystring = require('querystring')
-var wrapScryfallResponse = require('./wrap-scryfall-response')
-var convertSymbolsToEmoji = require('../lib/convert-symbols-to-emoji')
-var ScryfallError = require('../models/scryfall-error')
+var superagent = require("superagent");
+var querystring = require("querystring");
+var wrapScryfallResponse = require("./wrap-scryfall-response");
+var convertSymbolsToEmoji = require("../lib/convert-symbols-to-emoji");
+var ScryfallError = require("../models/scryfall-error");
 
-function sendRequest (url, options) {
-  var method
+function sendRequest(url, options) {
+  var method;
 
-  options = options || {}
-  method = options.method || 'get'
+  options = options || {};
+  method = options.method || "get";
 
   return superagent[method](url)
     .send(options.body)
-    .set('Accept', 'application/json')
+    .set("Accept", "application/json")
     .then(function (response) {
-      var body
+      var body;
 
       try {
-        body = JSON.parse(response.text)
+        body = JSON.parse(response.text);
       } catch (parsingError) {
-        return Promise.reject(new ScryfallError({
-          message: 'Could not parse response from Scryfall.',
-          thrownError: parsingError
-        }))
+        return Promise.reject(
+          new ScryfallError({
+            message: "Could not parse response from Scryfall.",
+            thrownError: parsingError,
+          })
+        );
       }
 
-      if (body.object === 'error') {
-        return Promise.reject(new ScryfallError(body))
+      if (body.object === "error") {
+        return Promise.reject(new ScryfallError(body));
       }
 
-      return body
-    })
+      return body;
+    });
 }
 
-function isFullScryfallUrl (url) {
-  return url.indexOf(SCRYFALL_API_ENDPOINT) === 0
+function isFullScryfallUrl(url) {
+  return url.indexOf(SCRYFALL_API_ENDPOINT) === 0;
 }
 
-function endpointBeginsWithSlash (endpoint) {
-  return endpoint.indexOf('/') === 0
+function endpointBeginsWithSlash(endpoint) {
+  return endpoint.indexOf("/") === 0;
 }
 
-function makeRequestFunction (options) {
-  var requestInProgress = false
-  var enquedRequests = []
-  var requestFunction, wrapFunction
+function makeRequestFunction(options) {
+  var requestInProgress = false;
+  var enquedRequests = [];
+  var requestFunction, wrapFunction;
 
-  options = options || {}
+  options = options || {};
 
-  function delayForScryfallDesignatedTime () {
-    var waitTime = options.delayBetweenRequests || DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME
+  function delayForScryfallDesignatedTime() {
+    var waitTime =
+      options.delayBetweenRequests || DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME;
 
     return new Promise(function (resolve) {
-      setTimeout(resolve, waitTime)
-    })
+      setTimeout(resolve, waitTime);
+    });
   }
 
-  function clearQueue () {
-    enquedRequests = []
-    requestInProgress = false
+  function clearQueue() {
+    enquedRequests = [];
+    requestInProgress = false;
   }
 
-  function checkForEnquedRequests (recursiveCheck) {
-    var nextRequest
+  function checkForEnquedRequests(recursiveCheck) {
+    var nextRequest;
 
     if (enquedRequests.length > 0) {
-      nextRequest = enquedRequests.splice(0, 1)[0]
+      nextRequest = enquedRequests.splice(0, 1)[0];
       delayForScryfallDesignatedTime().then(function () {
-        nextRequest.start()
-      })
+        nextRequest.start();
+      });
     } else if (recursiveCheck) {
-      requestInProgress = false
+      requestInProgress = false;
     } else {
       delayForScryfallDesignatedTime().then(function () {
-        checkForEnquedRequests(true)
-      })
+        checkForEnquedRequests(true);
+      });
     }
   }
 
-  function prepareRequest (request, url, options) {
-    var pendingResolveFunction, pendingRejectFunction
+  function prepareRequest(request, url, options) {
+    var pendingResolveFunction, pendingRejectFunction;
 
     return {
       pending: function () {
         return new Promise(function (resolve, reject) {
-          pendingResolveFunction = resolve
-          pendingRejectFunction = reject
-        })
+          pendingResolveFunction = resolve;
+          pendingRejectFunction = reject;
+        });
       },
       start: function () {
-        return sendRequest(url, options).then(function (body) {
-          try {
-            pendingResolveFunction(wrapFunction(body))
-          } catch (err) {
-            return Promise.reject(new ScryfallError({
-              message: 'Something went wrong when wrapping the response from Scryfall',
-              thrownError: err
-            }))
-          }
-        }).catch(function (err) {
-          if (!(err instanceof ScryfallError)) {
-            err = new ScryfallError({
-              message: 'An unexpected error occurred when requesting resources from Scryfall.',
-              status: err.status,
-              originalError: err
-            })
-          }
+        return sendRequest(url, options)
+          .then(function (body) {
+            try {
+              pendingResolveFunction(wrapFunction(body));
+            } catch (err) {
+              return Promise.reject(
+                new ScryfallError({
+                  message:
+                    "Something went wrong when wrapping the response from Scryfall",
+                  thrownError: err,
+                })
+              );
+            }
+          })
+          .catch(function (err) {
+            if (!(err instanceof ScryfallError)) {
+              err = new ScryfallError({
+                message:
+                  "An unexpected error occurred when requesting resources from Scryfall.",
+                status: err.status,
+                originalError: err,
+              });
+            }
 
-          pendingRejectFunction(err)
-        }).then(function () {
-          checkForEnquedRequests()
-        })
-      }
-    }
+            pendingRejectFunction(err);
+          })
+          .then(function () {
+            checkForEnquedRequests();
+          });
+      },
+    };
   }
 
-  requestFunction = function request (endpoint, options) {
-    var url, queryParams, pendingRequest, pendingRequestHandler
+  requestFunction = function request(endpoint, options) {
+    var url, queryParams, pendingRequest, pendingRequestHandler;
 
-    options = options || {}
+    options = options || {};
 
     if (isFullScryfallUrl(endpoint)) {
-      url = endpoint
+      url = endpoint;
     } else {
       if (endpointBeginsWithSlash(endpoint)) {
-        endpoint = endpoint.substring(1)
+        endpoint = endpoint.substring(1);
       }
-      url = SCRYFALL_API_ENDPOINT + endpoint
+      url = SCRYFALL_API_ENDPOINT + endpoint;
     }
 
     if (options.query) {
-      queryParams = querystring.stringify(options.query)
+      queryParams = querystring.stringify(options.query);
 
-      if (url.indexOf('?') > -1) {
-        url += '&'
+      if (url.indexOf("?") > -1) {
+        url += "&";
       } else {
-        url += '?'
+        url += "?";
       }
 
-      url += queryParams
+      url += queryParams;
     }
 
-    pendingRequestHandler = prepareRequest(request, url, options)
-    pendingRequest = pendingRequestHandler.pending()
+    pendingRequestHandler = prepareRequest(request, url, options);
+    pendingRequest = pendingRequestHandler.pending();
 
     if (!requestInProgress) {
-      requestInProgress = true
-      pendingRequestHandler.start()
+      requestInProgress = true;
+      pendingRequestHandler.start();
     } else {
-      enquedRequests.push(pendingRequestHandler)
+      enquedRequests.push(pendingRequestHandler);
     }
 
-    return pendingRequest
-  }
+    return pendingRequest;
+  };
 
   wrapFunction = function (body) {
     var wrapOptions = {
-      requestMethod: requestFunction
-    }
+      requestMethod: requestFunction,
+    };
 
     if (options.textTransformer) {
-      wrapOptions.textTransformer = options.textTransformer
+      wrapOptions.textTransformer = options.textTransformer;
     } else if (options.convertSymbolsToSlackEmoji) {
-      wrapOptions.textTransformer = convertSymbolsToEmoji.slack
+      wrapOptions.textTransformer = convertSymbolsToEmoji.slack;
     } else if (options.convertSymbolsToDiscordEmoji) {
-      wrapOptions.textTransformer = convertSymbolsToEmoji.discord
+      wrapOptions.textTransformer = convertSymbolsToEmoji.discord;
     }
-    return wrapScryfallResponse(body, wrapOptions)
-  }
+    return wrapScryfallResponse(body, wrapOptions);
+  };
 
-  requestFunction.wrapFunction = wrapFunction
-  requestFunction.clearQueue = clearQueue
+  requestFunction.wrapFunction = wrapFunction;
+  requestFunction.clearQueue = clearQueue;
 
-  return requestFunction
+  return requestFunction;
 }
 
-module.exports = makeRequestFunction
+module.exports = makeRequestFunction;
 
 },{"../lib/convert-symbols-to-emoji":4,"../models/scryfall-error":12,"./wrap-scryfall-response":6,"querystring":19,"superagent":21}],6:[function(require,module,exports){
-'use strict'
+"use strict";
 
-var GenericScryfallResponse = require('../models/generic-scryfall-response')
+var GenericScryfallResponse = require("../models/generic-scryfall-response");
 var models = {
-  card: require('../models/card'),
-  catalog: require('../models/catalog'),
-  list: require('../models/list'),
-  set: require('../models/set')
-}
-module.exports = function wrapScryfallResponse (response, options) {
-  var wrappedResponse, requestMethod
+  card: require("../models/card"),
+  catalog: require("../models/catalog"),
+  list: require("../models/list"),
+  set: require("../models/set"),
+};
+module.exports = function wrapScryfallResponse(response, options) {
+  var wrappedResponse, requestMethod;
 
-  if (typeof response === 'string' && options.textTransformer) {
-    response = options.textTransformer(response)
+  if (typeof response === "string" && options.textTransformer) {
+    response = options.textTransformer(response);
   }
 
-  if (!response || typeof response !== 'object') {
-    return response
+  if (!response || typeof response !== "object") {
+    return response;
   }
 
-  requestMethod = options.requestMethod
+  requestMethod = options.requestMethod;
 
   if (!response.object) {
-    wrappedResponse = response
+    wrappedResponse = response;
   } else if (response.object in models) {
     wrappedResponse = new models[response.object](response, {
       textTransformer: options.textTransformer,
-      requestMethod: requestMethod
-    })
+      requestMethod: requestMethod,
+    });
   } else {
-    wrappedResponse = new GenericScryfallResponse(response, requestMethod)
+    wrappedResponse = new GenericScryfallResponse(response, requestMethod);
   }
 
-  if (response.object === 'list') {
+  if (response.object === "list") {
     wrappedResponse.forEach(function (object, location) {
-      wrappedResponse[location] = wrapScryfallResponse(object, options)
-    })
+      wrappedResponse[location] = wrapScryfallResponse(object, options);
+    });
   } else {
     Object.keys(response).forEach(function (key) {
-      wrappedResponse[key] = wrapScryfallResponse(response[key], options)
-    })
+      wrappedResponse[key] = wrapScryfallResponse(response[key], options);
+    });
   }
 
-  return wrappedResponse
-}
+  return wrappedResponse;
+};
 
 },{"../models/card":8,"../models/catalog":9,"../models/generic-scryfall-response":10,"../models/list":11,"../models/set":13}],7:[function(require,module,exports){
-'use strict'
+"use strict";
 
 // based on http://perfectionkills.com/how-ecmascript-5-still-does-not-allow-to-subclass-an-array/
 /* eslint-disable no-proto, new-parens, no-array-constructor */
 
-function ArrayLike (scryfallObject) {
-  var arr = []
+function ArrayLike(scryfallObject) {
+  var arr = [];
 
-  arr.push.apply(arr, scryfallObject.data)
-  arr.__proto__ = ArrayLike.prototype
+  arr.push.apply(arr, scryfallObject.data);
+  arr.__proto__ = ArrayLike.prototype;
 
   Object.keys(scryfallObject).forEach(function (key) {
-    if (key === 'data' || arr[key]) {
-      return
+    if (key === "data" || arr[key]) {
+      return;
     }
 
-    arr[key] = scryfallObject[key]
-  })
+    arr[key] = scryfallObject[key];
+  });
 
-  return arr
+  return arr;
 }
 
-ArrayLike.prototype = new Array
+ArrayLike.prototype = new Array();
 
-module.exports = ArrayLike
+module.exports = ArrayLike;
 
 },{}],8:[function(require,module,exports){
-'use strict'
+"use strict";
 
 // Pulled from https://scryfall.com/docs/api/cards#card-face-objects
 // may need to be updated as attributes are added
 var CARD_FACE_ATTRIBUTES = [
-  'artist',
-  'color_indicator',
-  'colors',
-  'flavor_text',
-  'illustration_id',
-  'image_uris',
-  'loyalty',
-  'mana_cost',
-  'name',
-  'oracle_text',
-  'power',
-  'printed_name',
-  'printed_text',
-  'printed_type_line',
-  'toughness',
-  'type_line',
-  'watermark'
-]
+  "artist",
+  "color_indicator",
+  "colors",
+  "flavor_text",
+  "illustration_id",
+  "image_uris",
+  "loyalty",
+  "mana_cost",
+  "name",
+  "oracle_text",
+  "power",
+  "printed_name",
+  "printed_text",
+  "printed_type_line",
+  "toughness",
+  "type_line",
+  "watermark",
+];
 
-var SingularEntity = require('./singular-entity')
+var SingularEntity = require("./singular-entity");
 var basicGetMethods = {
-  getRulings: 'rulings_uri',
-  getSet: 'set_uri',
-  getPrints: 'prints_search_uri'
-}
+  getRulings: "rulings_uri",
+  getSet: "set_uri",
+  getPrints: "prints_search_uri",
+};
 
-var SCRYFALL_CARD_BACK_IMAGE_URL = 'https://img.scryfall.com/errors/missing.jpg'
+var SCRYFALL_CARD_BACK_IMAGE_URL =
+  "https://img.scryfall.com/errors/missing.jpg";
 
-function Card (scryfallObject, config) {
-  SingularEntity.call(this, scryfallObject, config)
+function Card(scryfallObject, config) {
+  var self = this;
 
-  this.card_faces = scryfallObject.card_faces || [{
-    object: 'card_face'
-  }]
+  SingularEntity.call(this, scryfallObject, config);
+
+  this._tokens = (scryfallObject.all_parts || []).filter(function (part) {
+    return part.component === "token";
+  });
+
+  this._hasTokens = Boolean(this._tokens.length);
+
+  this.card_faces = scryfallObject.card_faces || [
+    {
+      object: "card_face",
+    },
+  ];
 
   this.card_faces.forEach(function (face) {
     CARD_FACE_ATTRIBUTES.forEach(function (attribute) {
       if (attribute in face) {
-        return
+        return;
       }
 
       if (attribute in scryfallObject) {
-        face[attribute] = scryfallObject[attribute]
+        face[attribute] = scryfallObject[attribute];
       }
-    })
-  })
+    });
 
-  this._isDoublesided = scryfallObject.layout === 'transform' || scryfallObject.layout === 'double_faced_token'
+    if (
+      face.oracle_text &&
+      face.oracle_text.toLowerCase().indexOf("token") > -1
+    ) {
+      // if the tokens are missing from the all_parts attribute
+      // we still want to check the oracle text, it may only
+      // be missing in the particular printing and can be found
+      // by looking for another printing
+      self._hasTokens = true;
+    }
+  });
+
+  this._isDoublesided =
+    scryfallObject.layout === "transform" ||
+    scryfallObject.layout === "double_faced_token";
 }
 
-SingularEntity.setModelName(Card, 'card')
+SingularEntity.setModelName(Card, "card");
 
 Object.keys(basicGetMethods).forEach(function (method) {
   Card.prototype[method] = function () {
-    return this._request(this[basicGetMethods[method]])
-  }
-})
+    return this._request(this[basicGetMethods[method]]);
+  };
+});
 
 Card.prototype.isLegal = function (format) {
   if (!format) {
-    throw new Error('Must provide format for checking legality. Use one of ' + formatKeysForError(this.legalities) + '.')
+    throw new Error(
+      "Must provide format for checking legality. Use one of " +
+        formatKeysForError(this.legalities) +
+        "."
+    );
   }
 
-  var legality = this.legalities[format]
+  var legality = this.legalities[format];
 
   if (!legality) {
-    throw new Error('Format "' + format + '" is not recgonized. Use one of ' + formatKeysForError(this.legalities) + '.')
+    throw new Error(
+      'Format "' +
+        format +
+        '" is not recgonized. Use one of ' +
+        formatKeysForError(this.legalities) +
+        "."
+    );
   }
 
-  return legality === 'legal' || legality === 'restricted'
-}
+  return legality === "legal" || legality === "restricted";
+};
 
 Card.prototype.getImage = function (type) {
-  var imageObject = this.card_faces[0].image_uris
+  var imageObject = this.card_faces[0].image_uris;
 
   if (!imageObject) {
-    throw new Error('Could not find image uris for card.')
+    throw new Error("Could not find image uris for card.");
   }
 
-  type = type || 'normal'
+  type = type || "normal";
 
   if (!(type in imageObject)) {
-    throw new Error('`' + type + '` is not a valid type. Must be one of ' + formatKeysForError(imageObject) + '.')
+    throw new Error(
+      "`" +
+        type +
+        "` is not a valid type. Must be one of " +
+        formatKeysForError(imageObject) +
+        "."
+    );
   }
 
-  return imageObject[type]
-}
+  return imageObject[type];
+};
 
 Card.prototype.getBackImage = function (type) {
-  var imageObject
+  var imageObject;
 
   if (!this._isDoublesided) {
-    return SCRYFALL_CARD_BACK_IMAGE_URL
+    return SCRYFALL_CARD_BACK_IMAGE_URL;
   }
 
-  type = type || 'normal'
-  imageObject = this.card_faces[1].image_uris
+  type = type || "normal";
+  imageObject = this.card_faces[1].image_uris;
 
   if (!imageObject) {
-    throw new Error('An unexpected error occured when attempting to show back side of card.')
+    throw new Error(
+      "An unexpected error occured when attempting to show back side of card."
+    );
   }
 
   if (!imageObject[type]) {
-    throw new Error('`' + type + '` is not a valid type. Must be one of ' + formatKeysForError(imageObject) + '.')
+    throw new Error(
+      "`" +
+        type +
+        "` is not a valid type. Must be one of " +
+        formatKeysForError(imageObject) +
+        "."
+    );
   }
 
-  return imageObject[type]
-}
+  return imageObject[type];
+};
 
 Card.prototype.getPrice = function (type) {
-  var prices = this.prices
+  var prices = this.prices;
 
   if (!type) {
-    return prices.usd || prices.usd_foil || prices.eur || prices.tix || ''
+    return prices.usd || prices.usd_foil || prices.eur || prices.tix || "";
   }
 
-  return prices[type] || ''
-}
+  return prices[type] || "";
+};
 
 Card.prototype.getTokens = function () {
-  var self = this
-  var tokenRequests
+  var self = this;
 
-  if (!this.all_parts) {
-    return Promise.resolve([])
+  if (!this._hasTokens) {
+    return Promise.resolve([]);
   }
 
-  tokenRequests = this.all_parts.reduce(function (tokens, part) {
-    if (part.component === 'token') {
-      tokens.push(self._request(part.uri))
+  return Promise.all(
+    this._tokens.map(function (token) {
+      return self._request(token.uri);
+    })
+  ).then(function (tokens) {
+    if (tokens.length > 0) {
+      return tokens;
     }
 
-    return tokens
-  }, [])
+    return self.getPrints().then(function (prints) {
+      var printWithTokens = prints.find(function (print) {
+        return print._tokens.length > 0;
+      });
 
-  return Promise.all(tokenRequests)
-}
+      if (printWithTokens) {
+        return printWithTokens.getTokens();
+      }
+
+      return [];
+    });
+  });
+};
 
 Card.prototype.getTaggerUrl = function () {
-  return 'https://tagger.scryfall.com/card/' + this.set + '/' + this.collector_number
+  return (
+    "https://tagger.scryfall.com/card/" + this.set + "/" + this.collector_number
+  );
+};
+
+function formatKeysForError(obj) {
+  return Object.keys(obj)
+    .map(function (key) {
+      return "`" + key + "`";
+    })
+    .join(", ");
 }
 
-function formatKeysForError (obj) {
-  return Object.keys(obj).map(function (key) {
-    return '`' + key + '`'
-  }).join(', ')
-}
-
-module.exports = Card
+module.exports = Card;
 
 },{"./singular-entity":14}],9:[function(require,module,exports){
-'use strict'
+"use strict";
 
-var ArrayLike = require('./array-like')
+var ArrayLike = require("./array-like");
 
-function Catalog (scryfallObject) {
-  var arr = ArrayLike.call(this, scryfallObject)
+function Catalog(scryfallObject) {
+  var arr = ArrayLike.call(this, scryfallObject);
 
-  arr.__proto__ = Catalog.prototype // eslint-disable-line no-proto
+  arr.__proto__ = Catalog.prototype; // eslint-disable-line no-proto
 
-  return arr
+  return arr;
 }
 
-Catalog.prototype = Object.create(ArrayLike.prototype)
-Catalog.prototype.constructor = Catalog
+Catalog.prototype = Object.create(ArrayLike.prototype);
+Catalog.prototype.constructor = Catalog;
 
-module.exports = Catalog
+module.exports = Catalog;
 
 },{"./array-like":7}],10:[function(require,module,exports){
-'use strict'
+"use strict";
 
-function GenericScryfallResponse (scryfallObject) {
+function GenericScryfallResponse(scryfallObject) {
   if (!scryfallObject.object) {
-    throw new Error('Generic Scryfall response must have an object property')
+    throw new Error("Generic Scryfall response must have an object property");
   }
 }
 
-module.exports = GenericScryfallResponse
+module.exports = GenericScryfallResponse;
 
 },{}],11:[function(require,module,exports){
-'use strict'
+"use strict";
 
-var ArrayLike = require('./array-like')
+var ArrayLike = require("./array-like");
 
-function List (scryfallObject, config) {
-  var arr = ArrayLike.call(this, scryfallObject)
+function List(scryfallObject, config) {
+  var arr = ArrayLike.call(this, scryfallObject);
 
-  arr.__proto__ = List.prototype // eslint-disable-line no-proto
-  arr._request = config.requestMethod
+  arr.__proto__ = List.prototype; // eslint-disable-line no-proto
+  arr._request = config.requestMethod;
   arr.next = function () {
     if (!this.has_more) {
-      return Promise.reject(new Error('No additional pages.'))
+      return Promise.reject(new Error("No additional pages."));
     }
 
-    return this._request(this.next_page)
-  }.bind(arr)
+    return this._request(this.next_page);
+  }.bind(arr);
 
-  return arr
+  return arr;
 }
 
-List.prototype = Object.create(ArrayLike.prototype)
-List.prototype.constructor = List
+List.prototype = Object.create(ArrayLike.prototype);
+List.prototype.constructor = List;
 
-module.exports = List
+module.exports = List;
 
 },{"./array-like":7}],12:[function(require,module,exports){
-'use strict'
+"use strict";
 
-function ScryfallError (scryfallResponse) {
-  this.message = scryfallResponse.message || scryfallResponse.details
-  this.stack = Error().stack
+function ScryfallError(scryfallResponse) {
+  this.message = scryfallResponse.message || scryfallResponse.details;
+  this.stack = Error().stack;
 
-  Object.keys(scryfallResponse).forEach(function (key) {
-    if (!this[key]) {
-      this[key] = scryfallResponse[key]
-    }
-  }.bind(this))
+  Object.keys(scryfallResponse).forEach(
+    function (key) {
+      if (!this[key]) {
+        this[key] = scryfallResponse[key];
+      }
+    }.bind(this)
+  );
 }
 
-ScryfallError.prototype = Object.create(Error.prototype)
-ScryfallError.prototype.name = 'ScryfallError'
-ScryfallError.prototype.constructor = ScryfallError
+ScryfallError.prototype = Object.create(Error.prototype);
+ScryfallError.prototype.name = "ScryfallError";
+ScryfallError.prototype.constructor = ScryfallError;
 
-module.exports = ScryfallError
+module.exports = ScryfallError;
 
 },{}],13:[function(require,module,exports){
-'use strict'
+"use strict";
 
-var SingularEntity = require('./singular-entity')
+var SingularEntity = require("./singular-entity");
 
-function Set (scryfallObject, config) {
-  SingularEntity.call(this, scryfallObject, config)
+function Set(scryfallObject, config) {
+  SingularEntity.call(this, scryfallObject, config);
 }
 
-SingularEntity.setModelName(Set, 'set')
+SingularEntity.setModelName(Set, "set");
 
 Set.prototype.getCards = function () {
-  return this._request(this.search_uri)
-}
+  return this._request(this.search_uri);
+};
 
-module.exports = Set
+module.exports = Set;
 
 },{"./singular-entity":14}],14:[function(require,module,exports){
-function SingularEntity (scryfallObject, config) {
-  var modelName = this.constructor.SCRYFALL_MODEL_NAME
+function SingularEntity(scryfallObject, config) {
+  var modelName = this.constructor.SCRYFALL_MODEL_NAME;
 
   if (scryfallObject.object !== modelName) {
-    throw new Error('Object type must be "' + modelName + '"')
+    throw new Error('Object type must be "' + modelName + '"');
   }
 
-  this._request = config.requestMethod
+  this._request = config.requestMethod;
 }
 
 SingularEntity.setModelName = function (ChildModel, modelName) {
-  ChildModel.SCRYFALL_MODEL_NAME = modelName
-  ChildModel.prototype = Object.create(SingularEntity.prototype)
-  ChildModel.prototype.constructor = ChildModel
-}
+  ChildModel.SCRYFALL_MODEL_NAME = modelName;
+  ChildModel.prototype = Object.create(SingularEntity.prototype);
+  ChildModel.prototype.constructor = ChildModel;
+};
 
-module.exports = SingularEntity
+module.exports = SingularEntity;
 
 },{}],15:[function(require,module,exports){
 

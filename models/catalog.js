@@ -1,16 +1,16 @@
-'use strict'
+"use strict";
 
-var ArrayLike = require('./array-like')
+var ArrayLike = require("./array-like");
 
-function Catalog (scryfallObject) {
-  var arr = ArrayLike.call(this, scryfallObject)
+function Catalog(scryfallObject) {
+  var arr = ArrayLike.call(this, scryfallObject);
 
-  arr.__proto__ = Catalog.prototype // eslint-disable-line no-proto
+  arr.__proto__ = Catalog.prototype; // eslint-disable-line no-proto
 
-  return arr
+  return arr;
 }
 
-Catalog.prototype = Object.create(ArrayLike.prototype)
-Catalog.prototype.constructor = Catalog
+Catalog.prototype = Object.create(ArrayLike.prototype);
+Catalog.prototype.constructor = Catalog;
 
-module.exports = Catalog
+module.exports = Catalog;

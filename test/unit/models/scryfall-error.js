@@ -1,57 +1,60 @@
-'use strict'
+"use strict";
 
-const ScryfallError = require('../../../models/scryfall-error')
+const ScryfallError = require("../../../models/scryfall-error");
 
-describe('ScryfallError', function () {
-  it('inherits from Error', function () {
-    const error = new ScryfallError({})
+describe("ScryfallError", function () {
+  it("inherits from Error", function () {
+    const error = new ScryfallError({});
 
-    expect(error).to.be.an.instanceof(Error)
-  })
+    expect(error).to.be.an.instanceof(Error);
+  });
 
-  it('uses message from object', function () {
+  it("uses message from object", function () {
     const error = new ScryfallError({
-      message: 'custom message'
-    })
+      message: "custom message",
+    });
 
-    expect(error.message).to.equal('custom message')
-  })
+    expect(error.message).to.equal("custom message");
+  });
 
-  it('uses details for message from object if no message exists', function () {
+  it("uses details for message from object if no message exists", function () {
     const error = new ScryfallError({
-      object: 'error',
-      code: 'not_found',
+      object: "error",
+      code: "not_found",
       status: 404,
-      details: 'Message'
-    })
+      details: "Message",
+    });
 
-    expect(error.message).to.equal('Message')
-  })
+    expect(error.message).to.equal("Message");
+  });
 
-  it('prefers message over details', function () {
+  it("prefers message over details", function () {
     const error = new ScryfallError({
-      object: 'error',
-      code: 'not_found',
+      object: "error",
+      code: "not_found",
       status: 404,
-      message: 'message',
-      details: 'details'
-    })
+      message: "message",
+      details: "details",
+    });
 
-    expect(error.message).to.equal('message')
-  })
+    expect(error.message).to.equal("message");
+  });
 
-  it('passes on all properties', function () {
+  it("passes on all properties", function () {
     const error = new ScryfallError({
-      object: 'error',
-      code: 'not_found',
-      type: 'ambiguous',
+      object: "error",
+      code: "not_found",
+      type: "ambiguous",
       status: 404,
-      details: 'Too many cards match ambiguous name “jace”. Add more words to refine your search.'
-    })
+      details:
+        "Too many cards match ambiguous name “jace”. Add more words to refine your search.",
+    });
 
-    expect(error.code).to.equal('not_found')
-    expect(error.status).to.equal(404)
-    expect(error.details).to.equal('Too many cards match ambiguous name “jace”. Add more words to refine your search.')
-    expect(error.type).to.equal('ambiguous')
-  })
-})
+    expect(error.code).to.equal("not_found");
+    expect(error.status).to.equal(404);
+    expect(error.details).to.equal(
+      "Too many cards match ambiguous name “jace”. Add more words to refine your search."
+    );
+    expect(error.type).to.equal("ambiguous");
+  });
+});
