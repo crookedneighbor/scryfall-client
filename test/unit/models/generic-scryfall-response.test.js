@@ -5,19 +5,19 @@ const GenericScryfallResponse = require("../../../models/generic-scryfall-respon
 describe("GenericScryfallResponse", function () {
   it("does not throw for valid response object", function () {
     expect(() => {
+      // eslint-disable-next-line no-new
       new GenericScryfallResponse({
-        // eslint-disable-line no-new
         object: "type",
       });
-    }).to.not.throw();
+    }).not.toThrowError();
   });
 
   it("throws an error if there is no object property", function () {
     expect(() => {
+      // eslint-disable-next-line no-new
       new GenericScryfallResponse({
-        // eslint-disable-line no-new
         otherProp: "value",
       });
-    }).to.throw("Generic Scryfall response must have an object property");
+    }).toThrowError("Generic Scryfall response must have an object property");
   });
 });

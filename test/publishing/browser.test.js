@@ -1,6 +1,5 @@
 "use strict";
 
-const expect = require("chai").expect;
 const browserify = require("browserify");
 const path = require("path");
 const fs = require("fs");
@@ -8,14 +7,16 @@ const mkdirp = require("mkdirp");
 const checkES5 = require("check-ecmascript-version-compatibility");
 
 describe("built file (be patient, this can take a while)", function () {
-  before(function (done) {
+  let pathToBuild;
+
+  beforeAll(function (done) {
     const distLocation = path.resolve(__dirname, "..", "..", "dist");
 
     mkdirp.sync(distLocation);
 
     const name = "scryfall-client";
-    this.path = path.resolve(distLocation, `${name}.js`);
-    const bundleFs = fs.createWriteStream(this.path);
+    pathToBuild = path.resolve(distLocation, `${name}.js`);
+    const bundleFs = fs.createWriteStream(pathToBuild);
     const b = browserify({ standalone: name });
 
     bundleFs.on("finish", done);
@@ -25,21 +26,18 @@ describe("built file (be patient, this can take a while)", function () {
   });
 
   it("is es5 compliant", function (done) {
-    this.slow(40000);
-    this.timeout(45000);
-
-    checkES5(this.path, done);
+    checkES5(pathToBuild, done);
   });
 
   it("is less then 90 KiB unminified", function (done) {
-    fs.stat(this.path, function (err, stats) {
+    fs.stat(pathToBuild, function (err, stats) {
       if (err) {
         done(err);
 
         return;
       }
 
-      expect(stats.size).to.be.lessThan(90000);
+      expect(stats.size).toBeLessThan(90000);
 
       done();
     });

@@ -6,7 +6,7 @@ describe("ScryfallError", function () {
   it("inherits from Error", function () {
     const error = new ScryfallError({});
 
-    expect(error).to.be.an.instanceof(Error);
+    expect(error).toBeInstanceOf(Error);
   });
 
   it("uses message from object", function () {
@@ -14,7 +14,7 @@ describe("ScryfallError", function () {
       message: "custom message",
     });
 
-    expect(error.message).to.equal("custom message");
+    expect(error.message).toBe("custom message");
   });
 
   it("uses details for message from object if no message exists", function () {
@@ -25,7 +25,7 @@ describe("ScryfallError", function () {
       details: "Message",
     });
 
-    expect(error.message).to.equal("Message");
+    expect(error.message).toBe("Message");
   });
 
   it("prefers message over details", function () {
@@ -37,7 +37,7 @@ describe("ScryfallError", function () {
       details: "details",
     });
 
-    expect(error.message).to.equal("message");
+    expect(error.message).toBe("message");
   });
 
   it("passes on all properties", function () {
@@ -50,11 +50,11 @@ describe("ScryfallError", function () {
         "Too many cards match ambiguous name “jace”. Add more words to refine your search.",
     });
 
-    expect(error.code).to.equal("not_found");
-    expect(error.status).to.equal(404);
-    expect(error.details).to.equal(
+    expect(error.code).toBe("not_found");
+    expect(error.status).toBe(404);
+    expect(error.details).toBe(
       "Too many cards match ambiguous name “jace”. Add more words to refine your search."
     );
-    expect(error.type).to.equal("ambiguous");
+    expect(error.type).toBe("ambiguous");
   });
 });
