@@ -17,10 +17,10 @@
     "lint": "eslint .",
     "pretty": "prettier --write .",
     "posttest": "npm run lint",
-    "test": "npm run test:unit",
+    "test": "jest",
     "test:unit": "jest test/unit/**/*.js",
-    "test:integration": "jest test/integration/**/*.js",
-    "test:publishing": "jest test/publishing/**/*.js",
+    "test:integration": "jest test/integration/*.js",
+    "test:publishing": "jest test/publishing/*.js",
     "test:all": "npm run lint && npm run test:unit && npm run test:integration && npm run test:publishing"
   },
   "keywords": [
@@ -44,5 +44,10 @@
   },
   "dependencies": {
     "superagent": "^5.2.2"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "./test/helpers/setup.js"
+    ]
   }
 }

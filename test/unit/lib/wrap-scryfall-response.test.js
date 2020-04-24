@@ -8,10 +8,12 @@ const Set = require("../../../models/set");
 const GenericScryfallResponse = require("../../../models/generic-scryfall-response");
 
 describe("wrapScryfallResponse", function () {
+  let fakeRequestObject, options;
+
   beforeEach(function () {
-    this.fakeRequestObject = {};
-    this.options = {
-      requestMethod: this.fakeRequestObject,
+    fakeRequestObject = {};
+    options = {
+      requestMethod: fakeRequestObject,
     };
   });
 
@@ -21,10 +23,10 @@ describe("wrapScryfallResponse", function () {
         object: "foo",
         foo: "bar",
       },
-      this.options
+      options
     );
 
-    expect(wrappedResponse).to.be.an.instanceof(GenericScryfallResponse);
+    expect(wrappedResponse).toBeInstanceOf(GenericScryfallResponse);
   });
 
   it("wraps card responses in Card", function () {
@@ -33,11 +35,11 @@ describe("wrapScryfallResponse", function () {
         object: "card",
         foo: "bar",
       },
-      this.options
+      options
     );
 
-    expect(wrappedResponse).to.be.an.instanceof(Card);
-    expect(wrappedResponse.foo).to.equal("bar");
+    expect(wrappedResponse).toBeInstanceOf(Card);
+    expect(wrappedResponse.foo).toBe("bar");
   });
 
   it("wraps list responses in List", function () {
@@ -55,12 +57,12 @@ describe("wrapScryfallResponse", function () {
           },
         ],
       },
-      this.options
+      options
     );
 
-    expect(wrappedResponse).to.be.an.instanceof(List);
-    expect(wrappedResponse.length).to.equal(2);
-    expect(wrappedResponse[0]).to.be.an.instanceof(Card);
+    expect(wrappedResponse).toBeInstanceOf(List);
+    expect(wrappedResponse.length).toBe(2);
+    expect(wrappedResponse[0]).toBeInstanceOf(Card);
   });
 
   it("wraps catalog responses in cist", function () {
@@ -69,12 +71,12 @@ describe("wrapScryfallResponse", function () {
         object: "catalog",
         data: ["foo", "bar"],
       },
-      this.options
+      options
     );
 
-    expect(wrappedResponse).to.be.an.instanceof(Catalog);
-    expect(wrappedResponse.length).to.equal(2);
-    expect(wrappedResponse[0]).to.equal("foo");
+    expect(wrappedResponse).toBeInstanceOf(Catalog);
+    expect(wrappedResponse.length).toBe(2);
+    expect(wrappedResponse[0]).toBe("foo");
   });
 
   it("wraps set responses in Set", function () {
@@ -83,11 +85,11 @@ describe("wrapScryfallResponse", function () {
         object: "set",
         code: "DOM",
       },
-      this.options
+      options
     );
 
-    expect(wrappedResponse).to.be.an.instanceof(Set);
-    expect(wrappedResponse.code).to.equal("DOM");
+    expect(wrappedResponse).toBeInstanceOf(Set);
+    expect(wrappedResponse.code).toBe("DOM");
   });
 
   it("wraps nested properties", function () {
@@ -106,12 +108,12 @@ describe("wrapScryfallResponse", function () {
           },
         },
       },
-      this.options
+      options
     );
 
-    expect(wrappedResponse).to.be.an.instanceof(GenericScryfallResponse);
-    expect(wrappedResponse.related_card).to.be.an.instanceof(Card);
-    expect(wrappedResponse.nested_thing.more_nesting).to.be.an.instanceof(Card);
+    expect(wrappedResponse).toBeInstanceOf(GenericScryfallResponse);
+    expect(wrappedResponse.related_card).toBeInstanceOf(Card);
+    expect(wrappedResponse.nested_thing.more_nesting).toBeInstanceOf(Card);
   });
 
   it("wraps objects in an array", function () {
@@ -138,29 +140,25 @@ describe("wrapScryfallResponse", function () {
           ],
         },
       },
-      this.options
+      options
     );
 
-    expect(wrappedResponse).to.be.an.instanceof(GenericScryfallResponse);
-    expect(wrappedResponse.related_cards[0]).to.be.an.instanceof(Card);
-    expect(wrappedResponse.related_cards[1]).to.be.an.instanceof(Card);
-    expect(wrappedResponse.nested_thing.more_nesting[0]).to.be.an.instanceof(
-      Card
-    );
+    expect(wrappedResponse).toBeInstanceOf(GenericScryfallResponse);
+    expect(wrappedResponse.related_cards[0]).toBeInstanceOf(Card);
+    expect(wrappedResponse.related_cards[1]).toBeInstanceOf(Card);
+    expect(wrappedResponse.nested_thing.more_nesting[0]).toBeInstanceOf(Card);
   });
 
   it("can pass a text transformer function", function () {
-    this.options.textTransformer = function (text) {
+    options.textTransformer = function (text) {
       return text.replace("{t}", "TAP!");
     };
 
-    expect(wrapScryfallResponse("Foo {t} bar", this.options)).to.equal(
-      "Foo TAP! bar"
-    );
+    expect(wrapScryfallResponse("Foo {t} bar", options)).toBe("Foo TAP! bar");
   });
 
   it("can use a text transformer in nested objects", function () {
-    this.options.textTransformer = function (text) {
+    options.textTransformer = function (text) {
       var replacement = text.replace(/{(.*)}/, "<$1>");
 
       return replacement.toUpperCase();
@@ -189,14 +187,12 @@ describe("wrapScryfallResponse", function () {
           ],
         },
       },
-      this.options
+      options
     );
 
-    expect(wrappedResponse.foo).to.equal("<G/R> FOO");
-    expect(wrappedResponse.related_cards[1].foo).to.equal("<T> FOO");
-    expect(wrappedResponse.nested_thing.more_nesting[0].foo).to.equal(
-      "<R> BAR"
-    );
+    expect(wrappedResponse.foo).toBe("<G/R> FOO");
+    expect(wrappedResponse.related_cards[1].foo).toBe("<T> FOO");
+    expect(wrappedResponse.nested_thing.more_nesting[0].foo).toBe("<R> BAR");
   });
 
   it("does not convert symbols to slack emoji if not explicitly passed in", function () {
@@ -223,14 +219,12 @@ describe("wrapScryfallResponse", function () {
           ],
         },
       },
-      this.options
+      options
     );
 
-    expect(wrappedResponse.foo).to.equal("{g/r} foo");
-    expect(wrappedResponse.related_cards[1].foo).to.equal("{t} foo");
-    expect(wrappedResponse.nested_thing.more_nesting[0].foo).to.equal(
-      "{r} bar"
-    );
+    expect(wrappedResponse.foo).toBe("{g/r} foo");
+    expect(wrappedResponse.related_cards[1].foo).toBe("{t} foo");
+    expect(wrappedResponse.nested_thing.more_nesting[0].foo).toBe("{r} bar");
   });
 
   it("does not convert symbols to discord emoji if not explicitly passed in", function () {
@@ -257,13 +251,11 @@ describe("wrapScryfallResponse", function () {
           ],
         },
       },
-      this.options
+      options
     );
 
-    expect(wrappedResponse.foo).to.equal("{g/r} foo");
-    expect(wrappedResponse.related_cards[1].foo).to.equal("{t} foo");
-    expect(wrappedResponse.nested_thing.more_nesting[0].foo).to.equal(
-      "{r} bar"
-    );
+    expect(wrappedResponse.foo).toBe("{g/r} foo");
+    expect(wrappedResponse.related_cards[1].foo).toBe("{t} foo");
+    expect(wrappedResponse.nested_thing.more_nesting[0].foo).toBe("{r} bar");
   });
 });
