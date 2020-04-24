@@ -1,6 +1,6 @@
 "use strict";
 
-const browserify = require("browserify");
+const webpack = require("webpack");
 const path = require("path");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
@@ -10,19 +10,32 @@ describe("built file (be patient, this can take a while)", function () {
   let pathToBuild;
 
   beforeAll(function (done) {
-    const distLocation = path.resolve(__dirname, "..", "..", "dist");
+    const entry = path.resolve(__dirname, "..", "..", "index.js");
+    const dist = path.resolve(__dirname, "..", "..", "publishing-test-dist");
+    const filename = "browser.js";
 
-    mkdirp.sync(distLocation);
+    pathToBuild = path.resolve(dist, filename);
+    mkdirp.sync(dist);
 
-    const name = "scryfall-client";
-    pathToBuild = path.resolve(distLocation, `${name}.js`);
-    const bundleFs = fs.createWriteStream(pathToBuild);
-    const b = browserify({ standalone: name });
+    webpack(
+      {
+        mode: "production",
+        entry,
+        output: {
+          filename,
+          path: dist,
+        },
+      },
+      (err, stats) => {
+        if (err || stats.hasErrors()) {
+          done(new Error("something went wrong"));
 
-    bundleFs.on("finish", done);
+          return;
+        }
 
-    b.add("./index.js");
-    b.bundle().pipe(bundleFs);
+        done();
+      }
+    );
   });
 
   it("is es5 compliant", function (done) {
