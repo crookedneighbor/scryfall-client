@@ -12,7 +12,6 @@ export type ScryfallResponseObject =
 
 export type ScryfallList = {
   object: "list";
-  // TODO switch this out for each type of object it can be
   data: ScryfallResponseObject[]; // An array of the requested objects, in a specific order.
   has_more: boolean; // True if this List is paginated and there is a page beyond the current page.
   next_page?: URL; // If there is a page beyond the current page, this field will contain a full API URI to that page. You may submit a HTTP GET request to that URI to continue paginating forward on this List.
