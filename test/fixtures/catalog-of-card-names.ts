@@ -2,7 +2,7 @@
 
 module.exports = {
   object: "catalog",
-  total_items: 20,
+  total_values: 20,
   data: [
     "Thallid",
     "Thorn Thallid",

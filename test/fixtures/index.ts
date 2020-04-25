@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = {
+export default {
   card: require("./card"),
   cardWithTransformLayout: require("./card-with-transform-layout"),
   cardWithFlipLayout: require("./card-with-flip-layout"),
