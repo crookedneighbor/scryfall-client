@@ -1,14 +1,13 @@
 "use strict";
 
-const Catalog = require("../../../models/catalog");
-const fixtures = require("../../fixtures");
+import Catalog from "Models/catalog";
+import fixtures from "Fixtures";
 
 describe("Catalog", function () {
   it("inherits from Array", function () {
     const catalog = new Catalog(fixtures.catalogOfCardNames);
 
     expect(catalog).toBeInstanceOf(Array);
-    expect(catalog).toBeInstanceOf(Catalog);
   });
 
   it("its entries are defined by data properties", function () {
@@ -46,13 +45,7 @@ describe("Catalog", function () {
   it("applies properties to object", function () {
     const catalog = new Catalog(fixtures.catalogOfCardNames);
 
-    expect(catalog.total_items).toBeGreaterThan(0);
-    expect(catalog.total_items).toBe(fixtures.catalogOfCardNames.total_items);
-  });
-
-  it("does not apply data property to object", function () {
-    const catalog = new Catalog(fixtures.catalogOfCardNames);
-
-    expect(catalog.data).toBeUndefined();
+    expect(catalog.total_values).toBeGreaterThan(0);
+    expect(catalog.total_values).toBe(fixtures.catalogOfCardNames.total_values);
   });
 });

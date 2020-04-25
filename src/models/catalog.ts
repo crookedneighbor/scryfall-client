@@ -1,16 +1,20 @@
 "use strict";
 
-var ArrayLike = require("./array-like");
+import { ScryfallCatalog } from "Types/api/catalog";
+import ArrayLike from "./array-like";
 
-function Catalog(scryfallObject) {
-  var arr = ArrayLike.call(this, scryfallObject);
+export default class Catalog extends ArrayLike {
+  // Got to duplicate this from the ScryfallCatalog type
+  // since Catalog inherits from ArrayLike
+  public object: "catalog";
+  public uri: URL;
+  public total_values: number;
 
-  arr.__proto__ = Catalog.prototype; // eslint-disable-line no-proto
+  constructor(scrfallResponse: ScryfallCatalog) {
+    super(scrfallResponse);
 
-  return arr;
+    this.object = scrfallResponse.object;
+    this.uri = scrfallResponse.uri;
+    this.total_values = scrfallResponse.total_values;
+  }
 }
-
-Catalog.prototype = Object.create(ArrayLike.prototype);
-Catalog.prototype.constructor = Catalog;
-
-module.exports = Catalog;

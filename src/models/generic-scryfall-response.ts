@@ -1,9 +1,9 @@
 "use strict";
 
-function GenericScryfallResponse(scryfallObject) {
-  if (!scryfallObject.object) {
-    throw new Error("Generic Scryfall response must have an object property");
+import { ScryfallResponse } from "../types/api/response";
+
+export default class GenericScryfallResponse {
+  constructor(scryfallObject: ScryfallResponse) {
+    // noop
   }
 }
-
-module.exports = GenericScryfallResponse;

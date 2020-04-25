@@ -1,23 +1,18 @@
 "use strict";
 
-const GenericScryfallResponse = require("../../../models/generic-scryfall-response");
+import GenericScryfallResponse from "Models/generic-scryfall-response";
 
 describe("GenericScryfallResponse", function () {
-  it("does not throw for valid response object", function () {
+  it("accepts a Scryfall response object", function () {
     expect(() => {
       // eslint-disable-next-line no-new
       new GenericScryfallResponse({
-        object: "type",
+        object: "ruling",
+        oracle_id: "id",
+        source: "wotc",
+        published_at: "2010-10-10",
+        comment: "Text of ruling",
       });
-    }).not.toThrowError();
-  });
-
-  it("throws an error if there is no object property", function () {
-    expect(() => {
-      // eslint-disable-next-line no-new
-      new GenericScryfallResponse({
-        otherProp: "value",
-      });
-    }).toThrowError("Generic Scryfall response must have an object property");
+    }).not.toThrow();
   });
 });
