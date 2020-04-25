@@ -2,13 +2,14 @@
   "name": "scryfall-client",
   "version": "0.13.0",
   "description": "A module for making requests to scryfall",
-  "main": "index.js",
+  "main": "dist/index.js",
   "files": [
-    "index.js",
-    "lib/*",
-    "models/*"
+    "dist"
   ],
   "scripts": {
+    "prepublishOnly": "typescript",
+    "prebuild": "npm run pretty",
+    "typescript": "tsc --declaration",
     "build": "webpack",
     "build:watch": "webpack-dev-server",
     "predemo": "npm run build",
@@ -18,9 +19,9 @@
     "pretty": "prettier --write .",
     "posttest": "npm run lint",
     "test": "jest",
-    "test:unit": "jest test/unit/**/*.js",
-    "test:integration": "jest test/integration/*.js",
-    "test:publishing": "jest test/publishing/*.js",
+    "test:unit": "npm run test -- test/unit/**/*.js",
+    "test:integration": "npm run test -- test/integration/*.js",
+    "test:publishing": "npm run test -- test/publishing/*.js",
     "test:all": "npm run lint && npm run test:unit && npm run test:integration && npm run test:publishing"
   },
   "keywords": [
@@ -31,6 +32,7 @@
   "author": "blade <blade@crookedneighbor.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^25.2.1",
     "@typescript-eslint/eslint-plugin": "^2.29.0",
     "@typescript-eslint/parser": "^2.29.0",
     "check-ecmascript-version-compatibility": "^0.1.1",
@@ -52,8 +54,16 @@
     "superagent": "^5.2.2"
   },
   "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
     "setupFilesAfterEnv": [
-      "./test/helpers/setup.js"
-    ]
+      "./test/helpers/setup.ts"
+    ],
+    "moduleNameMapper": {
+      "^Lib/(.*)$": "<rootDir>/src/lib/$1",
+      "^Models/(.*)$": "<rootDir>/src/models/$1",
+      "^Types/(.*)$": "<rootDir>/src/types/$1",
+      "^Fixtures$": "<rootDir>/test/fixtures"
+    }
   }
 }

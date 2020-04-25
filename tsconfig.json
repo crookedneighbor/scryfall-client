@@ -2,9 +2,15 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "strict": true,
-    "module": "es6",
-    "target": "es5",
-    "files": ["src/**/*.ts"],
-    "allowJs": true
-  }
+    "baseUrl": ".",
+    "paths": {
+      "Lib/*": ["src/lib/*"],
+      "Models/*": ["src/models/*"],
+      "Types/*": ["src/types/*"],
+      "Fixtures": ["test/fixtures"]
+    },
+    "module": "commonjs",
+    "target": "es5"
+  },
+  "include": ["src/**/*.ts"]
 }
