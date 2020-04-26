@@ -27,7 +27,7 @@ describe("built file (be patient, this can take a while)", function () {
     webpack(config, (err: Error, stats: any) => {
       const errorMessage = err || stats.hasErrors();
       if (err || stats.hasErrors()) {
-        console.log(stats);
+        console.log(stats.toJson("minimal"));
         done(new Error("something went wrong"));
 
         return;

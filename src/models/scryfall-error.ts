@@ -1,5 +1,5 @@
 "use strict";
-import { ScryfallError as ScryfallAPIError } from "Types/api/error";
+import { ApiError } from "Types/api-error";
 
 class ExtendableError extends Error {
   constructor(message: string) {
@@ -24,8 +24,9 @@ class ScryfallError extends ExtendableError {
   type?: string;
   warnings?: string[];
 
-  constructor(scryfallResponse: ScryfallAPIError | Record<string, any>) {
-    const message = scryfallResponse.message || scryfallResponse.details;
+  constructor(scryfallResponse: ApiError | Error | Record<string, string>) {
+    const message =
+      scryfallResponse.message || (scryfallResponse as ApiError).details;
 
     super(message);
 

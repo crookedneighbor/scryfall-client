@@ -23,5 +23,3 @@ export type ScryfallResponse =
   | ScryfallList
   | ScryfallCatalog
   | ScryfallResponseObject;
-
-export { ScryfallError } from "./error";
