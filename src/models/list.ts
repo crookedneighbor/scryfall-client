@@ -1,8 +1,14 @@
 "use strict";
 
 import ArrayLike from "./array-like";
-import type { ScryfallList } from "Types/api/response";
+import type { ApiResponse } from "Types/api-response";
 import type { ModelConfig } from "Types/model-config";
+
+interface ListResponse extends ApiResponse {
+  object: "list";
+  // TODO make objects instead
+  data: any[];
+}
 
 export default class List extends ArrayLike {
   // From https://scryfall.com/docs/api/lists
@@ -15,7 +21,7 @@ export default class List extends ArrayLike {
 
   _request: Function;
 
-  constructor(scrfallResponse: ScryfallList, config: ModelConfig) {
+  constructor(scrfallResponse: ListResponse, config: ModelConfig) {
     super(scrfallResponse);
 
     this.object = scrfallResponse.object;

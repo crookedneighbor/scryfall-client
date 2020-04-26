@@ -1,9 +1,12 @@
-import { ScryfallList } from "Types/api/response";
-import { ScryfallCatalog } from "Types/api/catalog";
+import { ApiResponse } from "Types/api-response";
+
+interface ArrayLikeResponse extends ApiResponse {
+  object: "list" | "catalog";
+}
 
 // based on https://javascript.info/extend-natives
 export default abstract class ArrayLike extends Array {
-  constructor(scryfallObject: ScryfallList | ScryfallCatalog) {
+  constructor(scryfallObject: ArrayLikeResponse) {
     super();
 
     Object.setPrototypeOf(this, new.target.prototype);

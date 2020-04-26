@@ -9,7 +9,7 @@ import wrapScryfallResponse from "Lib/wrap-scryfall-response";
 import convertSymbolsToEmoji from "Lib/convert-symbols-to-emoji";
 import ScryfallError from "Models/scryfall-error";
 
-import type { ScryfallResponse } from "Types/api/response";
+import type { ApiResponse } from "Types/api-response";
 import type { ModelConfig } from "Types/model-config";
 
 interface PendingRequest {
@@ -196,7 +196,7 @@ function makeRequestFunction(options: RequestOptions = {}) {
     return pendingRequest;
   };
 
-  function wrapFunction(body: ScryfallResponse) {
+  function wrapFunction(body: ApiResponse) {
     const wrapOptions = {
       requestMethod: requestFunction,
     } as ModelConfig;

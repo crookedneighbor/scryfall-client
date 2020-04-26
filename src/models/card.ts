@@ -4,7 +4,6 @@ import SingularEntity from "Models/singular-entity";
 
 import type List from "Models/list";
 import type { ApiResponse } from "Types/api-response";
-import type { ScryfallCard } from "Types/api/card";
 import type { ModelConfig } from "Types/model-config";
 
 interface CardResponse extends ApiResponse {

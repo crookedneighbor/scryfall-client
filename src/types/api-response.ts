@@ -1,8 +1,8 @@
-type ObjectKind =
+export type ObjectKind =
   | "card"
   | "card_face"
   | "card_symbol"
-  | "catlog"
+  | "catalog"
   | "error"
   | "list"
   | "related_card"

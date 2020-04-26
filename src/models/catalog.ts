@@ -1,7 +1,12 @@
 "use strict";
 
-import { ScryfallCatalog } from "Types/api/catalog";
+import { ApiResponse } from "Types/api-response";
 import ArrayLike from "./array-like";
+
+interface CatalogResponse extends ApiResponse {
+  object: "catalog";
+  data: string[];
+}
 
 export default class Catalog extends ArrayLike {
   // From https://scryfall.com/docs/api/catalogs
@@ -10,7 +15,7 @@ export default class Catalog extends ArrayLike {
   uri: URL; // A link to the current catalog on Scryfall’s API.
   total_values: number; // The number of items in the data array.
 
-  constructor(scrfallResponse: ScryfallCatalog) {
+  constructor(scrfallResponse: CatalogResponse) {
     super(scrfallResponse);
 
     this.object = scrfallResponse.object;

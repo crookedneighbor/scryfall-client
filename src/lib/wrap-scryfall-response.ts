@@ -6,7 +6,6 @@ import List from "Models/list";
 import Set from "Models/set";
 import GenericScryfallResponse from "Models/generic-scryfall-response";
 
-import type { ScryfallResponse } from "Types/api/response";
 import type { ModelConfig } from "Types/model-config";
 
 export default function wrapScryfallResponse(
