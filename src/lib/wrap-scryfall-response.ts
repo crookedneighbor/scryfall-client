@@ -41,7 +41,7 @@ export default function wrapScryfallResponse(
   } else if (response.object === "set") {
     wrappedResponse = new Set(response, modelOptions);
   } else {
-    wrappedResponse = new GenericScryfallResponse(response);
+    wrappedResponse = new GenericScryfallResponse(response, modelOptions);
   }
 
   if (response.object === "list") {

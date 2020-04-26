@@ -1,9 +1,6 @@
 "use strict";
 
-import { ScryfallResponse } from "Types/api/response";
+import SingularEntity from "Models/singular-entity";
+import type { ApiResponse } from "Types/api-response";
 
-export default class GenericScryfallResponse {
-  constructor(scryfallObject: ScryfallResponse) {
-    // noop
-  }
-}
+export default class GenericScryfallResponse extends SingularEntity {}
