@@ -9,6 +9,7 @@ export default {
   cardBackWithMeldLayout: require("./card-back-with-meld-layout"),
   cardWithTokenButNoParts: require("./card-with-token-but-no-parts"),
   cardWithMultipleTokens: require("./card-with-multiple-tokens"),
+  cardSymbolT: require("./card-symbol-t"),
   catalogOfCardNames: require("./catalog-of-card-names"),
   listOfCards: require("./list-of-cards"),
   listOfCardsPage2: require("./list-of-cards-page-2"),

@@ -19,9 +19,9 @@
     "pretty": "prettier --write .",
     "posttest": "npm run lint",
     "test": "jest",
-    "test:unit": "npm run test -- test/unit/**/*.js",
-    "test:integration": "npm run test -- test/integration/*.js",
-    "test:publishing": "npm run test -- test/publishing/*.js",
+    "test:unit": "jest test/unit/**/*.ts",
+    "test:integration": "jest test/integration/*.ts",
+    "test:publishing": "jest test/publishing/*.ts",
     "test:all": "npm run lint && npm run test:unit && npm run test:integration && npm run test:publishing"
   },
   "keywords": [
@@ -33,6 +33,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^25.2.1",
+    "@types/superagent": "^4.1.7",
     "@typescript-eslint/eslint-plugin": "^2.29.0",
     "@typescript-eslint/parser": "^2.29.0",
     "check-ecmascript-version-compatibility": "^0.1.1",

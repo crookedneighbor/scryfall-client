@@ -1,17 +1,10 @@
-function SingularEntity(scryfallObject, config) {
-  var modelName = this.constructor.SCRYFALL_MODEL_NAME;
+import type { ScryfallResponseObject } from "Types/api/response";
+import type { ModelConfig } from "Types/model-config";
 
-  if (scryfallObject.object !== modelName) {
-    throw new Error('Object type must be "' + modelName + '"');
+export default abstract class SingularEntity {
+  _request: Function;
+
+  constructor(scryfallObject: ScryfallResponseObject, config: ModelConfig) {
+    this._request = config.requestMethod;
   }
-
-  this._request = config.requestMethod;
 }
-
-SingularEntity.setModelName = function (ChildModel, modelName) {
-  ChildModel.SCRYFALL_MODEL_NAME = modelName;
-  ChildModel.prototype = Object.create(SingularEntity.prototype);
-  ChildModel.prototype.constructor = ChildModel;
-};
-
-module.exports = SingularEntity;

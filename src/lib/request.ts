@@ -1,25 +1,47 @@
 "use strict";
 
-var SCRYFALL_API_ENDPOINT = "https://api.scryfall.com/";
-var DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME = 100;
+const SCRYFALL_API_ENDPOINT = "https://api.scryfall.com/";
+const DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME = 100;
 
-var superagent = require("superagent");
-var querystring = require("querystring");
-var wrapScryfallResponse = require("./wrap-scryfall-response");
-var convertSymbolsToEmoji = require("../lib/convert-symbols-to-emoji");
-var ScryfallError = require("../models/scryfall-error");
+import superagent = require("superagent");
+import querystring = require("querystring");
+import wrapScryfallResponse from "Lib/wrap-scryfall-response";
+import convertSymbolsToEmoji from "Lib/convert-symbols-to-emoji";
+import ScryfallError from "Models/scryfall-error";
 
-function sendRequest(url, options) {
-  var method;
+import type { ScryfallResponse } from "Types/api/response";
+import type { ModelConfig } from "Types/model-config";
+
+interface PendingRequest {
+  pending: Function;
+  start: Function;
+}
+
+interface RequestOptions extends Partial<ModelConfig> {
+  method?: "post" | "get";
+  body?: Record<string, any>;
+  delayBetweenRequests?: number;
+  query?: Record<string, string>;
+  convertSymbolsToSlackEmoji?: boolean;
+  convertSymbolsToDiscordEmoji?: boolean;
+}
+
+function sendRequest(url: string, options: RequestOptions) {
+  let superagentPromise;
 
   options = options || {};
-  method = options.method || "get";
 
-  return superagent[method](url)
+  if (options.method === "post") {
+    superagentPromise = superagent.post(url);
+  } else {
+    superagentPromise = superagent.get(url);
+  }
+
+  return superagentPromise
     .send(options.body)
     .set("Accept", "application/json")
-    .then(function (response) {
-      var body;
+    .then((response) => {
+      let body;
 
       try {
         body = JSON.parse(response.text);
@@ -40,23 +62,20 @@ function sendRequest(url, options) {
     });
 }
 
-function isFullScryfallUrl(url) {
+function isFullScryfallUrl(url: string) {
   return url.indexOf(SCRYFALL_API_ENDPOINT) === 0;
 }
 
-function endpointBeginsWithSlash(endpoint) {
+function endpointBeginsWithSlash(endpoint: string) {
   return endpoint.indexOf("/") === 0;
 }
 
-function makeRequestFunction(options) {
-  var requestInProgress = false;
-  var enquedRequests = [];
-  var requestFunction, wrapFunction;
-
-  options = options || {};
+function makeRequestFunction(options: RequestOptions = {}) {
+  let requestInProgress = false;
+  let enquedRequests: PendingRequest[] = [];
 
   function delayForScryfallDesignatedTime() {
-    var waitTime =
+    const waitTime =
       options.delayBetweenRequests || DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME;
 
     return new Promise(function (resolve) {
@@ -69,8 +88,9 @@ function makeRequestFunction(options) {
     requestInProgress = false;
   }
 
-  function checkForEnquedRequests(recursiveCheck) {
-    var nextRequest;
+  function checkForEnquedRequests(recursiveCheck?: boolean) {
+    // TODO
+    let nextRequest: PendingRequest;
 
     if (enquedRequests.length > 0) {
       nextRequest = enquedRequests.splice(0, 1)[0];
@@ -86,8 +106,11 @@ function makeRequestFunction(options) {
     }
   }
 
-  function prepareRequest(request, url, options) {
-    var pendingResolveFunction, pendingRejectFunction;
+  function prepareRequest(
+    url: string,
+    options: RequestOptions
+  ): PendingRequest {
+    let pendingResolveFunction: Function, pendingRejectFunction: Function;
 
     return {
       pending: function () {
@@ -100,6 +123,7 @@ function makeRequestFunction(options) {
         return sendRequest(url, options)
           .then(function (body) {
             try {
+              // eslint-disable-next-line @typescript-eslint/no-use-before-define
               pendingResolveFunction(wrapFunction(body));
             } catch (err) {
               return Promise.reject(
@@ -130,8 +154,11 @@ function makeRequestFunction(options) {
     };
   }
 
-  requestFunction = function request(endpoint, options) {
-    var url, queryParams, pendingRequest, pendingRequestHandler;
+  const requestFunction = function request(
+    endpoint: string,
+    options?: RequestOptions
+  ) {
+    let url, queryParams;
 
     options = options || {};
 
@@ -156,8 +183,8 @@ function makeRequestFunction(options) {
       url += queryParams;
     }
 
-    pendingRequestHandler = prepareRequest(request, url, options);
-    pendingRequest = pendingRequestHandler.pending();
+    const pendingRequestHandler = prepareRequest(url, options);
+    const pendingRequest = pendingRequestHandler.pending();
 
     if (!requestInProgress) {
       requestInProgress = true;
@@ -169,10 +196,10 @@ function makeRequestFunction(options) {
     return pendingRequest;
   };
 
-  wrapFunction = function (body) {
-    var wrapOptions = {
+  function wrapFunction(body: ScryfallResponse) {
+    const wrapOptions = {
       requestMethod: requestFunction,
-    };
+    } as ModelConfig;
 
     if (options.textTransformer) {
       wrapOptions.textTransformer = options.textTransformer;
@@ -182,7 +209,7 @@ function makeRequestFunction(options) {
       wrapOptions.textTransformer = convertSymbolsToEmoji.discord;
     }
     return wrapScryfallResponse(body, wrapOptions);
-  };
+  }
 
   requestFunction.wrapFunction = wrapFunction;
   requestFunction.clearQueue = clearQueue;
@@ -190,4 +217,4 @@ function makeRequestFunction(options) {
   return requestFunction;
 }
 
-module.exports = makeRequestFunction;
+export default makeRequestFunction;

@@ -1,17 +1,20 @@
 "use strict";
 
-const wrapScryfallResponse = require("../../../lib/wrap-scryfall-response");
-const Card = require("../../../models/card");
-const Catalog = require("../../../models/catalog");
-const List = require("../../../models/list");
-const Set = require("../../../models/set");
-const GenericScryfallResponse = require("../../../models/generic-scryfall-response");
+import wrapScryfallResponse from "Lib/wrap-scryfall-response";
+import fixtures from "Fixtures";
+import Card from "Models/card";
+import Catalog from "Models/catalog";
+import List from "Models/list";
+import Set from "Models/set";
+import GenericScryfallResponse from "Models/generic-scryfall-response";
+
+import type { ModelConfig } from "Types/model-config";
 
 describe("wrapScryfallResponse", function () {
-  let fakeRequestObject, options;
+  let fakeRequestObject: Function, options: ModelConfig;
 
   beforeEach(function () {
-    fakeRequestObject = {};
+    fakeRequestObject = jest.fn().mockResolvedValue(null);
     options = {
       requestMethod: fakeRequestObject,
     };
@@ -20,8 +23,14 @@ describe("wrapScryfallResponse", function () {
   it("wraps generic objects with GenericScryfallResponse", function () {
     const wrappedResponse = wrapScryfallResponse(
       {
-        object: "foo",
-        foo: "bar",
+        object: "card_symbol",
+        symbol: "Symbol String",
+        english: "english",
+        transposable: false,
+        represents_mana: false,
+        appears_in_mana_costs: false,
+        funny: false,
+        colors: [],
       },
       options
     );
@@ -30,123 +39,49 @@ describe("wrapScryfallResponse", function () {
   });
 
   it("wraps card responses in Card", function () {
-    const wrappedResponse = wrapScryfallResponse(
-      {
-        object: "card",
-        foo: "bar",
-      },
-      options
-    );
+    const wrappedResponse = wrapScryfallResponse(fixtures.card, options);
 
     expect(wrappedResponse).toBeInstanceOf(Card);
-    expect(wrappedResponse.foo).toBe("bar");
+    expect(wrappedResponse.id).toBe("357cf802-2d66-49a4-bf43-ab3bc30ab825");
   });
 
   it("wraps list responses in List", function () {
-    const wrappedResponse = wrapScryfallResponse(
-      {
-        object: "list",
-        data: [
-          {
-            object: "card",
-            foo: "bar",
-          },
-          {
-            object: "card",
-            foo: "bar",
-          },
-        ],
-      },
-      options
-    );
+    const wrappedResponse = wrapScryfallResponse(fixtures.listOfCards, options);
 
-    expect(wrappedResponse).toBeInstanceOf(List);
+    expect(wrappedResponse).toBeInstanceOf(Array);
     expect(wrappedResponse.length).toBe(2);
     expect(wrappedResponse[0]).toBeInstanceOf(Card);
+    expect(wrappedResponse[1]).toBeInstanceOf(Card);
   });
 
-  it("wraps catalog responses in cist", function () {
+  it("wraps catalog responses in Catalog", function () {
     const wrappedResponse = wrapScryfallResponse(
-      {
-        object: "catalog",
-        data: ["foo", "bar"],
-      },
+      fixtures.catalogOfCardNames,
       options
     );
 
-    expect(wrappedResponse).toBeInstanceOf(Catalog);
-    expect(wrappedResponse.length).toBe(2);
-    expect(wrappedResponse[0]).toBe("foo");
+    expect(wrappedResponse).toBeInstanceOf(Array);
+    expect(wrappedResponse.length).toBe(20);
   });
 
   it("wraps set responses in Set", function () {
-    const wrappedResponse = wrapScryfallResponse(
-      {
-        object: "set",
-        code: "DOM",
-      },
-      options
-    );
+    const wrappedResponse = wrapScryfallResponse(fixtures.set, options);
 
     expect(wrappedResponse).toBeInstanceOf(Set);
-    expect(wrappedResponse.code).toBe("DOM");
+    expect(wrappedResponse.code).toBe("chk");
   });
 
   it("wraps nested properties", function () {
     const wrappedResponse = wrapScryfallResponse(
-      {
-        object: "foo",
-        foo: "bar",
-        related_card: {
-          object: "card",
-          foo: "bar",
-        },
-        nested_thing: {
-          more_nesting: {
-            object: "card",
-            foo: "bar",
-          },
-        },
-      },
+      fixtures.cardWithMultipleTokens,
       options
     );
 
-    expect(wrappedResponse).toBeInstanceOf(GenericScryfallResponse);
-    expect(wrappedResponse.related_card).toBeInstanceOf(Card);
-    expect(wrappedResponse.nested_thing.more_nesting).toBeInstanceOf(Card);
-  });
-
-  it("wraps objects in an array", function () {
-    const wrappedResponse = wrapScryfallResponse(
-      {
-        object: "foo",
-        foo: "bar",
-        related_cards: [
-          {
-            object: "card",
-            foo: "bar",
-          },
-          {
-            object: "card",
-            foo: "baz",
-          },
-        ],
-        nested_thing: {
-          more_nesting: [
-            {
-              object: "card",
-              foo: "bar",
-            },
-          ],
-        },
-      },
-      options
+    expect(wrappedResponse).toBeInstanceOf(Card);
+    expect(wrappedResponse.image_uris.small).toContain("img.scryfall.com");
+    expect(wrappedResponse.all_parts[0]).toBeInstanceOf(
+      GenericScryfallResponse
     );
-
-    expect(wrappedResponse).toBeInstanceOf(GenericScryfallResponse);
-    expect(wrappedResponse.related_cards[0]).toBeInstanceOf(Card);
-    expect(wrappedResponse.related_cards[1]).toBeInstanceOf(Card);
-    expect(wrappedResponse.nested_thing.more_nesting[0]).toBeInstanceOf(Card);
   });
 
   it("can pass a text transformer function", function () {
@@ -158,104 +93,24 @@ describe("wrapScryfallResponse", function () {
   });
 
   it("can use a text transformer in nested objects", function () {
+    const card = JSON.parse(JSON.stringify(fixtures.cardWithMultipleTokens));
+    card.all_parts[1].component = "{F} FOO";
+
     options.textTransformer = function (text) {
-      var replacement = text.replace(/{(.*)}/, "<$1>");
+      const replacement = text.replace(/{([\w\d]*)}/g, "<$1>");
 
       return replacement.toUpperCase();
     };
 
-    const wrappedResponse = wrapScryfallResponse(
-      {
-        object: "foo",
-        foo: "{g/r} foo",
-        related_cards: [
-          {
-            object: "card",
-            foo: "bar",
-          },
-          {
-            object: "card",
-            foo: "{t} foo",
-          },
-        ],
-        nested_thing: {
-          more_nesting: [
-            {
-              object: "card",
-              foo: "{r} bar",
-            },
-          ],
-        },
-      },
-      options
-    );
+    const wrappedResponse = wrapScryfallResponse(card, options);
 
-    expect(wrappedResponse.foo).toBe("<G/R> FOO");
-    expect(wrappedResponse.related_cards[1].foo).toBe("<T> FOO");
-    expect(wrappedResponse.nested_thing.more_nesting[0].foo).toBe("<R> BAR");
+    expect(wrappedResponse.mana_cost).toBe("<3><G><G>");
+    expect(wrappedResponse.all_parts[1].component).toBe("<F> FOO");
   });
 
-  it("does not convert symbols to slack emoji if not explicitly passed in", function () {
-    const wrappedResponse = wrapScryfallResponse(
-      {
-        object: "foo",
-        foo: "{g/r} foo",
-        related_cards: [
-          {
-            object: "card",
-            foo: "bar",
-          },
-          {
-            object: "card",
-            foo: "{t} foo",
-          },
-        ],
-        nested_thing: {
-          more_nesting: [
-            {
-              object: "card",
-              foo: "{r} bar",
-            },
-          ],
-        },
-      },
-      options
-    );
+  it("does not convert symbols to slack or discord emoji if not explicitly passed in", function () {
+    const wrappedResponse = wrapScryfallResponse(fixtures.card, options);
 
-    expect(wrappedResponse.foo).toBe("{g/r} foo");
-    expect(wrappedResponse.related_cards[1].foo).toBe("{t} foo");
-    expect(wrappedResponse.nested_thing.more_nesting[0].foo).toBe("{r} bar");
-  });
-
-  it("does not convert symbols to discord emoji if not explicitly passed in", function () {
-    const wrappedResponse = wrapScryfallResponse(
-      {
-        object: "foo",
-        foo: "{g/r} foo",
-        related_cards: [
-          {
-            object: "card",
-            foo: "bar",
-          },
-          {
-            object: "card",
-            foo: "{t} foo",
-          },
-        ],
-        nested_thing: {
-          more_nesting: [
-            {
-              object: "card",
-              foo: "{r} bar",
-            },
-          ],
-        },
-      },
-      options
-    );
-
-    expect(wrappedResponse.foo).toBe("{g/r} foo");
-    expect(wrappedResponse.related_cards[1].foo).toBe("{t} foo");
-    expect(wrappedResponse.nested_thing.more_nesting[0].foo).toBe("{r} bar");
+    expect(wrappedResponse.mana_cost).toBe("{2}{U}");
   });
 });

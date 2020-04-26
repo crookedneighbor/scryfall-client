@@ -6,6 +6,8 @@ export default abstract class ArrayLike extends Array {
   constructor(scryfallObject: ScryfallList | ScryfallCatalog) {
     super();
 
+    Object.setPrototypeOf(this, new.target.prototype);
+
     this.push(...scryfallObject.data);
   }
 

@@ -1,4 +1,7 @@
 export type ScryfallError = {
+  // Not part of the documented api
+  message?: string;
+
   status: number; // An integer HTTP status code for this error.
   code: string; // A computer-friendly string representing the appropriate HTTP status code.
   details: string; // A human-readable string explaining the error.

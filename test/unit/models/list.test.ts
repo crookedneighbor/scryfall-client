@@ -1,11 +1,12 @@
 "use strict";
 
-const wrapScryfallResponse = require("../../../lib/wrap-scryfall-response");
-const List = require("../../../models/list");
-const fixtures = require("../../fixtures");
+import wrapScryfallResponse from "Lib/wrap-scryfall-response";
+import List from "Models/list";
+import fixtures from "Fixtures";
+import type { ModelConfig } from "Types/model-config";
 
 describe("List", function () {
-  let fakeRequestMethod, config;
+  let fakeRequestMethod: any, config: ModelConfig;
 
   beforeEach(function () {
     fakeRequestMethod = jest.fn();
@@ -56,12 +57,6 @@ describe("List", function () {
     expect(list.total_cards).toBe(fixtures.listOfCards.total_cards);
     expect(list.has_more).toBe(true);
     expect(list.has_more).toBe(fixtures.listOfCards.has_more);
-  });
-
-  it("does not apply data property to object", function () {
-    const list = new List(fixtures.listOfCards, config);
-
-    expect(list.data).toBeUndefined();
   });
 
   describe("next", function () {

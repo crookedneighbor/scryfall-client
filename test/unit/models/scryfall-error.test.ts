@@ -1,6 +1,6 @@
 "use strict";
 
-const ScryfallError = require("../../../models/scryfall-error");
+import ScryfallError from "Models/scryfall-error";
 
 describe("ScryfallError", function () {
   it("inherits from Error", function () {

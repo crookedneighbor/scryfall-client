@@ -1,29 +1,21 @@
 "use strict";
 
-const Card = require("../../../models/card");
-const wrapScryfallResponse = require("../../../lib/wrap-scryfall-response");
-const fixtures = require("../../fixtures");
+import Card from "Models/card";
+import List from "Models/list";
+import Set from "Models/set";
+import GenericScryfallResponse from "Models/generic-scryfall-response";
+import wrapScryfallResponse from "Lib/wrap-scryfall-response";
+import fixtures from "Fixtures";
+import type { ModelConfig } from "Types/model-config";
 
 describe("Card", function () {
-  let fakeRequestMethod, config, card;
+  let fakeRequestMethod: any, config: ModelConfig, card: Card;
 
   beforeEach(function () {
     fakeRequestMethod = jest.fn();
     config = {
       requestMethod: fakeRequestMethod,
     };
-  });
-
-  it('does not throw if object type is "card"', function () {
-    expect(() => {
-      new Card(fixtures.card, config); // eslint-disable-line no-new
-    }).not.toThrowError();
-  });
-
-  it('throws if object type is not "card"', function () {
-    expect(() => {
-      new Card(fixtures.listOfRulings, config); // eslint-disable-line no-new
-    }).toThrowError('Object type must be "card"');
   });
 
   it("normalizes card faces", function () {
@@ -60,19 +52,21 @@ describe("Card", function () {
 
   describe("getRulings", function () {
     beforeEach(function () {
-      fakeRequestMethod.mockResolvedValue(fixtures.listOfRulings);
+      fakeRequestMethod.mockResolvedValue(
+        wrapScryfallResponse(fixtures.listOfRulings, {
+          requestMethod: fakeRequestMethod,
+        })
+      );
       card = wrapScryfallResponse(fixtures.card, {
         requestMethod: fakeRequestMethod,
       });
     });
 
     it("gets rulings for card", function () {
-      return card.getRulings().then((rulings) => {
+      return card.getRulings().then((rulings: List) => {
         expect(typeof fixtures.card.rulings_uri).toBe("string");
         expect(fakeRequestMethod).toBeCalledWith(fixtures.card.rulings_uri);
-        expect(rulings.data[0].comment).toBe(
-          fixtures.listOfRulings.data[0].comment
-        );
+        expect(rulings[0].comment).toBe(fixtures.listOfRulings.data[0].comment);
       });
     });
   });
@@ -86,7 +80,7 @@ describe("Card", function () {
     });
 
     it("gets set for card", function () {
-      return card.getSet().then((set) => {
+      return card.getSet().then((set: Set) => {
         expect(typeof fixtures.card.set_uri).toBe("string");
         expect(fakeRequestMethod).toBeCalledWith(fixtures.card.set_uri);
         expect(set.code).toBe(fixtures.set.code);
@@ -142,25 +136,25 @@ describe("Card", function () {
     });
 
     it("returns true for legal card in provided format", function () {
-      card.legalities.commander = "legal";
+      card.legalities!.commander = "legal";
 
       expect(card.isLegal("commander")).toBe(true);
     });
 
     it("returns true for restricted card in provided format", function () {
-      card.legalities.vintage = "restricted";
+      card.legalities!.vintage = "restricted";
 
       expect(card.isLegal("vintage")).toBe(true);
     });
 
     it("returns false for illegal card in provided format", function () {
-      card.legalities.modern = "not_legal";
+      card.legalities!.modern = "not_legal";
 
       expect(card.isLegal("modern")).toBe(false);
     });
 
     it("returns false for banned card in provided format", function () {
-      card.legalities.legacy = "banned";
+      card.legalities!.legacy = "banned";
 
       expect(card.isLegal("legacy")).toBe(false);
     });
@@ -334,7 +328,7 @@ describe("Card", function () {
   });
 
   describe("getPrice", function () {
-    let originalPrices;
+    let originalPrices: Record<string, string>;
 
     beforeEach(function () {
       card = wrapScryfallResponse(fixtures.card, {
@@ -349,7 +343,7 @@ describe("Card", function () {
     });
 
     afterEach(function () {
-      fixtures.card.prices = originalPrices;
+      fixtures.card.prices! = originalPrices;
     });
 
     it("returns the non-foil usd price when no arguments are given", function () {
@@ -361,37 +355,37 @@ describe("Card", function () {
     });
 
     it("returns the foil price if no usd price is available and no argument is given", function () {
-      card.prices.usd = null;
+      delete card.prices!.usd;
 
       expect(card.getPrice()).toBe(originalPrices.usd_foil);
     });
 
     it("returns the eur price if no usd or foil price available", function () {
-      card.prices.usd = null;
-      card.prices.usd_foil = null;
+      delete card.prices!.usd;
+      delete card.prices!.usd_foil;
 
       expect(card.getPrice()).toBe(originalPrices.eur);
     });
 
     it("returns the tix price if no usd or foil or eur price available", function () {
-      card.prices.usd = null;
-      card.prices.usd_foil = null;
-      card.prices.eur = null;
+      delete card.prices!.usd;
+      delete card.prices!.usd_foil;
+      delete card.prices!.eur;
 
       expect(card.getPrice()).toBe(originalPrices.tix);
     });
 
     it("returns an empty string if no pricing is available", function () {
-      card.prices.usd = null;
-      card.prices.usd_foil = null;
-      card.prices.eur = null;
-      card.prices.tix = null;
+      delete card.prices!.usd;
+      delete card.prices!.usd_foil;
+      delete card.prices!.eur;
+      delete card.prices!.tix;
 
       expect(card.getPrice()).toBe("");
     });
 
     it("returns an empty string if the specified type is not available", function () {
-      card.prices.usd_foil = null;
+      delete card.prices!.usd_foil;
 
       expect(card.getPrice("usd_foil")).toBe("");
     });
@@ -421,7 +415,7 @@ describe("Card", function () {
         requestMethod: fakeRequestMethod,
       });
 
-      return card.getTokens().then((tokens) => {
+      return card.getTokens().then((tokens: Card[]) => {
         expect(fakeRequestMethod).toBeCalledTimes(3);
         expect(fakeRequestMethod).toBeCalledWith(
           "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b"
@@ -433,7 +427,7 @@ describe("Card", function () {
           "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475"
         );
 
-        tokens.forEach((token) => {
+        tokens.forEach((token: Card) => {
           expect(token).toBeInstanceOf(Card);
           expect(token.layout).toBe("token");
         });
@@ -445,7 +439,7 @@ describe("Card", function () {
         requestMethod: fakeRequestMethod,
       });
 
-      return card.getTokens().then((tokens) => {
+      return card.getTokens().then((tokens: Card[]) => {
         expect(tokens).toEqual([]);
       });
     });
@@ -464,7 +458,7 @@ describe("Card", function () {
         }),
       ]);
 
-      return card.getTokens().then((tokens) => {
+      return card.getTokens().then((tokens: Card[]) => {
         expect(card.getPrints).toBeCalledTimes(1);
 
         expect(fakeRequestMethod).toBeCalledTimes(3);
@@ -478,7 +472,7 @@ describe("Card", function () {
           "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475"
         );
 
-        tokens.forEach((token) => {
+        tokens.forEach((token: Card) => {
           expect(token).toBeInstanceOf(Card);
           expect(token.layout).toBe("token");
         });
@@ -490,16 +484,20 @@ describe("Card", function () {
         requestMethod: fakeRequestMethod,
       });
 
-      jest.spyOn(card, "getPrints").mockResolvedValue([
-        wrapScryfallResponse(fixtures.cardWithTokenButNoParts, {
-          requestMethod: fakeRequestMethod,
-        }),
-        wrapScryfallResponse(fixtures.card, {
-          requestMethod: fakeRequestMethod,
-        }),
-      ]);
+      jest.spyOn(card, "getPrints").mockResolvedValue(
+        wrapScryfallResponse(
+          {
+            object: "list",
+            total_cards: 2,
+            data: [fixtures.cardWithTokenButNoParts, fixtures.card],
+          },
+          {
+            requestMethod: fakeRequestMethod,
+          }
+        )
+      );
 
-      return card.getTokens().then((tokens) => {
+      return card.getTokens().then((tokens: Card[]) => {
         expect(card.getPrints).toBeCalledTimes(1);
 
         expect(fakeRequestMethod).toBeCalledTimes(0);

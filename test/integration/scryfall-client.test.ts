@@ -1,13 +1,17 @@
 "use strict";
 
-const ScryfallClient = require("../../");
-const fakeCard = require("../fixtures/card");
-const Card = require("../../models/card");
+import ScryfallClient = require("../../src/");
+import fixtures from "Fixtures";
+import Card from "Models/card";
+import List from "Models/list";
+import Set from "Models/set";
 
 jest.setTimeout(90000);
 
+const fakeCard = fixtures.card;
+
 describe("scryfallClient", function () {
-  let client;
+  let client: ScryfallClient;
 
   beforeEach(function () {
     client = new ScryfallClient();
@@ -15,7 +19,7 @@ describe("scryfallClient", function () {
 
   describe("get", function () {
     it("makes a request to scryfall", function () {
-      return client.get("cards/random").then((card) => {
+      return client.get("cards/random").then((card: Card) => {
         expect(card.object).toBe("card");
       });
     });
@@ -32,7 +36,7 @@ describe("scryfallClient", function () {
         .get("cards/search", {
           q: "Budoka Gardener c:g",
         })
-        .then((list) => {
+        .then((list: List) => {
           expect(list[0].object).toBe("card");
         });
     });
@@ -43,25 +47,27 @@ describe("scryfallClient", function () {
           .get("cards/search", {
             q: "set:rix",
           })
-          .then((list) => {
+          .then((list: List) => {
             expect(list.object).toBe("list");
 
             return list.next();
           })
-          .then((list) => {
+          .then((list: List) => {
             expect(list.object).toBe("list");
           });
       });
 
       it("can recursively call next", function () {
-        let totalCards;
+        let totalCards: number;
 
-        function collectCards(list, allCards) {
-          allCards = allCards || [];
-          allCards.push.apply(allCards, list);
+        function collectCards(
+          list: List,
+          allCards: Card[] = []
+        ): Promise<List | Card[]> {
+          allCards.push(...list);
 
           if (!list.has_more) {
-            return allCards;
+            return Promise.resolve(allCards);
           }
 
           return list.next().then(function (newList) {
@@ -73,12 +79,12 @@ describe("scryfallClient", function () {
           .get("cards/search", {
             q: "format:standard r:r",
           })
-          .then(function (list) {
-            totalCards = list.total_cards;
+          .then(function (list: List) {
+            totalCards = list.total_cards!;
 
             return collectCards(list);
           })
-          .then(function (allRareCardsInStandard) {
+          .then(function (allRareCardsInStandard: Card[]) {
             expect(allRareCardsInStandard.length).toBe(totalCards);
           });
       });
@@ -88,12 +94,12 @@ describe("scryfallClient", function () {
       it("can get cards from set", function () {
         return client
           .get("sets/dom")
-          .then((set) => {
+          .then((set: Set) => {
             expect(set.object).toBe("set");
 
             return set.getCards();
           })
-          .then((list) => {
+          .then((list: List) => {
             expect(list.object).toBe("list");
             expect(list[0].object).toBe("card");
           });
@@ -112,10 +118,10 @@ describe("scryfallClient", function () {
       it("can get rulings for card", function () {
         return client
           .get(`cards/${budokaGardener}`)
-          .then((card) => {
+          .then((card: Card) => {
             return card.getRulings();
           })
-          .then((rulings) => {
+          .then((rulings: List) => {
             expect(rulings.object).toBe("list");
             expect(rulings[0].object).toBe("ruling");
           });
@@ -124,10 +130,10 @@ describe("scryfallClient", function () {
       it("can get set object for card", function () {
         return client
           .get(`cards/${budokaGardener}`)
-          .then((card) => {
+          .then((card: Card) => {
             return card.getSet();
           })
-          .then((set) => {
+          .then((set: Set) => {
             expect(set.object).toBe("set");
           });
       });
@@ -135,10 +141,10 @@ describe("scryfallClient", function () {
       it("can get prints for card", function () {
         return client
           .get(`cards/${windfall}`)
-          .then((card) => {
+          .then((card: Card) => {
             return card.getPrints();
           })
-          .then((prints) => {
+          .then((prints: List) => {
             expect(prints.object).toBe("list");
             expect(prints.length).toBeGreaterThan(1);
           });
@@ -149,7 +155,7 @@ describe("scryfallClient", function () {
           .get("cards/search", {
             q: "format:standard r:r",
           })
-          .then((list) => {
+          .then((list: List) => {
             const card = list[0];
 
             expect(card.isLegal("standard")).toBe(true);
@@ -159,10 +165,10 @@ describe("scryfallClient", function () {
 
       describe("card images", function () {
         it("can get the image of a card", function () {
-          let id;
+          let id: string;
 
-          return client.get(`cards/${windfall}`).then((card) => {
-            id = card.id;
+          return client.get(`cards/${windfall}`).then((card: Card) => {
+            id = card.id!;
 
             const image = card.getImage();
             expect(typeof image).toBe("string");
@@ -172,23 +178,27 @@ describe("scryfallClient", function () {
         });
 
         it("can get the image of a transform card", function () {
-          let id;
+          let id: string;
 
-          return client.get(`cards/${docentOfPerfection}`).then((card) => {
-            id = card.id;
+          return client
+            .get(`cards/${docentOfPerfection}`)
+            .then((card: Card) => {
+              id = card.id!;
 
-            const image = card.getImage();
-            expect(typeof image).toBe("string");
-            expect(image).toEqual(expect.stringContaining("img.scryfall.com"));
-            expect(image).toEqual(expect.stringContaining(id));
-          });
+              const image = card.getImage();
+              expect(typeof image).toBe("string");
+              expect(image).toEqual(
+                expect.stringContaining("img.scryfall.com")
+              );
+              expect(image).toEqual(expect.stringContaining(id));
+            });
         });
 
         it("can get the image of a meld card", function () {
-          let id;
+          let id: string;
 
-          return client.get(`cards/${brunaFadingLight}`).then((card) => {
-            id = card.id;
+          return client.get(`cards/${brunaFadingLight}`).then((card: Card) => {
+            id = card.id!;
 
             const image = card.getImage();
             expect(typeof image).toBe("string");
@@ -198,10 +208,10 @@ describe("scryfallClient", function () {
         });
 
         it("can get the image of a melded card", function () {
-          let id;
+          let id: string;
 
-          return client.get(`cards/${brisela}`).then((card) => {
-            id = card.id;
+          return client.get(`cards/${brisela}`).then((card: Card) => {
+            id = card.id!;
 
             const image = card.getImage();
             expect(typeof image).toBe("string");
@@ -211,34 +221,38 @@ describe("scryfallClient", function () {
         });
 
         it("can get the backside image of a normal card (missing url)", function () {
-          return client.get(`cards/${windfall}`).then((card) => {
+          return client.get(`cards/${windfall}`).then((card: Card) => {
             const image = card.getBackImage();
             expect(image).toBe("https://img.scryfall.com/errors/missing.jpg");
           });
         });
 
         it("can get the backside image of a meld card (missing url)", function () {
-          return client.get(`cards/${brunaFadingLight}`).then((card) => {
+          return client.get(`cards/${brunaFadingLight}`).then((card: Card) => {
             const image = card.getBackImage();
             expect(image).toBe("https://img.scryfall.com/errors/missing.jpg");
           });
         });
 
         it("can get the backside image of a transform card", function () {
-          let id;
+          let id: string;
 
-          return client.get(`cards/${docentOfPerfection}`).then((card) => {
-            id = card.id;
+          return client
+            .get(`cards/${docentOfPerfection}`)
+            .then((card: Card) => {
+              id = card.id!;
 
-            const image = card.getBackImage();
-            expect(image).toEqual(expect.stringContaining("img.scryfall.com"));
-            expect(image).toEqual(expect.stringContaining(id));
-          });
+              const image = card.getBackImage();
+              expect(image).toEqual(
+                expect.stringContaining("img.scryfall.com")
+              );
+              expect(image).toEqual(expect.stringContaining(id));
+            });
         });
       });
 
       it("can get price for a card", function () {
-        return client.get(`cards/${beastialMenace}`).then((card) => {
+        return client.get(`cards/${beastialMenace}`).then((card: Card) => {
           const price = Number(card.getPrice());
 
           expect(price).toBeGreaterThan(0);
@@ -248,10 +262,10 @@ describe("scryfallClient", function () {
       it("can get tokens for a card", function () {
         return client
           .get(`cards/${beastialMenace}`)
-          .then((card) => {
+          .then((card: Card) => {
             return card.getTokens();
           })
-          .then((tokens) => {
+          .then((tokens: Card[]) => {
             expect(tokens.length).toBe(3);
 
             tokens.forEach((token) => {
@@ -263,10 +277,10 @@ describe("scryfallClient", function () {
       it("can get tokens for a card where the print does not have tokens", function () {
         return client
           .get(`cards/${originalProsh}`)
-          .then((card) => {
+          .then((card: Card) => {
             return card.getTokens();
           })
-          .then((tokens) => {
+          .then((tokens: Card[]) => {
             expect(tokens.length).toBe(1);
             expect(tokens[0].layout).toBe("token");
           });
@@ -289,7 +303,7 @@ describe("scryfallClient", function () {
             },
           ],
         })
-        .then((cards) => {
+        .then((cards: List) => {
           expect(cards[0].name).toBe("Vial Smasher the Fierce");
           expect(cards[1].name).toBe("Hedron Crab");
         });

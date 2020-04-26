@@ -1,14 +1,20 @@
 "use strict";
 
-var GenericScryfallResponse = require("../models/generic-scryfall-response");
-var models = {
-  card: require("../models/card"),
-  catalog: require("../models/catalog"),
-  list: require("../models/list"),
-  set: require("../models/set"),
-};
-module.exports = function wrapScryfallResponse(response, options) {
-  var wrappedResponse, requestMethod;
+import Card from "Models/card";
+import Catalog from "Models/catalog";
+import List from "Models/list";
+import Set from "Models/set";
+import GenericScryfallResponse from "Models/generic-scryfall-response";
+
+import type { ScryfallResponse } from "Types/api/response";
+import type { ModelConfig } from "Types/model-config";
+
+export default function wrapScryfallResponse(
+  response: any, // TODO any
+  options: ModelConfig
+) {
+  // TODO not any
+  let wrappedResponse: any;
 
   if (typeof response === "string" && options.textTransformer) {
     response = options.textTransformer(response);
@@ -18,21 +24,28 @@ module.exports = function wrapScryfallResponse(response, options) {
     return response;
   }
 
-  requestMethod = options.requestMethod;
+  const requestMethod = options.requestMethod;
+  const modelOptions = {
+    textTransformer: options.textTransformer,
+    requestMethod,
+  };
 
   if (!response.object) {
     wrappedResponse = response;
-  } else if (response.object in models) {
-    wrappedResponse = new models[response.object](response, {
-      textTransformer: options.textTransformer,
-      requestMethod: requestMethod,
-    });
+  } else if (response.object === "card") {
+    wrappedResponse = new Card(response, modelOptions);
+  } else if (response.object === "list") {
+    wrappedResponse = new List(response, modelOptions);
+  } else if (response.object === "catalog") {
+    wrappedResponse = new Catalog(response);
+  } else if (response.object === "set") {
+    wrappedResponse = new Set(response, modelOptions);
   } else {
-    wrappedResponse = new GenericScryfallResponse(response, requestMethod);
+    wrappedResponse = new GenericScryfallResponse(response);
   }
 
   if (response.object === "list") {
-    wrappedResponse.forEach(function (object, location) {
+    wrappedResponse.forEach(function (object: any, location: number) {
       wrappedResponse[location] = wrapScryfallResponse(object, options);
     });
   } else {
@@ -42,4 +55,4 @@ module.exports = function wrapScryfallResponse(response, options) {
   }
 
   return wrappedResponse;
-};
+}

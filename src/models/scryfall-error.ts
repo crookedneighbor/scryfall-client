@@ -1,20 +1,36 @@
 "use strict";
+import { ScryfallError as ScryfallAPIError } from "Types/api/error";
 
-function ScryfallError(scryfallResponse) {
-  this.message = scryfallResponse.message || scryfallResponse.details;
-  this.stack = Error().stack;
+class ExtendableError extends Error {
+  constructor(message: string) {
+    super(message);
+    Object.setPrototypeOf(this, new.target.prototype);
 
-  Object.keys(scryfallResponse).forEach(
-    function (key) {
-      if (!this[key]) {
-        this[key] = scryfallResponse[key];
-      }
-    }.bind(this)
-  );
+    this.name = this.constructor.name;
+
+    if (typeof Error.captureStackTrace === "function") {
+      Error.captureStackTrace(this, this.constructor);
+    } else {
+      this.stack = new Error(message).stack;
+    }
+  }
 }
 
-ScryfallError.prototype = Object.create(Error.prototype);
-ScryfallError.prototype.name = "ScryfallError";
-ScryfallError.prototype.constructor = ScryfallError;
+class ScryfallError extends ExtendableError {
+  thrownError?: Error;
+  status?: number;
+  code?: string;
+  details?: string;
+  type?: string;
+  warnings?: string[];
 
-module.exports = ScryfallError;
+  constructor(scryfallResponse: ScryfallAPIError | Record<string, any>) {
+    const message = scryfallResponse.message || scryfallResponse.details;
+
+    super(message);
+
+    Object.assign(this, scryfallResponse);
+  }
+}
+
+export default ScryfallError;

@@ -1,6 +1,6 @@
 "use strict";
 
-const convertSymbolsToEmoji = require("../../../lib/convert-symbols-to-emoji");
+import convertSymbolsToEmoji from "../../../src/lib/convert-symbols-to-emoji";
 
 describe("convertSymbolsToEmoji", function () {
   describe("slack", function () {

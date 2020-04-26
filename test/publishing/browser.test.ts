@@ -1,41 +1,40 @@
 "use strict";
 
+/* eslint-disable @typescript-eslint/no-var-requires */
 const webpack = require("webpack");
-const path = require("path");
-const fs = require("fs");
-const mkdirp = require("mkdirp");
 const checkES5 = require("check-ecmascript-version-compatibility");
+const config = require("../../webpack.config");
+/* eslint-enable @typescript-eslint/no-var-requires */
+
+import path = require("path");
+import fs = require("fs");
 
 describe("built file (be patient, this can take a while)", function () {
-  let pathToBuild;
+  let pathToBuild: string;
 
   beforeAll(function (done) {
-    const entry = path.resolve(__dirname, "..", "..", "index.js");
-    const dist = path.resolve(__dirname, "..", "..", "publishing-test-dist");
-    const filename = "browser.js";
-
-    pathToBuild = path.resolve(dist, filename);
-    mkdirp.sync(dist);
-
-    webpack(
-      {
-        mode: "production",
-        entry,
-        output: {
-          filename,
-          path: dist,
-        },
-      },
-      (err, stats) => {
-        if (err || stats.hasErrors()) {
-          done(new Error("something went wrong"));
-
-          return;
-        }
-
-        done();
-      }
+    config.entry = path.resolve(__dirname, "..", "..", "src", "index.ts");
+    config.output.path = path.resolve(
+      __dirname,
+      "..",
+      "..",
+      "publishing-test-dist"
     );
+    config.output.filename = "browser.js";
+
+    pathToBuild = path.resolve(config.output.path, config.output.filename);
+
+    webpack(config, (err: Error, stats: any) => {
+      const errorMessage = err || stats.hasErrors();
+      if (err || stats.hasErrors()) {
+        console.log(stats);
+        done(new Error("something went wrong"));
+
+        return;
+      }
+
+      done();
+    });
   });
 
   it("is es5 compliant", function (done) {

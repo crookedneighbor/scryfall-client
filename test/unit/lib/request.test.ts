@@ -1,13 +1,16 @@
 "use strict";
 
-const superagent = require("superagent");
-const makeRequestFunction = require("../../../lib/request");
-const ScryfallError = require("../../../models/scryfall-error");
-const GenericScryfallResponse = require("../../../models/generic-scryfall-response");
-const fixtures = require("../../fixtures");
+import superagent = require("superagent");
+import makeRequestFunction from "Lib/request";
+import Card from "Models/card";
+import ScryfallError from "Models/scryfall-error";
+import GenericScryfallResponse from "Models/generic-scryfall-response";
+import fixtures from "Fixtures";
 
 describe("makeRequestFunction", function () {
-  let fakeResponse, fakeRequest, request;
+  let fakeResponse: Record<string, string>;
+  let fakeRequest: Record<string, jest.SpyInstance>;
+  let request: Function;
 
   beforeEach(function () {
     fakeResponse = {
@@ -17,13 +20,13 @@ describe("makeRequestFunction", function () {
       send: jest.fn().mockReturnThis(),
       set: jest.fn().mockResolvedValue(fakeResponse),
     };
-    jest.spyOn(superagent, "get").mockReturnValue(fakeRequest);
-    jest.spyOn(superagent, "post").mockReturnValue(fakeRequest);
+    jest.spyOn(superagent, "get").mockReturnValue(fakeRequest as any);
+    jest.spyOn(superagent, "post").mockReturnValue(fakeRequest as any);
     request = makeRequestFunction();
   });
 
   afterEach(function () {
-    request.clearQueue();
+    (request as any).clearQueue();
   });
 
   it("returns a request function", function () {
@@ -124,7 +127,7 @@ describe("makeRequestFunction", function () {
 
   it("does not rate limit a request that occurs after rate limiting from initial request is done", function () {
     let count = 0;
-    let intervalRef;
+    let intervalRef: any;
 
     return request("foo")
       .then(() => {
@@ -156,7 +159,7 @@ describe("makeRequestFunction", function () {
       },
     });
 
-    return request("foo").then((card) => {
+    return request("foo").then((card: Card) => {
       expect(card.mana_cost).toBe(
         '<img src="https://example.com/mana-2.png" /><img src="https://example.com/mana-U.png" />'
       );
@@ -184,7 +187,7 @@ describe("makeRequestFunction", function () {
       convertSymbolsToSlackEmoji: true,
     });
 
-    return request("foo").then((card) => {
+    return request("foo").then((card: Card) => {
       expect(card.mana_cost).toBe(":mana-2::mana-U:");
     });
   });
@@ -194,7 +197,7 @@ describe("makeRequestFunction", function () {
       convertSymbolsToDiscordEmoji: true,
     });
 
-    return request("foo").then((card) => {
+    return request("foo").then((card: Card) => {
       expect(card.mana_cost).toBe(":mana2::manaU:");
     });
   });
@@ -210,7 +213,7 @@ describe("makeRequestFunction", function () {
       },
     });
 
-    return request("foo").then((card) => {
+    return request("foo").then((card: Card) => {
       expect(card.mana_cost).toBe(
         '<img src="https://example.com/mana-2.png" /><img src="https://example.com/mana-U.png" />'
       );
@@ -223,7 +226,7 @@ describe("makeRequestFunction", function () {
       convertSymbolsToSlackEmoji: true,
     });
 
-    return request("foo").then((card) => {
+    return request("foo").then((card: Card) => {
       expect(card.mana_cost).toBe(":mana-2::mana-U:");
     });
   });
@@ -252,10 +255,10 @@ describe("makeRequestFunction", function () {
 
   it("resolves with a Scryfall Response", function () {
     fakeRequest.set.mockResolvedValue({
-      text: '{"object":"foo"}',
+      text: JSON.stringify(fixtures.cardSymbolT),
     });
 
-    return request("foo").then((response) => {
+    return request("foo").then((response: GenericScryfallResponse) => {
       expect(response).toBeInstanceOf(GenericScryfallResponse);
     });
   });
@@ -336,10 +339,12 @@ describe("makeRequestFunction", function () {
 
     expect.assertions(2);
 
-    await expect(request("foo")).rejects.toBeInstanceOf(ScryfallError);
-    await expect(request("foo")).rejects.toMatchObject({
-      message: "Could not parse response from Scryfall.",
-    });
+    try {
+      await request("foo");
+    } catch (error) {
+      expect(error).toBeInstanceOf(ScryfallError);
+      expect(error.message).toBe("Could not parse response from Scryfall.");
+    }
   });
 
   it("rejects when body is an error object", async function () {
@@ -352,12 +357,14 @@ describe("makeRequestFunction", function () {
       }),
     });
 
-    expect.assertions(2);
+    expect.assertions(3);
 
-    await expect(request("foo")).rejects.toBeInstanceOf(ScryfallError);
-    await expect(request("foo")).rejects.toMatchObject({
-      message: "Failure",
-      status: 404,
-    });
+    try {
+      await request("foo");
+    } catch (error) {
+      expect(error).toBeInstanceOf(ScryfallError);
+      expect(error.message).toBe("Failure");
+      expect(error.status).toBe(404);
+    }
   });
 });

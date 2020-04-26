@@ -14,6 +14,11 @@ module.exports = {
   },
   resolve: {
     extensions: [".ts", ".js"],
+    alias: {
+      Lib: path.resolve(__dirname, "src/lib/"),
+      Types: path.resolve(__dirname, "src/types/"),
+      Models: path.resolve(__dirname, "src/models/"),
+    },
   },
   output: {
     filename: "script.js",
