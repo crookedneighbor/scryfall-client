@@ -1,8 +1,9 @@
 "use strict";
 
-import { ApiResponse } from "Types/api-response";
-import type { ModelConfig } from "Types/model-config";
 import SingularEntity from "Models/singular-entity";
+
+import type { ApiResponse } from "Types/api-response";
+import type { ModelConfig } from "Types/model-config";
 
 interface SetResponse extends ApiResponse {
   object: "set";
