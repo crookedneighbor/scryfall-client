@@ -1,12 +1,18 @@
 "use strict";
 
 import makeRequestFunction from "Lib/request";
-import { ModelConfig } from "Types/model-config";
+
+type ScryfallClientOptions = {
+  textTransformer?: (text: string) => string;
+  convertSymbolsToSlackEmoji?: boolean;
+  convertSymbolsToDiscordEmoji?: boolean;
+  delayBetweenRequests?: number;
+};
 
 class ScryfallClient {
   _request: any;
 
-  constructor(options?: ModelConfig) {
+  constructor(options?: ScryfallClientOptions) {
     this._request = makeRequestFunction(options);
   }
 
