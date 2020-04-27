@@ -1,7 +1,30 @@
 import sendRequest from "Lib/api-request/send-request";
 import superagent = require("superagent");
 
-jest.mock("superagent");
+jest.mock("superagent", () => {
+  const mockResponse = {
+    text: "{}",
+  };
+  return {
+    // leave these as non-spies so we can inspect the call counts
+    // and have them get cleaned up without issue
+    post: function () {
+      return this;
+    },
+    get: function () {
+      return this;
+    },
+    send: function () {
+      return this;
+    },
+    set: jest.fn().mockReturnThis(),
+    then: jest.fn().mockImplementation((callback) => {
+      return new Promise((resolve, reject) => {
+        return resolve(callback(mockResponse));
+      });
+    }),
+  };
+});
 
 describe("sendRequest", () => {
   let getSpy: jest.SpyInstance;
@@ -48,5 +71,13 @@ describe("sendRequest", () => {
       expect(getSpy).toBeCalledTimes(1);
       expect(getSpy).toBeCalledWith("https://example.com");
     });
+  });
+
+  it("handles parsing errors", () => {
+    // todo
+  });
+
+  it("handles scryfall api errors", () => {
+    // todo
   });
 });
