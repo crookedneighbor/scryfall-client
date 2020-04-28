@@ -1,10 +1,12 @@
 import sendRequest from "Lib/api-request/send-request";
+import ScryfallError from "Models/scryfall-error";
 import superagent = require("superagent");
 
+let mockResponse: {
+  text: string;
+};
+
 jest.mock("superagent", () => {
-  const mockResponse = {
-    text: "{}",
-  };
   return {
     // leave these as non-spies so we can inspect the call counts
     // and have them get cleaned up without issue
@@ -35,6 +37,7 @@ describe("sendRequest", () => {
     getSpy = jest.spyOn(superagent, "get").mockReturnThis();
     postSpy = jest.spyOn(superagent, "post").mockReturnThis();
     sendSpy = jest.spyOn(superagent as any, "send").mockReturnThis();
+    mockResponse = { text: "{}" };
   });
 
   it("sends a get request", () => {
@@ -73,11 +76,48 @@ describe("sendRequest", () => {
     });
   });
 
-  it("handles parsing errors", () => {
-    // todo
+  it("handles parsing errors", async () => {
+    mockResponse.text = "{";
+
+    expect.assertions(2);
+
+    await expect(
+      sendRequest({
+        method: "get",
+        url: "https://example.com",
+      })
+    ).rejects.toBeInstanceOf(ScryfallError);
+    await expect(
+      sendRequest({
+        method: "get",
+        url: "https://example.com",
+      })
+    ).rejects.toMatchObject({
+      message: "Could not parse response from Scryfall.",
+    });
   });
 
-  it("handles scryfall api errors", () => {
-    // todo
+  it("handles scryfall api errors", async () => {
+    mockResponse.text = JSON.stringify({
+      object: "error",
+      details: "Error from API",
+    });
+
+    expect.assertions(2);
+
+    await expect(
+      sendRequest({
+        method: "get",
+        url: "https://example.com",
+      })
+    ).rejects.toBeInstanceOf(ScryfallError);
+    await expect(
+      sendRequest({
+        method: "get",
+        url: "https://example.com",
+      })
+    ).rejects.toMatchObject({
+      message: "Error from API",
+    });
   });
 });
