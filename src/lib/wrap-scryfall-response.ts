@@ -6,50 +6,59 @@ import List from "Models/list";
 import Set from "Models/set";
 import GenericScryfallResponse from "Models/generic-scryfall-response";
 
+import { TextTransformFunction } from "Types/text-transform";
 import type { ModelConfig } from "Types/model-config";
+import type { ApiResponse } from "Types/api-response";
 
-export default function wrapScryfallResponse(
-  response: any, // TODO any
-  options: ModelConfig
-) {
+let transformFunction: TextTransformFunction;
+
+const noopTransformFunction = (text: string): string => {
+  // noop by default
+  return text;
+};
+
+export function setTextTransform(func: TextTransformFunction): void {
+  transformFunction = func;
+}
+export function resetTextTransform(): void {
+  setTextTransform(noopTransformFunction);
+}
+
+resetTextTransform();
+
+export default function wrapScryfallResponse(response: any) {
   // TODO not any
   let wrappedResponse: any;
 
-  if (typeof response === "string" && options.textTransformer) {
-    response = options.textTransformer(response);
+  if (typeof response === "string") {
+    return transformFunction(response);
   }
 
   if (!response || typeof response !== "object") {
     return response;
   }
 
-  const requestMethod = options.requestMethod;
-  const modelOptions = {
-    textTransformer: options.textTransformer,
-    requestMethod,
-  };
-
   if (!response.object) {
     wrappedResponse = response;
   } else if (response.object === "card") {
-    wrappedResponse = new Card(response, modelOptions);
+    wrappedResponse = new Card(response);
   } else if (response.object === "list") {
-    wrappedResponse = new List(response, modelOptions);
+    wrappedResponse = new List(response);
   } else if (response.object === "catalog") {
     wrappedResponse = new Catalog(response);
   } else if (response.object === "set") {
-    wrappedResponse = new Set(response, modelOptions);
+    wrappedResponse = new Set(response);
   } else {
-    wrappedResponse = new GenericScryfallResponse(response, modelOptions);
+    wrappedResponse = new GenericScryfallResponse(response);
   }
 
   if (response.object === "list") {
     wrappedResponse.forEach(function (object: any, location: number) {
-      wrappedResponse[location] = wrapScryfallResponse(object, options);
+      wrappedResponse[location] = wrapScryfallResponse(object);
     });
   } else {
     Object.keys(response).forEach(function (key) {
-      wrappedResponse[key] = wrapScryfallResponse(response[key], options);
+      wrappedResponse[key] = wrapScryfallResponse(response[key]);
     });
   }
 

@@ -3,27 +3,32 @@
 import wrapScryfallResponse from "Lib/wrap-scryfall-response";
 import List from "Models/list";
 import fixtures from "Fixtures";
-import type { ModelConfig } from "Types/model-config";
+import request from "Lib/api-request";
+
+import { mocked } from "ts-jest/utils";
+
+jest.mock("Lib/api-request");
 
 describe("List", function () {
-  let fakeRequestMethod: any, config: ModelConfig;
+  let fakeRequest: jest.SpyInstance;
 
-  beforeEach(function () {
-    fakeRequestMethod = jest.fn();
-    config = {
-      requestMethod: fakeRequestMethod,
-    };
+  beforeEach(() => {
+    fakeRequest = mocked(request);
+  });
+
+  afterEach(() => {
+    fakeRequest.mockReset();
   });
 
   it("inherits from Array", function () {
-    const list = new List(fixtures.listOfCards, config);
+    const list = new List(fixtures.listOfCards);
 
     expect(list).toBeInstanceOf(Array);
     expect(list).toBeInstanceOf(List);
   });
 
   it("its entries are defined by data properties", function () {
-    const list = new List(fixtures.listOfCards, config);
+    const list = new List(fixtures.listOfCards);
 
     expect(typeof list[0].name).toBe("string");
     expect(list[0].name).toBe(fixtures.listOfCards.data[0].name);
@@ -32,7 +37,7 @@ describe("List", function () {
   });
 
   it("responds to Array methods", function () {
-    const list = new List(fixtures.listOfCards, config);
+    const list = new List(fixtures.listOfCards);
 
     expect(list.length).toBe(2);
 
@@ -51,7 +56,7 @@ describe("List", function () {
   });
 
   it("applies properties to object", function () {
-    const list = new List(fixtures.listOfCards, config);
+    const list = new List(fixtures.listOfCards);
 
     expect(list.total_cards).toBeGreaterThan(0);
     expect(list.total_cards).toBe(fixtures.listOfCards.total_cards);
@@ -61,26 +66,24 @@ describe("List", function () {
 
   describe("next", function () {
     beforeEach(function () {
-      fakeRequestMethod.mockResolvedValue(
-        wrapScryfallResponse(fixtures.listOfCardsPage2, {
-          requestMethod: fakeRequestMethod,
-        })
+      fakeRequest.mockResolvedValue(
+        wrapScryfallResponse(fixtures.listOfCardsPage2)
       );
     });
 
     it("makes a request for the next page", function () {
-      const list = new List(fixtures.listOfCards, config);
+      const list = new List(fixtures.listOfCards);
 
       return list.next().then((list2) => {
-        expect(fakeRequestMethod).toBeCalledWith(
-          fixtures.listOfCards.next_page
-        );
+        expect(fakeRequest).toBeCalledWith({
+          endpoint: fixtures.listOfCards.next_page,
+        });
         expect(list2[0].name).toBe(fixtures.listOfCardsPage2.data[0].name);
       });
     });
 
     it("rejects promise if there are no additional results", function () {
-      const list = new List(fixtures.listOfCards, config);
+      const list = new List(fixtures.listOfCards);
 
       list.has_more = false;
 

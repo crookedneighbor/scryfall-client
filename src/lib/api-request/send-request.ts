@@ -7,7 +7,7 @@ type PostBody = Record<string, any>;
 
 interface RequestOptions {
   url: string;
-  method: "post" | "get";
+  method?: "post" | "get";
   body?: PostBody;
 }
 

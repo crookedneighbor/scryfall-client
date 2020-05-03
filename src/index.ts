@@ -1,6 +1,11 @@
 "use strict";
 
-import makeRequestFunction from "Lib/request";
+import request from "Lib/api-request";
+import wrapScryfallResponse, {
+  setTextTransform,
+} from "Lib/wrap-scryfall-response";
+
+import { TextTransformFunction } from "Types/text-transform";
 
 type ScryfallClientOptions = {
   textTransformer?: (text: string) => string;
@@ -10,23 +15,27 @@ type ScryfallClientOptions = {
 };
 
 class ScryfallClient {
-  _request: any;
-
   constructor(options?: ScryfallClientOptions) {
-    this._request = makeRequestFunction(options);
+    // this._request = request;
+  }
+
+  static setTextTransform(func: TextTransformFunction): void {
+    setTextTransform(func);
   }
 
   get(url: string, query?: Record<string, any>) {
-    return this._request(url, {
+    return request({
+      endpoint: url,
       method: "get",
       query,
     });
   }
 
   post(url: string, body?: Record<string, any>) {
-    return this._request(url, {
-      body,
+    return request({
+      endpoint: url,
       method: "post",
+      body,
     });
   }
 
@@ -38,7 +47,7 @@ class ScryfallClient {
   }
 
   wrap(body: any) {
-    return this._request.wrapFunction(body);
+    return wrapScryfallResponse(body);
   }
 }
 

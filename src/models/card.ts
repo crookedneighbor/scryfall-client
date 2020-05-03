@@ -1,6 +1,7 @@
 "use strict";
 
 import SingularEntity from "Models/singular-entity";
+import request from "Lib/api-request";
 
 import type List from "Models/list";
 import type { ApiResponse } from "Types/api-response";
@@ -12,89 +13,21 @@ interface CardResponse extends ApiResponse {
 
 type Color = "W" | "U" | "B" | "R" | "G";
 
-type Rarity = "common" | "uncommon" | "rare" | "mythic";
-
-type GameKind = "paper" | "arena" | "mtgo";
-
 type RelatedCardComponent =
   | "token"
   | "meld_part"
   | "meld_result"
   | "combo_piece";
 
-type LanguageCode =
-  | "en"
-  | "es"
-  | "fr"
-  | "de"
-  | "it"
-  | "pt"
-  | "ja"
-  | "ko"
-  | "ru"
-  | "zhs"
-  | "zht"
-  | "he"
-  | "la"
-  | "grc"
-  | "ar"
-  | "sa"
-  | "px";
-
 type Legality = "legal" | "not_legal" | "restricted" | "banned";
 
-type Layout =
-  | "normal" // A standard Magic card with one face
-  | "split" // A split-faced card
-  | "flip" // Cards that invert vertically with the flip keyword
-  | "transform" // Double-sided cards that transform
-  | "meld" // Cards with meld parts printed on the back
-  | "leveler" // Cards with Level Up
-  | "saga" // Saga-type cards
-  | "adventure" // Cards with an Adventure spell part
-  | "planar" // Plane and Phenomenon-type cards
-  | "scheme" // Scheme-type cards
-  | "vanguard" // Vanguard-type cards
-  | "token" // Token cards
-  | "double_faced_token" // Tokens with another token printed on the back
-  | "emblem" // Emblem cards
-  | "augment" // Cards with Augment
-  | "host" // Host-type cards
-  | "art_series" // Art Series collectable double-faced cards
-  | "double_sided"; // A Magic card with two sides that are unrelated
-
-type Frame =
-  | "1993" // The original Magic card frame, starting from Limited Edition Alpha.
-  | "1997" // The updated classic frame starting from Mirage block
-  | "2003" // The “modern” Magic card frame, introduced in Eighth Edition and Mirrodin block.
-  | "2015" // The holofoil-stamp Magic card frame, introduced in Magic 2015.
-  | "future"; // The frame used on cards from the future
-
-type FrameEffect =
-  | "legendary" // The cards have a legendary crown
-  | "miracle" // The miracle frame effect
-  | "nyxtouched" // The Nyx-touched frame effect
-  | "draft" // The draft-matters frame effect
-  | "devoid" // The Devoid frame effect
-  | "tombstone" // The Odyssey tombstone mark
-  | "colorshifted" // A colorshifted frame
-  | "inverted" // The FNM-style inverted frame
-  | "sunmoondfc" // The sun and moon transform marks
-  | "compasslanddfc" // The compass and land transform marks
-  | "originpwdfc" // The Origins and planeswalker transform marks
-  | "mooneldrazidfc" // The moon and Eldrazi transform marks
-  | "moonreversemoondfc" // The waxing and waning crescent moon transform marks
-  | "showcase" // A custom Showcase frame
-  | "extendedart" // An extended art frame
-  | "companion"; // The cards have a companion frame
-
 type ImageUris = {
-  png: URL;
-  border_crop: URL;
-  art_crop: URL;
-  large: URL;
-  normal: URL;
-  small: URL;
+  png: string;
+  border_crop: string;
+  art_crop: string;
+  large: string;
+  normal: string;
+  small: string;
 };
 
 type Prices = {
@@ -118,7 +51,7 @@ type Legalities = {
   brawl: Legality;
   duel: Legality;
   oldschool: Legality;
-  // TODO get rid of?
+  // allow arbitary new additions
   [prop: string]: string;
 };
 
@@ -128,7 +61,7 @@ type RelatedCard = {
   component: RelatedCardComponent; // A field explaining what role this card plays in this relationship, one of token, meld_part, meld_result, or combo_piece.
   name: string; // The name of this particular related card.
   type_line: string; // The type line of this card.
-  uri: URL; // A URI where you can retrieve a full object describing this card on Scryfall’s API.
+  uri: string; // A URI where you can retrieve a full object describing this card on Scryfall’s API.
 };
 
 type CardFace = {
@@ -155,8 +88,7 @@ type CardFace = {
 const SCRYFALL_CARD_BACK_IMAGE_URL =
   "https://img.scryfall.com/errors/missing.jpg";
 
-// TODO no any
-function formatKeysForError(obj: any) {
+function formatKeysForError(obj: Record<string, string>): string {
   return Object.keys(obj)
     .map(function (key) {
       return "`" + key + "`";
@@ -180,7 +112,7 @@ export default class Card extends SingularEntity {
   flavor_text: string; // The flavor text, if any.
   illustration_id: string; // A unique identifier for the card artwork that remains consistent across reprints. Newly spoiled cards may not have this field yet.
   image_uris: ImageUris; // An object listing available imagery for this card. See the Card Imagery article for more information.
-  layout: Layout; // A code for this card’s layout.
+  layout: string; // A code for this card’s layout.
   legalities: Legalities; // An object describing the legality of this card across play formats. Possible legalities are legal, not_legal, restricted, and banned.
   loyalty?: string; // This loyalty if any. Note that some cards have loyalties that are not numeric, such as X.
   mana_cost: string; // The mana cost for this card. This value will be any empty string "" if the cost is absent. Remember that per the game rules, a missing mana cost and a mana cost of {0} are different values. Multi-faced cards will report this value in card faces.
@@ -191,16 +123,16 @@ export default class Card extends SingularEntity {
   printed_name: string; // The localized name printed on this card, if any.
   printed_text: string; // The localized text printed on this card, if any.
   printed_type_line: string; // The localized type line printed on this card, if any.
-  prints_search_uri: URL; // A link to where you can begin paginating all re/prints for this card on Scryfall’s API.
-  rulings_uri: URL; // A link to this card’s rulings list on Scryfall’s API.
+  prints_search_uri: string; // A link to where you can begin paginating all re/prints for this card on Scryfall’s API.
+  rulings_uri: string; // A link to this card’s rulings list on Scryfall’s API.
   set: string; // This card’s set code.
-  set_uri: URL; // A link to this card’s set object on Scryfall’s API.
+  set_uri: string; // A link to this card’s set object on Scryfall’s API.
   toughness?: string; // This card’s toughness, if any. Note that some cards have toughnesses that are not numeric, such as *.
   type_line: string; // The type line of this card.
   watermark: string; // This card’s watermark, if any.
 
-  constructor(scryfallObject: CardResponse, config: ModelConfig) {
-    super(scryfallObject, config);
+  constructor(scryfallObject: CardResponse) {
+    super(scryfallObject);
 
     this.all_parts = scryfallObject.all_parts;
     this.artist = scryfallObject.artist;
@@ -278,15 +210,21 @@ export default class Card extends SingularEntity {
   }
 
   getRulings() {
-    return this._request(this.rulings_uri as URL);
+    return request({
+      endpoint: this.rulings_uri as string,
+    });
   }
 
   getSet() {
-    return this._request(this.set_uri as URL);
+    return request({
+      endpoint: this.set_uri as string,
+    });
   }
 
-  getPrints(): Promise<List> {
-    return this._request(this.prints_search_uri as URL);
+  getPrints(): Promise<any> {
+    return request({
+      endpoint: this.prints_search_uri as string,
+    });
   }
 
   isLegal(format?: string) {
@@ -313,49 +251,26 @@ export default class Card extends SingularEntity {
     return legality === "legal" || legality === "restricted";
   }
 
-  getImage(type?: keyof ImageUris) {
+  getImage(type: keyof ImageUris = "normal") {
     const imageObject = this.card_faces[0].image_uris;
 
     if (!imageObject) {
       throw new Error("Could not find image uris for card.");
     }
 
-    type = type || "normal";
-
-    if (!(type in imageObject)) {
-      throw new Error(
-        "`" +
-          type +
-          "` is not a valid type. Must be one of " +
-          formatKeysForError(imageObject) +
-          "."
-      );
-    }
-
     return imageObject[type];
   }
 
-  getBackImage(type?: keyof ImageUris) {
+  getBackImage(type: keyof ImageUris = "normal") {
     if (!this._isDoublesided) {
       return SCRYFALL_CARD_BACK_IMAGE_URL;
     }
 
-    type = type || "normal";
     const imageObject = this.card_faces[1].image_uris;
 
     if (!imageObject) {
       throw new Error(
         "An unexpected error occured when attempting to show back side of card."
-      );
-    }
-
-    if (!imageObject[type]) {
-      throw new Error(
-        "`" +
-          type +
-          "` is not a valid type. Must be one of " +
-          formatKeysForError(imageObject) +
-          "."
       );
     }
 
@@ -379,7 +294,9 @@ export default class Card extends SingularEntity {
 
     return Promise.all(
       this._tokens.map((token) => {
-        return this._request(token.uri as URL);
+        return request({
+          endpoint: token.uri as string,
+        });
       })
     ).then((tokens) => {
       if (tokens.length > 0) {

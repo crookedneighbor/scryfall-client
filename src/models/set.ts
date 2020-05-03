@@ -1,9 +1,9 @@
 "use strict";
 
 import SingularEntity from "Models/singular-entity";
+import request from "Lib/api-request";
 
 import type { ApiResponse } from "Types/api-response";
-import type { ModelConfig } from "Types/model-config";
 
 interface SetResponse extends ApiResponse {
   object: "set";
@@ -12,15 +12,17 @@ interface SetResponse extends ApiResponse {
 export default class Set extends SingularEntity {
   // Properties from https://scryfall.com/docs/api/sets
   // that the class actively uses
-  search_uri: URL; // A Scryfall API URI that you can request to begin paginating over the cards in this set.
+  search_uri: string; // A Scryfall API URI that you can request to begin paginating over the cards in this set.
 
-  constructor(scryfallObject: SetResponse, config: ModelConfig) {
-    super(scryfallObject, config);
+  constructor(scryfallObject: SetResponse) {
+    super(scryfallObject);
 
     this.search_uri = scryfallObject.search_uri;
   }
 
   getCards() {
-    return this._request(this.search_uri!);
+    return request({
+      endpoint: this.search_uri as string,
+    });
   }
 }
