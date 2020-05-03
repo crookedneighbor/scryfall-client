@@ -6,7 +6,5 @@ function createEmojiFunction(converter: string) {
   };
 }
 
-export default {
-  slack: createEmojiFunction(":mana-$1$3:"),
-  discord: createEmojiFunction(":mana$1$3:"),
-};
+export const slack = createEmojiFunction(":mana-$1$3:");
+export const discord = createEmojiFunction(":mana$1$3:");

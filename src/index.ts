@@ -1,26 +1,44 @@
 "use strict";
 
 import request from "Lib/api-request";
+import {
+  setTaskDelayTime,
+  resetTaskDelayTime,
+} from "Lib/api-request/enque-task";
 import wrapScryfallResponse, {
   setTextTransform,
+  resetTextTransform,
 } from "Lib/wrap-scryfall-response";
+import {
+  slack as slackTransformer,
+  discord as discordTransformer,
+} from "Lib/convert-symbols-to-emoji";
 
 import { TextTransformFunction } from "Types/text-transform";
 
-type ScryfallClientOptions = {
-  textTransformer?: (text: string) => string;
-  convertSymbolsToSlackEmoji?: boolean;
-  convertSymbolsToDiscordEmoji?: boolean;
-  delayBetweenRequests?: number;
-};
-
 class ScryfallClient {
-  constructor(options?: ScryfallClientOptions) {
-    // this._request = request;
-  }
-
   static setTextTransform(func: TextTransformFunction): void {
     setTextTransform(func);
+  }
+
+  static slackify() {
+    ScryfallClient.setTextTransform(slackTransformer);
+  }
+
+  static discordify() {
+    ScryfallClient.setTextTransform(discordTransformer);
+  }
+
+  static resetTextTransform(): void {
+    resetTextTransform();
+  }
+
+  static setApiRequestDelayTime(waitTime: number): void {
+    setTaskDelayTime(waitTime);
+  }
+
+  static resetApiRequestDelayTime(): void {
+    resetTaskDelayTime();
   }
 
   get(url: string, query?: Record<string, any>) {

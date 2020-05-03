@@ -5,18 +5,25 @@ const DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME = 100;
 
 let taskCurrentlyInProgress = false;
 let queue: Task[] = [];
+let delayTime = DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME;
 
 export function clearQueue(): void {
   queue = [];
   taskCurrentlyInProgress = false;
 }
 
-function delayForScryfallDesignatedTime(
-  waitTime = DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME
-) {
+function delayForScryfallDesignatedTime() {
   return new Promise(function (resolve) {
-    setTimeout(resolve, waitTime);
+    setTimeout(resolve, delayTime);
   });
+}
+
+export function setTaskDelayTime(time: number): void {
+  delayTime = time;
+}
+
+export function resetTaskDelayTime(): void {
+  delayTime = DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME;
 }
 
 function checkForEnquedTasks(recursiveCheck?: boolean) {
