@@ -1,6 +1,6 @@
 "use strict";
 
-import ScryfallClient = require("../../src/");
+import client = require("../../src/");
 import fixtures from "Fixtures";
 import Card from "Models/card";
 import List from "Models/list";
@@ -19,12 +19,6 @@ const beastialMenace = "73c16134-692d-4fd1-bffa-f9342113cbd8";
 const originalProsh = "fc411c52-3ee2-4fe4-983d-3fa43b516237";
 
 describe("scryfallClient", function () {
-  let client: ScryfallClient;
-
-  beforeEach(function () {
-    client = new ScryfallClient();
-  });
-
   describe("get", function () {
     it("makes a request to scryfall", function () {
       return client.get("cards/random").then((card) => {
@@ -326,11 +320,11 @@ describe("scryfallClient", function () {
 
   describe("text transformations", function () {
     afterEach(() => {
-      ScryfallClient.resetTextTransform();
+      client.resetTextTransform();
     });
 
     it("can set custom text transform function", function () {
-      ScryfallClient.setTextTransform((text: string) => {
+      client.setTextTransform((text: string) => {
         return text.toUpperCase();
       });
 
@@ -340,7 +334,7 @@ describe("scryfallClient", function () {
     });
 
     it("can set text transform to slack emoji", function () {
-      ScryfallClient.slackify();
+      client.slackify();
 
       return client.get(`cards/${originalProsh}`).then((card) => {
         expect(card.mana_cost).toBe(":mana-3::mana-B::mana-R::mana-G:");
@@ -348,7 +342,7 @@ describe("scryfallClient", function () {
     });
 
     it("can set text transform to discord emoji", function () {
-      ScryfallClient.discordify();
+      client.discordify();
 
       return client.get(`cards/${originalProsh}`).then((card) => {
         expect(card.mana_cost).toBe(":mana3::manaB::manaR::manaG:");

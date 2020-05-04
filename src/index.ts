@@ -6,8 +6,8 @@ import {
   resetTaskDelayTime,
 } from "Lib/api-request/enque-task";
 import wrapScryfallResponse, {
-  setTextTransform,
-  resetTextTransform,
+  setTextTransform as wrapTransform,
+  resetTextTransform as wrapReset,
 } from "Lib/wrap-scryfall-response";
 import {
   slack as slackTransformer,
@@ -16,57 +16,69 @@ import {
 
 import { TextTransformFunction } from "Types/text-transform";
 
-class ScryfallClient {
-  static setTextTransform(func: TextTransformFunction): void {
-    setTextTransform(func);
-  }
-
-  static slackify() {
-    ScryfallClient.setTextTransform(slackTransformer);
-  }
-
-  static discordify() {
-    ScryfallClient.setTextTransform(discordTransformer);
-  }
-
-  static resetTextTransform(): void {
-    resetTextTransform();
-  }
-
-  static setApiRequestDelayTime(waitTime: number): void {
-    setTaskDelayTime(waitTime);
-  }
-
-  static resetApiRequestDelayTime(): void {
-    resetTaskDelayTime();
-  }
-
-  get(url: string, query?: Record<string, any>) {
-    return request({
-      endpoint: url,
-      method: "get",
-      query,
-    });
-  }
-
-  post(url: string, body?: Record<string, any>) {
-    return request({
-      endpoint: url,
-      method: "post",
-      body,
-    });
-  }
-
-  getSymbolUrl(symbol: string) {
-    const match = symbol.match(/{?(.)}?/);
-    const character = match ? match[1] : symbol;
-
-    return "https://img.scryfall.com/symbology/" + character + ".svg";
-  }
-
-  wrap(body: any) {
-    return wrapScryfallResponse(body);
-  }
+function setTextTransform(func: TextTransformFunction): void {
+  wrapTransform(func);
 }
 
-export = ScryfallClient;
+function slackify(): void {
+  wrapTransform(slackTransformer);
+}
+
+function discordify(): void {
+  wrapTransform(discordTransformer);
+}
+
+function resetTextTransform(): void {
+  wrapReset();
+}
+
+function setApiRequestDelayTime(waitTime: number): void {
+  setTaskDelayTime(waitTime);
+}
+
+function resetApiRequestDelayTime(): void {
+  resetTaskDelayTime();
+}
+
+// TODO return model type
+function get(url: string, query?: Record<string, any>) {
+  return request({
+    endpoint: url,
+    method: "get",
+    query,
+  });
+}
+
+// TODO return model type
+function post(url: string, body?: Record<string, any>) {
+  return request({
+    endpoint: url,
+    method: "post",
+    body,
+  });
+}
+
+function getSymbolUrl(symbol: string): string {
+  const match = symbol.match(/{?(.)}?/);
+  const character = match ? match[1] : symbol;
+
+  return "https://img.scryfall.com/symbology/" + character + ".svg";
+}
+
+// TODO return model type
+function wrap(body: any) {
+  return wrapScryfallResponse(body);
+}
+
+export = {
+  setTaskDelayTime,
+  resetTaskDelayTime,
+  setTextTransform,
+  slackify,
+  discordify,
+  resetTextTransform,
+  getSymbolUrl,
+  get,
+  post,
+  wrap,
+};

@@ -8,14 +8,17 @@ A simple (unofficial) wrapper for the [Scryfall API](https://scryfall.com/docs/a
 npm install --save scryfall-client
 ```
 
+The module is a singleton object that can make requests to the Scryfall API.
+
+```js
+var scryfall = require("scryfall-client");
+```
+
 # Basic Usage
 
 You can make a get request to any of the [API endpoints](https://scryfall.com/docs/api). It will return a Promise that resolves with the result.
 
 ```js
-var ScryfallClient = require("scryfall-client");
-var scryfall = new ScryfallClient();
-
 scryfall.get("cards/random").then(function (card) {
   card; // a random card
 });
@@ -100,20 +103,14 @@ scryfall.getSymbolUrl("W"); // 'https://img.scryfall.com/symbology/W.svg'
 scryfall.getSymbolUrl("{U}"); // 'https://img.scryfall.com/symbology/U.svg'
 ```
 
-# Additional Options
-
-You can pass in an options object when creating your client.
-
-## `textTransformer`
+## `setTextTransformer`
 
 A function that yields the text of the fields of the card, whatever the function returns will replace the text.
 
 The main use case is for transforming the mana symbol notation. You can use the `getSymbolUrl` method in conjunction with the textTransformer function to embed the mana symbols on a web page.
 
 ```js
-var ScryfallClient = require("scryfall-client");
-var scryfall = new ScryfallClient({
-  textTransformer: function (text) {
+scryfall.setTextTransform(function (text) {
     var matches = text.match(/{(.)(\/(.))?}/g);
 
     if (matches) {
@@ -143,49 +140,44 @@ scryfall
 
 It is probably easiest to copy the function above as is, and replace the second argument in `text.replace` with your own string where `$1` is the first match and `$3` is the second match if the mana symbols is a split symbol (such as with hybrid mana).
 
-If a `textTransformer` option is provided, it will take precedence over `convertSymbolsToSlackEmoji` and `convertSymbolsToDiscordEmoji`.
-
-## `convertSymbolsToSlackEmoji`
+## `slackify`
 
 If using this module within Slack, you may want the mana symbols converted automatically to the [emoji that Scryfall provides](https://scryfall.com/docs/slack-bot#manamoji-support).
 
 ```js
-var ScryfallClient = require("scryfall-client");
-var scryfall = new ScryfallClient({
-  convertSymbolsToSlackEmoji: true,
-});
+scryfall.slackify();
 
 scryfall.get("cards/random").then(function (card) {
   card.mana_cost; // ':mana-2::mana-G:
 });
 ```
 
-If a `convertSymbolsToSlackEmoji` option is provided, it will take precedence over `convertSymbolsToDiscordEmoji`.
-
-## `convertSymbolsToDiscordEmoji`
+## `discordify`
 
 If using this module within Discord, you may want the mana symbols converted automatically to the [emoji that Scryfall provides](https://scryfall.com/docs/discord-bot#manamoji-usage).
 
 ```js
-var ScryfallClient = require("scryfall-client");
-var scryfall = new ScryfallClient({
-  convertSymbolsToDiscordEmoji: true,
-});
+scryfall.discordify();
 
 scryfall.get("cards/random").then(function (card) {
   card.mana_cost; // ':mana2::manaG:
 });
 ```
 
-## `delayBetweenRequests`
+## `resetTextTransform`
+
+To reset the text transformation to the defaults, use `resetTextTransform`.
+
+```js
+scryfall.resetTextTransform();
+```
+
+## `setApiRequestDelayTime`
 
 By default, there is about 50-100 milliseceond delay between requests ([as recomended by Scryfall](https://scryfall.com/docs/api#rate-limits-and-good-citizenship)). You can configure this value.
 
 ```js
-var ScryfallClient = require("scryfall-client");
-var scryfall = new ScryfallClient({
-  delayBetweenRequests: 500,
-});
+scryfall.setApiRequestDelayTime(500);
 
 scryfall
   .get("cards/random")
@@ -198,6 +190,14 @@ scryfall
   .then(function (card) {
     // do something with card
   });
+```
+
+## `resetApiRequestDelayTime`
+
+To reset the delay time back to the default, use `resetApiRequestDelayTime`.
+
+```js
+scryfall.resetApiRequestDelayTime();
 ```
 
 # API Objects
@@ -507,15 +507,19 @@ lookUpCardInDatabase(someId).then(function (cardData) {
 
 # Browser Support
 
-This code is intentionally written in ES5 without any transpilers so that it can be built for the browser without the need to use transpilers such as Babel.
+The source code is written in Typescript and transpiled to ES5.
 
-The module does make use of the [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object, so if this SDK is used in a browser that does not support promises, it will need to be polyfilled in your script.
+The module makes use of the [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) object, so if this SDK is used in a browser that does not support promises, it will need to be polyfilled in your script.
 
 # Contributing Guidelines
 
 ## Code Style
 
-The code base uses [Standard](https://www.npmjs.com/package/standard).
+The code base uses [Prettier](https://prettier.io/). Run:
+
+```
+npm run pretty
+```
 
 ## Testing
 

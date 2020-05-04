@@ -1,3 +1,17 @@
+# unreleased
+
+- Add typescript types
+- Add `setTextTransform` method to process text from request responses
+- Add `slackify` method to automatically convert mana symobls into slack emoji text
+- Add `discordify` method to automatically convert mana symobls into slack emoji text
+- Add `resetTextTransform` method to reset text transformation
+- Add `setApiRequestDelayTime` method to set delay time between requests
+- Add `resetApiRequestDelayTime` method to reset delay time between requests to default (100 milliseconds)
+
+_Breaking Changes_
+
+- Switch from class style module to singleton object
+
 # 0.13.0
 
 - Fallback to lookup tokens from other prints when card has no tokens but rules text mentions tokens
