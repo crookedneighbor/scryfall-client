@@ -11,5 +11,6 @@ export type ObjectKind =
 
 export type ApiResponse = {
   object: ObjectKind;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [property: string]: any;
 };

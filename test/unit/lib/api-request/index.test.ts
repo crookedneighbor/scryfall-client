@@ -2,7 +2,6 @@ import apiRequest from "Lib/api-request";
 import sendRequest from "Lib/api-request/send-request";
 import getUrl from "Lib/api-request/get-url";
 import enqueTask from "Lib/api-request/enque-task";
-import Card from "Models/card";
 import ScryfallError from "Models/scryfall-error";
 import wrapScryfallResponse from "Lib/wrap-scryfall-response";
 import fixtures from "Fixtures";

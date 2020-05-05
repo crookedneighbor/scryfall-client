@@ -1,4 +1,3 @@
-import ScryfallError from "Models/scryfall-error";
 import Task, { TaskFunction, TaskPromise } from "./task";
 
 const DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME = 100;
@@ -12,7 +11,7 @@ export function clearQueue(): void {
   taskCurrentlyInProgress = false;
 }
 
-function delayForScryfallDesignatedTime() {
+function delayForScryfallDesignatedTime(): Promise<void> {
   return new Promise(function (resolve) {
     setTimeout(resolve, delayTime);
   });
@@ -26,7 +25,7 @@ export function resetTaskDelayTime(): void {
   delayTime = DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME;
 }
 
-function checkForEnquedTasks(recursiveCheck?: boolean) {
+function checkForEnquedTasks(recursiveCheck?: boolean): void {
   if (queue.length > 0) {
     const nextTask = queue.shift();
 

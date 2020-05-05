@@ -41,6 +41,7 @@ function resetApiRequestDelayTime(): void {
 }
 
 // TODO return model type
+// TODO no any
 function get(url: string, query?: Record<string, any>) {
   return request({
     endpoint: url,
@@ -50,6 +51,7 @@ function get(url: string, query?: Record<string, any>) {
 }
 
 // TODO return model type
+// TODO no any
 function post(url: string, body?: Record<string, any>) {
   return request({
     endpoint: url,
@@ -66,13 +68,14 @@ function getSymbolUrl(symbol: string): string {
 }
 
 // TODO return model type
+// TODO no any
 function wrap(body: any) {
   return wrapScryfallResponse(body);
 }
 
 export = {
-  setTaskDelayTime,
-  resetTaskDelayTime,
+  setApiRequestDelayTime,
+  resetApiRequestDelayTime,
   setTextTransform,
   slackify,
   discordify,

@@ -3,9 +3,7 @@
 import SingularEntity from "Models/singular-entity";
 import request from "Lib/api-request";
 
-import type List from "Models/list";
 import type { ApiResponse } from "Types/api-response";
-import type { ModelConfig } from "Types/model-config";
 
 interface CardResponse extends ApiResponse {
   object: "card";
@@ -209,25 +207,28 @@ export default class Card extends SingularEntity {
       this.layout === "transform" || this.layout === "double_faced_token";
   }
 
+  // TODO returns a ruligns list
   getRulings() {
     return request({
       endpoint: this.rulings_uri as string,
     });
   }
 
+  // TODO rename Set to MagicSet
   getSet() {
     return request({
       endpoint: this.set_uri as string,
     });
   }
 
+  // TODO should be a list
   getPrints(): Promise<any> {
     return request({
       endpoint: this.prints_search_uri as string,
     });
   }
 
-  isLegal(format?: string) {
+  isLegal(format?: string): boolean {
     if (!format) {
       throw new Error(
         "Must provide format for checking legality. Use one of " +
@@ -236,7 +237,7 @@ export default class Card extends SingularEntity {
       );
     }
 
-    const legality = this.legalities![format];
+    const legality = this.legalities[format];
 
     if (!legality) {
       throw new Error(
@@ -251,7 +252,7 @@ export default class Card extends SingularEntity {
     return legality === "legal" || legality === "restricted";
   }
 
-  getImage(type: keyof ImageUris = "normal") {
+  getImage(type: keyof ImageUris = "normal"): string {
     const imageObject = this.card_faces[0].image_uris;
 
     if (!imageObject) {
@@ -261,7 +262,7 @@ export default class Card extends SingularEntity {
     return imageObject[type];
   }
 
-  getBackImage(type: keyof ImageUris = "normal") {
+  getBackImage(type: keyof ImageUris = "normal"): string {
     if (!this._isDoublesided) {
       return SCRYFALL_CARD_BACK_IMAGE_URL;
     }
@@ -277,8 +278,8 @@ export default class Card extends SingularEntity {
     return imageObject[type];
   }
 
-  getPrice(type?: keyof Prices) {
-    const prices = this.prices!;
+  getPrice(type?: keyof Prices): string {
+    const prices = this.prices;
 
     if (!type) {
       return prices.usd || prices.usd_foil || prices.eur || prices.tix || "";
@@ -317,7 +318,7 @@ export default class Card extends SingularEntity {
     });
   }
 
-  getTaggerUrl() {
+  getTaggerUrl(): string {
     return (
       "https://tagger.scryfall.com/card/" +
       this.set +

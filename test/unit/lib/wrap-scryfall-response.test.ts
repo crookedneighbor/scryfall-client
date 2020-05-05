@@ -6,12 +6,8 @@ import wrapScryfallResponse, {
 } from "Lib/wrap-scryfall-response";
 import fixtures from "Fixtures";
 import Card from "Models/card";
-import Catalog from "Models/catalog";
-import List from "Models/list";
 import Set from "Models/set";
 import GenericScryfallResponse from "Models/generic-scryfall-response";
-
-import type { ModelConfig } from "Types/model-config";
 
 describe("wrapScryfallResponse", function () {
   afterEach(() => {

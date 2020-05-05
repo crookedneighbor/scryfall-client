@@ -7,8 +7,6 @@ import Set from "Models/set";
 import GenericScryfallResponse from "Models/generic-scryfall-response";
 
 import { TextTransformFunction } from "Types/text-transform";
-import type { ModelConfig } from "Types/model-config";
-import type { ApiResponse } from "Types/api-response";
 
 let transformFunction: TextTransformFunction;
 
@@ -26,6 +24,8 @@ export function resetTextTransform(): void {
 
 resetTextTransform();
 
+// TODO not any
+// TODO returns a model
 export default function wrapScryfallResponse(response: any) {
   // TODO not any
   let wrappedResponse: any;
@@ -53,6 +53,7 @@ export default function wrapScryfallResponse(response: any) {
   }
 
   if (response.object === "list") {
+    // TODO not any, kind of model
     wrappedResponse.forEach(function (object: any, location: number) {
       wrappedResponse[location] = wrapScryfallResponse(object);
     });

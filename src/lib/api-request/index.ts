@@ -12,6 +12,7 @@ type RequestOptions = {
   query?: Record<string, string>;
 };
 
+// TODO no any
 function wrapFunction(body: ApiResponse): any {
   // TODO
   // const wrapOptions = {

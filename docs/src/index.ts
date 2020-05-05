@@ -2,10 +2,8 @@
 
 // TODO change this to import require when converted
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const ScryfallClient = require("../../src/");
+const scryfall = require("../../src/");
 import debounce from "./debounce";
-
-const scryfall = new ScryfallClient();
 
 const search = document.querySelector(
   "#search-wrapper input"

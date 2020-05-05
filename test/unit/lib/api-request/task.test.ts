@@ -1,13 +1,6 @@
 import Task from "Lib/api-request/task";
-import * as ExtendedPromise from "@braintree/extended-promise";
 
 describe("Task", () => {
-  it("takes a function", () => {
-    const t = new Task(() => {
-      return "foo";
-    });
-  });
-
   describe("getPromise", () => {
     it("returns the extended promise", () => {
       const t = new Task(() => {

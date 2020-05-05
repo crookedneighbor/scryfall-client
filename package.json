@@ -19,9 +19,9 @@
     "pretty": "prettier --write .",
     "posttest": "npm run lint",
     "test": "jest",
-    "test:unit": "jest test/unit/**/*.ts",
-    "test:integration": "jest test/integration/*.ts",
-    "test:publishing": "jest test/publishing/*.ts",
+    "test:unit": "jest test/unit/",
+    "test:integration": "jest test/integration/",
+    "test:publishing": "jest test/publishing/",
     "test:all": "npm run lint && npm run test:unit && npm run test:integration && npm run test:publishing"
   },
   "keywords": [

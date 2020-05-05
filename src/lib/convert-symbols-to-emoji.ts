@@ -1,6 +1,6 @@
-"use strict";
+import type { TextTransformFunction } from "Types/text-transform";
 
-function createEmojiFunction(converter: string) {
+function createEmojiFunction(converter: string): TextTransformFunction {
   return function (text: string) {
     return text.replace(/{(.)(\/(.))?}/g, converter);
   };

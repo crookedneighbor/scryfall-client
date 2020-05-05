@@ -24,8 +24,8 @@ describe("built file (be patient, this can take a while)", function () {
 
     pathToBuild = path.resolve(config.output.path, config.output.filename);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     webpack(config, (err: Error, stats: any) => {
-      const errorMessage = err || stats.hasErrors();
       if (err || stats.hasErrors()) {
         console.log(stats.toJson("minimal"));
         done(new Error("something went wrong"));

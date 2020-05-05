@@ -1,6 +1,7 @@
 "use strict";
 
 import SingularEntity from "Models/singular-entity";
+import type List from "Models/list";
 import request from "Lib/api-request";
 
 import type { ApiResponse } from "Types/api-response";
@@ -20,7 +21,7 @@ export default class Set extends SingularEntity {
     this.search_uri = scryfallObject.search_uri;
   }
 
-  getCards() {
+  getCards(): Promise<List> {
     return request({
       endpoint: this.search_uri as string,
     });

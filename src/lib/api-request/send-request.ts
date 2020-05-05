@@ -1,8 +1,10 @@
 import superagent = require("superagent");
+import type { SuperAgentRequest } from "superagent";
 import ScryfallError from "Models/scryfall-error";
 
 import type { ApiResponse } from "Types/api-response";
 
+// TODO no any
 type PostBody = Record<string, any>;
 
 interface RequestOptions {
@@ -11,11 +13,11 @@ interface RequestOptions {
   body?: PostBody;
 }
 
-function get(url: string) {
+function get(url: string): SuperAgentRequest {
   return superagent.get(url);
 }
 
-function post(url: string, body: PostBody) {
+function post(url: string, body: PostBody): SuperAgentRequest {
   return superagent.post(url).send(body);
 }
 

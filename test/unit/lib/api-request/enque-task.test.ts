@@ -22,11 +22,13 @@ describe("enqueTask", () => {
   });
 
   it("waits to start subsequent tasks with delay until the previous task has finished", async () => {
+    expect.assertions(7);
+
     const delayedPromise = new ExtendedPromise();
     const delayedTask = jest.fn().mockReturnValue(delayedPromise);
     const task = jest.fn().mockReturnValue("result");
 
-    const promise1 = enqueTask(task);
+    const promise1 = enqueTask(delayedTask);
     const promise2 = enqueTask(task);
     const promise3 = enqueTask(task);
 

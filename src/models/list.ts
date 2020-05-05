@@ -3,7 +3,6 @@
 import ArrayLike from "./array-like";
 import request from "Lib/api-request";
 import type { ApiResponse } from "Types/api-response";
-import type { ModelConfig } from "Types/model-config";
 
 interface ListResponse extends ApiResponse {
   object: "list";
@@ -30,7 +29,7 @@ export default class List extends ArrayLike {
     this.warnings = scrfallResponse.warnings;
   }
 
-  next() {
+  next(): Promise<List> {
     if (!this.has_more || !this.next_page) {
       return Promise.reject(new Error("No additional pages."));
     }

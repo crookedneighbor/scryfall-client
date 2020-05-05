@@ -82,7 +82,7 @@ describe("scryfallClient", function () {
             q: "format:standard r:r",
           })
           .then(function (list) {
-            totalCards = list.total_cards!;
+            totalCards = list.total_cards;
 
             return collectCards(list);
           })
@@ -162,7 +162,7 @@ describe("scryfallClient", function () {
           let id: string;
 
           return client.get(`cards/${windfall}`).then((card) => {
-            id = card.id!;
+            id = card.id;
 
             const image = card.getImage();
             expect(typeof image).toBe("string");
@@ -175,7 +175,7 @@ describe("scryfallClient", function () {
           let id: string;
 
           return client.get(`cards/${docentOfPerfection}`).then((card) => {
-            id = card.id!;
+            id = card.id;
 
             const image = card.getImage();
             expect(typeof image).toBe("string");
@@ -188,7 +188,7 @@ describe("scryfallClient", function () {
           let id: string;
 
           return client.get(`cards/${brunaFadingLight}`).then((card) => {
-            id = card.id!;
+            id = card.id;
 
             const image = card.getImage();
             expect(typeof image).toBe("string");
@@ -201,7 +201,7 @@ describe("scryfallClient", function () {
           let id: string;
 
           return client.get(`cards/${brisela}`).then((card) => {
-            id = card.id!;
+            id = card.id;
 
             const image = card.getImage();
             expect(typeof image).toBe("string");
@@ -228,7 +228,7 @@ describe("scryfallClient", function () {
           let id: string;
 
           return client.get(`cards/${docentOfPerfection}`).then((card) => {
-            id = card.id!;
+            id = card.id;
 
             const image = card.getBackImage();
             expect(image).toEqual(expect.stringContaining("img.scryfall.com"));

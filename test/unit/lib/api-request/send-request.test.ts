@@ -2,49 +2,47 @@ import sendRequest from "Lib/api-request/send-request";
 import ScryfallError from "Models/scryfall-error";
 import superagent = require("superagent");
 
+import { mocked } from "ts-jest/utils";
+
 let mockResponse: {
   text: string;
 };
 
 jest.mock("superagent", () => {
   return {
-    // leave these as non-spies so we can inspect the call counts
-    // and have them get cleaned up without issue
-    post: function () {
-      return this;
-    },
-    get: function () {
-      return this;
-    },
-    send: function () {
-      return this;
-    },
+    post: jest.fn().mockReturnThis(),
+    get: jest.fn().mockReturnThis(),
+    send: jest.fn().mockReturnThis(),
     set: jest.fn().mockReturnThis(),
     then: jest.fn().mockImplementation((callback) => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         return resolve(callback(mockResponse));
       });
     }),
   };
 });
 
-describe("sendRequest", () => {
-  let getSpy: jest.SpyInstance;
-  let postSpy: jest.SpyInstance;
-  let sendSpy: jest.SpyInstance;
+const getSpy = mocked(superagent.get);
+const postSpy = mocked(superagent.post);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const sendSpy = mocked((superagent as any).send);
 
+describe("sendRequest", () => {
   beforeEach(() => {
-    getSpy = jest.spyOn(superagent, "get").mockReturnThis();
-    postSpy = jest.spyOn(superagent, "post").mockReturnThis();
-    sendSpy = jest.spyOn(superagent as any, "send").mockReturnThis();
     mockResponse = { text: "{}" };
+  });
+
+  afterEach(() => {
+    getSpy.mockClear();
+    postSpy.mockClear();
+    sendSpy.mockClear();
   });
 
   it("sends a get request", () => {
     return sendRequest({
       method: "get",
       url: "https://example.com",
-    }).then((response) => {
+    }).then(() => {
       expect(getSpy).toBeCalledTimes(1);
       expect(getSpy).toBeCalledWith("https://example.com");
     });
@@ -57,7 +55,7 @@ describe("sendRequest", () => {
       method: "post",
       url: "https://example.com",
       body,
-    }).then((response) => {
+    }).then(() => {
       expect(postSpy).toBeCalledTimes(1);
       expect(postSpy).toBeCalledWith("https://example.com");
       expect(sendSpy).toBeCalledTimes(1);
@@ -69,7 +67,7 @@ describe("sendRequest", () => {
     return sendRequest({
       method: "post",
       url: "https://example.com",
-    }).then((response) => {
+    }).then(() => {
       expect(postSpy).toBeCalledTimes(0);
       expect(getSpy).toBeCalledTimes(1);
       expect(getSpy).toBeCalledWith("https://example.com");
