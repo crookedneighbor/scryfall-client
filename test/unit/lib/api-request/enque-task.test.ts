@@ -34,7 +34,7 @@ describe("enqueTask", () => {
 
     expect(Task.prototype.start).toBeCalledTimes(1);
 
-    promise1.resolve("delayed result");
+    delayedPromise.resolve("delayed result");
 
     const res1 = await promise1;
     expect(res1).toBe("delayed result");

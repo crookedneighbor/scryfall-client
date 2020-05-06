@@ -9,7 +9,7 @@ describe("Task", () => {
 
       expect.assertions(1);
 
-      const promise = t.getPromise().then((result: string) => {
+      const promise = t.getPromise().then((result) => {
         expect(result).toBe("foo");
       });
 

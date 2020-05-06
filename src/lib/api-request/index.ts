@@ -36,39 +36,36 @@ export default function sendRequestToApi(
 ): Promise<any> {
   const url = getUrl(options.endpoint, options.query);
 
-  return (
-    enqueTask(() => {
-      return sendRequest({
-        url,
-        method: options.method,
-        body: options.body,
-      });
-    })
-      .then((response: ApiResponse) => {
-        try {
-          return wrapFunction(response);
-        } catch (err) {
-          return Promise.reject(
-            new ScryfallError({
-              message:
-                "Something went wrong when wrapping the response from Scryfall",
-              thrownError: err,
-            })
-          );
-        }
-      })
-      // TODO no any
-      .catch((err: any) => {
-        if (!(err instanceof ScryfallError)) {
-          err = new ScryfallError({
+  return enqueTask(() => {
+    return sendRequest({
+      url,
+      method: options.method,
+      body: options.body,
+    });
+  })
+    .then((response) => {
+      try {
+        return wrapFunction(response as ApiResponse);
+      } catch (err) {
+        return Promise.reject(
+          new ScryfallError({
             message:
-              "An unexpected error occurred when requesting resources from Scryfall.",
-            status: err.status,
-            originalError: err,
-          });
-        }
+              "Something went wrong when wrapping the response from Scryfall",
+            thrownError: err,
+          })
+        );
+      }
+    })
+    .catch((err) => {
+      if (!(err instanceof ScryfallError)) {
+        err = new ScryfallError({
+          message:
+            "An unexpected error occurred when requesting resources from Scryfall.",
+          status: err.status,
+          originalError: err,
+        });
+      }
 
-        return Promise.reject(err);
-      })
-  );
+      return Promise.reject(err);
+    });
 }
