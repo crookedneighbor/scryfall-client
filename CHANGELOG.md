@@ -11,6 +11,7 @@
 _Breaking Changes_
 
 - Switch from class style module to singleton object
+- Rename `Set` model to `MagicSet` to avoid collision with global Set object
 
 # 0.13.0
 

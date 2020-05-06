@@ -214,7 +214,6 @@ export default class Card extends SingularEntity {
     });
   }
 
-  // TODO rename Set to MagicSet
   getSet() {
     return request({
       endpoint: this.set_uri as string,

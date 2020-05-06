@@ -3,7 +3,7 @@
 import Card from "Models/card";
 import Catalog from "Models/catalog";
 import List from "Models/list";
-import Set from "Models/set";
+import MagicSet from "Models/magic-set";
 import GenericScryfallResponse from "Models/generic-scryfall-response";
 
 import { TextTransformFunction } from "Types/text-transform";
@@ -47,7 +47,7 @@ export default function wrapScryfallResponse(response: any) {
   } else if (response.object === "catalog") {
     wrappedResponse = new Catalog(response);
   } else if (response.object === "set") {
-    wrappedResponse = new Set(response);
+    wrappedResponse = new MagicSet(response);
   } else {
     wrappedResponse = new GenericScryfallResponse(response);
   }

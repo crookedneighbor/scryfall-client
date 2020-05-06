@@ -6,7 +6,7 @@ import wrapScryfallResponse, {
 } from "Lib/wrap-scryfall-response";
 import fixtures from "Fixtures";
 import Card from "Models/card";
-import Set from "Models/set";
+import MagicSet from "Models/magic-set";
 import GenericScryfallResponse from "Models/generic-scryfall-response";
 
 describe("wrapScryfallResponse", function () {
@@ -52,10 +52,10 @@ describe("wrapScryfallResponse", function () {
     expect(wrappedResponse.length).toBe(20);
   });
 
-  it("wraps set responses in Set", function () {
+  it("wraps set responses in MagicSet", function () {
     const wrappedResponse = wrapScryfallResponse(fixtures.set);
 
-    expect(wrappedResponse).toBeInstanceOf(Set);
+    expect(wrappedResponse).toBeInstanceOf(MagicSet);
     expect(wrappedResponse.code).toBe("chk");
   });
 

@@ -1,6 +1,6 @@
 "use strict";
 
-import Set from "Models/set";
+import MagicSet from "Models/magic-set";
 import Card from "Models/card";
 import wrapScryfallResponse from "Lib/wrap-scryfall-response";
 import request from "Lib/api-request";
@@ -11,7 +11,7 @@ import { mocked } from "ts-jest/utils";
 jest.mock("Lib/api-request");
 
 describe("Set", function () {
-  let fakeRequest: jest.SpyInstance, set: Set;
+  let fakeRequest: jest.SpyInstance, set: MagicSet;
 
   beforeEach(() => {
     fakeRequest = mocked(request);

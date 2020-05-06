@@ -4,7 +4,7 @@ import client = require("../../src/");
 import fixtures from "Fixtures";
 import Card from "Models/card";
 import List from "Models/list";
-import Set from "Models/set";
+import MagicSet from "Models/magic-set";
 
 jest.setTimeout(90000);
 
@@ -96,7 +96,7 @@ describe("scryfallClient", function () {
       it("can get cards from set", function () {
         return client
           .get("sets/dom")
-          .then((set: Set) => {
+          .then((set: MagicSet) => {
             expect(set.object).toBe("set");
 
             return set.getCards();
@@ -127,7 +127,7 @@ describe("scryfallClient", function () {
           .then((card) => {
             return card.getSet();
           })
-          .then((set: Set) => {
+          .then((set: MagicSet) => {
             expect(set.object).toBe("set");
           });
       });

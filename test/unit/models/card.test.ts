@@ -2,7 +2,7 @@
 
 import Card from "Models/card";
 import List from "Models/list";
-import Set from "Models/set";
+import MagicSet from "Models/magic-set";
 import request from "Lib/api-request";
 import wrapScryfallResponse from "Lib/wrap-scryfall-response";
 import fixtures from "Fixtures";
@@ -74,7 +74,7 @@ describe("Card", function () {
     });
 
     it("gets set for card", function () {
-      return card.getSet().then((set: Set) => {
+      return card.getSet().then((set: MagicSet) => {
         expect(typeof fixtures.card.set_uri).toBe("string");
         expect(request).toBeCalledWith({ endpoint: fixtures.card.set_uri });
         expect(set.code).toBe(fixtures.set.code);
