@@ -3,6 +3,7 @@
 import Card from "Models/card";
 import List from "Models/list";
 import MagicSet from "Models/magic-set";
+import GenericScryfallResponse from "Models/generic-scryfall-response";
 import request from "Lib/api-request";
 import wrapScryfallResponse from "Lib/wrap-scryfall-response";
 import fixtures from "Fixtures";
@@ -56,14 +57,18 @@ describe("Card", function () {
     });
 
     it("gets rulings for card", function () {
-      return card.getRulings().then((rulings: List) => {
-        expect(typeof fixtures.card.rulings_uri).toBe("string");
-        expect(request).toBeCalledTimes(1);
-        expect(request).toBeCalledWith({
-          endpoint: fixtures.card.rulings_uri,
+      return card
+        .getRulings()
+        .then((rulings: List<GenericScryfallResponse>) => {
+          expect(typeof fixtures.card.rulings_uri).toBe("string");
+          expect(request).toBeCalledTimes(1);
+          expect(request).toBeCalledWith({
+            endpoint: fixtures.card.rulings_uri,
+          });
+          expect(rulings[0].comment).toBe(
+            fixtures.listOfRulings.data[0].comment
+          );
         });
-        expect(rulings[0].comment).toBe(fixtures.listOfRulings.data[0].comment);
-      });
     });
   });
 
@@ -378,12 +383,15 @@ describe("Card", function () {
     it("looks up tokens from prints for card when card has no `all_parts` attribute, but rules text mentions token", function () {
       const card = new Card(fixtures.cardWithTokenButNoParts);
 
-      jest
-        .spyOn(card, "getPrints")
-        .mockResolvedValue([
-          wrapScryfallResponse(fixtures.cardWithTokenButNoParts),
-          wrapScryfallResponse(fixtures.cardWithMultipleTokens),
-        ]);
+      jest.spyOn(card, "getPrints").mockResolvedValue(
+        wrapScryfallResponse({
+          object: "list",
+          data: [
+            fixtures.cardWithTokenButNoParts,
+            fixtures.cardWithMultipleTokens,
+          ],
+        })
+      );
 
       return card.getTokens().then((tokens: Card[]) => {
         expect(card.getPrints).toBeCalledTimes(1);

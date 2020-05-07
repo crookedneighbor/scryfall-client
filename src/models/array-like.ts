@@ -5,13 +5,14 @@ interface ArrayLikeResponse extends ApiResponse {
 }
 
 // based on https://javascript.info/extend-natives
-export default abstract class ArrayLike extends Array {
+export default abstract class ArrayLike<T> extends Array {
   constructor(scryfallObject: ArrayLikeResponse) {
     super();
 
     Object.setPrototypeOf(this, new.target.prototype);
 
-    this.push(...scryfallObject.data);
+    const data = scryfallObject.data as T[];
+    this.push(...data);
   }
 
   // built-in methods will use this as the constructor

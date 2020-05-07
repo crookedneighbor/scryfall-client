@@ -26,6 +26,7 @@ resetTextTransform();
 
 // TODO not any
 // TODO returns a model
+// TODO make this a generic?
 export default function wrapScryfallResponse(response: any) {
   // TODO not any
   let wrappedResponse: any;

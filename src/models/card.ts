@@ -1,6 +1,9 @@
 "use strict";
 
 import SingularEntity from "Models/singular-entity";
+import type List from "Models/list";
+import type GenericScryfallResponse from "Models/generic-scryfall-response";
+import type MagicSet from "Models/magic-set";
 import request from "Lib/api-request";
 
 import type { ApiResponse } from "Types/api-response";
@@ -207,21 +210,19 @@ export default class Card extends SingularEntity {
       this.layout === "transform" || this.layout === "double_faced_token";
   }
 
-  // TODO returns a ruligns list
-  getRulings() {
+  getRulings(): Promise<List<GenericScryfallResponse>> {
     return request({
       endpoint: this.rulings_uri as string,
     });
   }
 
-  getSet() {
+  getSet(): Promise<MagicSet> {
     return request({
       endpoint: this.set_uri as string,
     });
   }
 
-  // TODO should be a list
-  getPrints(): Promise<any> {
+  getPrints(): Promise<List<Card>> {
     return request({
       endpoint: this.prints_search_uri as string,
     });
@@ -298,7 +299,7 @@ export default class Card extends SingularEntity {
           endpoint: token.uri as string,
         });
       })
-    ).then((tokens) => {
+    ).then((tokens: Card[]) => {
       if (tokens.length > 0) {
         return tokens;
       }

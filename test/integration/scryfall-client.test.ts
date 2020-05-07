@@ -4,7 +4,6 @@ import client = require("../../src/");
 import fixtures from "Fixtures";
 import Card from "Models/card";
 import List from "Models/list";
-import MagicSet from "Models/magic-set";
 
 jest.setTimeout(90000);
 
@@ -63,9 +62,9 @@ describe("scryfallClient", function () {
         let totalCards: number;
 
         function collectCards(
-          list: List,
+          list: List<Card>,
           allCards: Card[] = []
-        ): Promise<List | Card[]> {
+        ): Promise<List<Card> | Card[]> {
           allCards.push(...list);
 
           if (!list.has_more) {
@@ -86,7 +85,7 @@ describe("scryfallClient", function () {
 
             return collectCards(list);
           })
-          .then(function (allRareCardsInStandard: Card[]) {
+          .then(function (allRareCardsInStandard) {
             expect(allRareCardsInStandard.length).toBe(totalCards);
           });
       });
@@ -96,7 +95,7 @@ describe("scryfallClient", function () {
       it("can get cards from set", function () {
         return client
           .get("sets/dom")
-          .then((set: MagicSet) => {
+          .then((set) => {
             expect(set.object).toBe("set");
 
             return set.getCards();
@@ -127,7 +126,7 @@ describe("scryfallClient", function () {
           .then((card) => {
             return card.getSet();
           })
-          .then((set: MagicSet) => {
+          .then((set) => {
             expect(set.object).toBe("set");
           });
       });
@@ -251,10 +250,11 @@ describe("scryfallClient", function () {
           .then((card) => {
             return card.getTokens();
           })
-          .then((tokens: Card[]) => {
+          .then((tokens) => {
             expect(tokens.length).toBe(3);
 
-            tokens.forEach((token) => {
+            // TODO remove this when request is no longer sending an any result
+            tokens.forEach((token: Card) => {
               expect(token.layout).toBe("token");
             });
           });
@@ -266,7 +266,7 @@ describe("scryfallClient", function () {
           .then((card) => {
             return card.getTokens();
           })
-          .then((tokens: Card[]) => {
+          .then((tokens) => {
             expect(tokens.length).toBe(1);
             expect(tokens[0].layout).toBe("token");
           });
@@ -324,7 +324,7 @@ describe("scryfallClient", function () {
     });
 
     it("can set custom text transform function", function () {
-      client.setTextTransform((text: string) => {
+      client.setTextTransform((text) => {
         return text.toUpperCase();
       });
 

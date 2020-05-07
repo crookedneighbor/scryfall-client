@@ -8,7 +8,7 @@ interface CatalogResponse extends ApiResponse {
   data: string[];
 }
 
-export default class Catalog extends ArrayLike {
+export default class Catalog extends ArrayLike<string> {
   // From https://scryfall.com/docs/api/catalogs
   // omitting data since it becomes an entry in the array like structure
   object: "catalog";

@@ -14,7 +14,8 @@ import {
   discord as discordTransformer,
 } from "Lib/convert-symbols-to-emoji";
 
-import { TextTransformFunction } from "Types/text-transform";
+import type { TextTransformFunction } from "Types/text-transform";
+import type { ApiResponse } from "Types/api-response";
 
 function setTextTransform(func: TextTransformFunction): void {
   wrapTransform(func);
@@ -68,8 +69,7 @@ function getSymbolUrl(symbol: string): string {
 }
 
 // TODO return model type
-// TODO no any
-function wrap(body: any) {
+function wrap(body: ApiResponse) {
   return wrapScryfallResponse(body);
 }
 

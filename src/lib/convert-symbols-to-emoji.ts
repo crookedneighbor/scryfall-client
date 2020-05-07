@@ -1,7 +1,7 @@
 import type { TextTransformFunction } from "Types/text-transform";
 
 function createEmojiFunction(converter: string): TextTransformFunction {
-  return function (text: string) {
+  return function (text: string): string {
     return text.replace(/{(.)(\/(.))?}/g, converter);
   };
 }
