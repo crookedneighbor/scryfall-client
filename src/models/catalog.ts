@@ -1,7 +1,8 @@
 "use strict";
 
-import { CatalogApiResponse } from "Types/api-response";
 import ArrayLike from "./array-like";
+
+import type { CatalogApiResponse } from "Types/api-response";
 
 export default class Catalog extends ArrayLike<string> {
   // From https://scryfall.com/docs/api/catalogs

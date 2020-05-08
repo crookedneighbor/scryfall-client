@@ -381,7 +381,10 @@ describe("Card", function () {
     });
 
     it("looks up tokens from prints for card when card has no `all_parts` attribute, but rules text mentions token", function () {
-      const card = new Card(fixtures.cardWithTokenButNoParts);
+      const list = wrapScryfallResponse(
+        fixtures.listOfPrintsWithAndWithoutTokens
+      ) as List<Card>;
+      const card = list.find((c) => !c.all_parts);
 
       jest.spyOn(card, "getPrints").mockResolvedValue(
         wrapScryfallResponse({
@@ -418,15 +421,12 @@ describe("Card", function () {
     });
 
     it("resolves with empty array when rules text mentions tokens but no prints have them", function () {
-      const card = new Card(fixtures.cardWithTokenButNoParts);
-
-      jest.spyOn(card, "getPrints").mockResolvedValue(
-        wrapScryfallResponse({
-          object: "list",
-          total_cards: 2,
-          data: [fixtures.cardWithTokenButNoParts, fixtures.card],
-        })
+      const list = wrapScryfallResponse(
+        fixtures.listOfPrintsWithTokensButNoParts
       );
+      const card = list[0];
+
+      jest.spyOn(card, "getPrints").mockResolvedValue(list);
 
       return card.getTokens().then((tokens: Card[]) => {
         expect(card.getPrints).toBeCalledTimes(1);

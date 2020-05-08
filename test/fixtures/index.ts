@@ -14,6 +14,8 @@ export default {
   listOfCards: require("./list-of-cards"),
   listOfCardsPage2: require("./list-of-cards-page-2"),
   listOfPrints: require("./list-of-prints"),
+  listOfPrintsWithAndWithoutTokens: require("./list-of-prints-with-and-without-tokens"),
+  listOfPrintsWithTokensButNoParts: require("./list-of-prints-with-tokens-but-no-parts"),
   listOfRulings: require("./list-of-rulings"),
   set: require("./set"),
   tokens: require("./tokens"),

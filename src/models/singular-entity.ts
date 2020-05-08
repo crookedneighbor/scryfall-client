@@ -1,4 +1,4 @@
-import { ApiResponse, ObjectKind } from "Types/api-response";
+import type { ApiResponse, ObjectKind } from "Types/api-response";
 
 export default abstract class SingularEntity {
   object: ObjectKind;

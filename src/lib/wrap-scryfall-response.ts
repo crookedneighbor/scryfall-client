@@ -1,10 +1,19 @@
 "use strict";
 
+import type SingularEntity from "Models/singular-entity";
 import Card from "Models/card";
 import Catalog from "Models/catalog";
 import List from "Models/list";
 import MagicSet from "Models/magic-set";
 import GenericScryfallResponse from "Models/generic-scryfall-response";
+import type { Model } from "Types/model";
+import type {
+  ApiResponse,
+  CardApiResponse,
+  ListApiResponse,
+  SetApiResponse,
+  CatalogApiResponse,
+} from "Types/api-response";
 
 import { TextTransformFunction } from "Types/text-transform";
 
@@ -24,13 +33,15 @@ export function resetTextTransform(): void {
 
 resetTextTransform();
 
-// TODO not any
-// TODO returns a model
-// TODO make this a generic?
-export default function wrapScryfallResponse(response: any) {
-  // TODO not any
-  let wrappedResponse: any;
+type passthrough<T> = (arg: T) => (c: T) => T;
 
+function wrapScryfallResponse<T>(response: T): T;
+function wrapScryfallResponse(body: ApiResponse): Model;
+function wrapScryfallResponse(body: CardApiResponse): Card;
+function wrapScryfallResponse(body: ListApiResponse): List<SingularEntity>;
+function wrapScryfallResponse(body: SetApiResponse): MagicSet;
+function wrapScryfallResponse(body: CatalogApiResponse): Catalog;
+function wrapScryfallResponse(response: any): any {
   if (typeof response === "string") {
     return transformFunction(response);
   }
@@ -39,30 +50,29 @@ export default function wrapScryfallResponse(response: any) {
     return response;
   }
 
-  if (!response.object) {
-    wrappedResponse = response;
-  } else if (response.object === "card") {
-    wrappedResponse = new Card(response);
-  } else if (response.object === "list") {
-    wrappedResponse = new List(response);
-  } else if (response.object === "catalog") {
-    wrappedResponse = new Catalog(response);
+  if (response.object === "list" || response.object === "catalog") {
+    response.data = response.data.map(wrapScryfallResponse);
+
+    if (response.object === "list") {
+      return new List(response);
+    } else if (response.object === "catalog") {
+      return new Catalog(response);
+    }
+  }
+
+  Object.keys(response).forEach(function (key) {
+    response[key] = wrapScryfallResponse(response[key]);
+  });
+
+  if (response.object === "card") {
+    return new Card(response);
   } else if (response.object === "set") {
-    wrappedResponse = new MagicSet(response);
-  } else {
-    wrappedResponse = new GenericScryfallResponse(response);
+    return new MagicSet(response);
+  } else if (response.object) {
+    return new GenericScryfallResponse(response);
   }
 
-  if (response.object === "list") {
-    // TODO not any, kind of model
-    wrappedResponse.forEach(function (object: any, location: number) {
-      wrappedResponse[location] = wrapScryfallResponse(object);
-    });
-  } else {
-    Object.keys(response).forEach(function (key) {
-      wrappedResponse[key] = wrapScryfallResponse(response[key]);
-    });
-  }
-
-  return wrappedResponse;
+  return response;
 }
+
+export default wrapScryfallResponse;

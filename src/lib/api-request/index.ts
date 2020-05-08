@@ -12,24 +12,6 @@ type RequestOptions = {
   query?: Record<string, string>;
 };
 
-// TODO no any
-function wrapFunction(body: ApiResponse): any {
-  // TODO
-  // const wrapOptions = {
-  //   requestMethod: requestFunction,
-  // } as ModelConfig;
-  //
-  // if (options.textTransformer) {
-  //   wrapOptions.textTransformer = options.textTransformer;
-  // } else if (options.convertSymbolsToSlackEmoji) {
-  //   wrapOptions.textTransformer = convertSymbolsToEmoji.slack;
-  // } else if (options.convertSymbolsToDiscordEmoji) {
-  //   wrapOptions.textTransformer = convertSymbolsToEmoji.discord;
-  // }
-  // return wrapScryfallResponse(body, wrapOptions);
-  return wrapScryfallResponse(body);
-}
-
 export default function sendRequestToApi(
   options: RequestOptions
   // TODO no any
@@ -45,7 +27,7 @@ export default function sendRequestToApi(
   })
     .then((response) => {
       try {
-        return wrapFunction(response as ApiResponse);
+        return wrapScryfallResponse(response as ApiResponse);
       } catch (err) {
         return Promise.reject(
           new ScryfallError({
