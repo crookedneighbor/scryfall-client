@@ -1,4 +1,4 @@
-import Task, { TaskFunction, TaskPromise } from "./task";
+import Task, { TaskFunction } from "./task";
 
 const DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME = 100;
 
@@ -50,7 +50,9 @@ function checkForEnquedTasks(recursiveCheck?: boolean): void {
   }
 }
 
-export default function enqueTask(task: TaskFunction<unknown>): TaskPromise {
+export default function enqueTask(
+  task: TaskFunction<unknown>
+): Promise<unknown> {
   const handler = new Task(task);
 
   if (!taskCurrentlyInProgress) {

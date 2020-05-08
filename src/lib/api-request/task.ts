@@ -1,6 +1,5 @@
 import * as ExtendedPromise from "@braintree/extended-promise";
 export type TaskFunction<T> = () => T | Promise<T>;
-export type TaskPromise = Promise<unknown>;
 
 export default class Task {
   taskFn: TaskFunction<unknown>;
