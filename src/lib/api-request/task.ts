@@ -1,18 +1,18 @@
 import * as ExtendedPromise from "@braintree/extended-promise";
 export type TaskFunction<T> = () => T | Promise<T>;
 
-export default class Task {
-  taskFn: TaskFunction<unknown>;
+export default class Task<T> {
+  taskFn: TaskFunction<T>;
   pendingPromise: ExtendedPromise;
 
-  constructor(fn: TaskFunction<unknown>) {
+  constructor(fn: TaskFunction<T>) {
     this.taskFn = fn;
     this.pendingPromise = new ExtendedPromise();
   }
 
-  getPromise(): Promise<unknown> {
+  getPromise(): Promise<T> {
     return this.pendingPromise
-      .then((res: unknown) => {
+      .then((res: T) => {
         return Promise.resolve(res);
       })
       .catch((e: Error) => {

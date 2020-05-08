@@ -3,7 +3,7 @@ import Task, { TaskFunction } from "./task";
 const DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME = 100;
 
 let taskCurrentlyInProgress = false;
-let queue: Task[] = [];
+let queue: Task<unknown>[] = [];
 let delayTime = DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME;
 
 export function clearQueue(): void {
@@ -50,10 +50,8 @@ function checkForEnquedTasks(recursiveCheck?: boolean): void {
   }
 }
 
-export default function enqueTask(
-  task: TaskFunction<unknown>
-): Promise<unknown> {
-  const handler = new Task(task);
+export default function enqueTask<T>(task: TaskFunction<T>): Promise<T> {
+  const handler = new Task<T>(task);
 
   if (!taskCurrentlyInProgress) {
     taskCurrentlyInProgress = true;

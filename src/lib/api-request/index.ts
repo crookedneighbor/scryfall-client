@@ -18,7 +18,7 @@ export default function sendRequestToApi(
 ): Promise<any> {
   const url = getUrl(options.endpoint, options.query);
 
-  return enqueTask(() => {
+  return enqueTask<ApiResponse>(() => {
     return sendRequest({
       url,
       method: options.method,
@@ -27,7 +27,7 @@ export default function sendRequestToApi(
   })
     .then((response) => {
       try {
-        return wrapScryfallResponse(response as ApiResponse);
+        return wrapScryfallResponse(response);
       } catch (err) {
         return Promise.reject(
           new ScryfallError({
