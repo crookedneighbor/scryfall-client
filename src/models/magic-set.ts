@@ -7,7 +7,7 @@ import request from "Lib/api-request";
 
 import type { SetApiResponse } from "Types/api-response";
 
-export default class Set extends SingularEntity {
+export default class MagicSet extends SingularEntity {
   // Properties from https://scryfall.com/docs/api/sets
   // that the class actively uses
   search_uri: string; // A Scryfall API URI that you can request to begin paginating over the cards in this set.
