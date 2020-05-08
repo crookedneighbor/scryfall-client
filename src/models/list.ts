@@ -2,14 +2,8 @@
 
 import ArrayLike from "./array-like";
 import request from "Lib/api-request";
-import type { ApiResponse } from "Types/api-response";
+import type { ListApiResponse } from "Types/api-response";
 import type SingularEntity from "Models/singular-entity";
-
-interface ListResponse extends ApiResponse {
-  object: "list";
-  // TODO make objects instead
-  data: any[];
-}
 
 export default class List<T> extends ArrayLike<SingularEntity> {
   // From https://scryfall.com/docs/api/lists
@@ -20,7 +14,7 @@ export default class List<T> extends ArrayLike<SingularEntity> {
   total_cards?: number; // If this is a list of Card objects, this field will contain the total number of cards found across all pages.
   warnings?: string[]; // An array of human-readable warnings issued when generating this list, as strings. Warnings are non-fatal issues that the API discovered with your input. In general, they indicate that the List will not contain the all of the information you requested. You should fix the warnings and re-submit your request.
 
-  constructor(scrfallResponse: ListResponse) {
+  constructor(scrfallResponse: ListApiResponse) {
     super(scrfallResponse);
 
     this.object = scrfallResponse.object;

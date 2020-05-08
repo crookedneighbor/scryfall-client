@@ -15,7 +15,19 @@ import {
 } from "Lib/convert-symbols-to-emoji";
 
 import type { TextTransformFunction } from "Types/text-transform";
-import type { ApiResponse } from "Types/api-response";
+import type {
+  ApiResponse,
+  CardApiResponse,
+  ListApiResponse,
+  SetApiResponse,
+  CatalogApiResponse,
+} from "Types/api-response";
+import type { Model } from "Types/model";
+import type SingularEntity from "Models/singular-entity";
+import type Card from "Models/card";
+import type List from "Models/list";
+import type Catalog from "Models/catalog";
+import type MagicSet from "Models/magic-set";
 
 function setTextTransform(func: TextTransformFunction): void {
   wrapTransform(func);
@@ -68,8 +80,11 @@ function getSymbolUrl(symbol: string): string {
   return "https://img.scryfall.com/symbology/" + character + ".svg";
 }
 
-// TODO return model type
-function wrap(body: ApiResponse) {
+function wrap(body: CardApiResponse): Card;
+function wrap(body: ListApiResponse): List<SingularEntity>;
+function wrap(body: SetApiResponse): MagicSet;
+function wrap(body: CatalogApiResponse): Catalog;
+function wrap(body: ApiResponse): Model {
   return wrapScryfallResponse(body);
 }
 

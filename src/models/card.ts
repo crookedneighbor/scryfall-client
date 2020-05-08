@@ -6,11 +6,7 @@ import type GenericScryfallResponse from "Models/generic-scryfall-response";
 import type MagicSet from "Models/magic-set";
 import request from "Lib/api-request";
 
-import type { ApiResponse } from "Types/api-response";
-
-interface CardResponse extends ApiResponse {
-  object: "card";
-}
+import type { CardApiResponse } from "Types/api-response";
 
 type Color = "W" | "U" | "B" | "R" | "G";
 
@@ -132,7 +128,7 @@ export default class Card extends SingularEntity {
   type_line: string; // The type line of this card.
   watermark: string; // This card’s watermark, if any.
 
-  constructor(scryfallObject: CardResponse) {
+  constructor(scryfallObject: CardApiResponse) {
     super(scryfallObject);
 
     this.all_parts = scryfallObject.all_parts;

@@ -5,18 +5,14 @@ import type Card from "Models/card";
 import type List from "Models/list";
 import request from "Lib/api-request";
 
-import type { ApiResponse } from "Types/api-response";
-
-interface SetResponse extends ApiResponse {
-  object: "set";
-}
+import type { SetApiResponse } from "Types/api-response";
 
 export default class Set extends SingularEntity {
   // Properties from https://scryfall.com/docs/api/sets
   // that the class actively uses
   search_uri: string; // A Scryfall API URI that you can request to begin paginating over the cards in this set.
 
-  constructor(scryfallObject: SetResponse) {
+  constructor(scryfallObject: SetApiResponse) {
     super(scryfallObject);
 
     this.search_uri = scryfallObject.search_uri;

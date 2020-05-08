@@ -14,3 +14,18 @@ export type ApiResponse = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [property: string]: any;
 };
+
+export interface CardApiResponse extends ApiResponse {
+  object: "card";
+}
+export interface ListApiResponse extends ApiResponse {
+  object: "list";
+  data: ApiResponse[];
+}
+export interface CatalogApiResponse extends ApiResponse {
+  object: "catalog";
+  data: string[];
+}
+export interface SetApiResponse extends ApiResponse {
+  object: "set";
+}

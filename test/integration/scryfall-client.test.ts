@@ -8,6 +8,7 @@ import List from "Models/list";
 jest.setTimeout(90000);
 
 const fakeCard = fixtures.card;
+const fakeList = fixtures.listOfCards;
 
 const budokaGardener = "49999b95-5e62-414c-b975-4191b9c1ab39";
 const windfall = "357cf802-2d66-49a4-bf43-ab3bc30ab825";
@@ -315,6 +316,15 @@ describe("scryfallClient", function () {
       const card = client.wrap(fakeCard);
 
       expect(card).toBeInstanceOf(Card);
+      expect(card.name).toBe("Windfall");
+    });
+
+    it("can wrap saved list response object into scryfall response", function () {
+      const list = client.wrap(fakeList);
+
+      expect(list).toBeInstanceOf(List);
+      expect(list[0].name).toBe("Abbey Griffin");
+      expect(list[0]).toBeInstanceOf(Card);
     });
   });
 
