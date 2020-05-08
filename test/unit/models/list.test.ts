@@ -3,7 +3,7 @@
 import wrapScryfallResponse from "Lib/wrap-scryfall-response";
 import List from "Models/list";
 import fixtures from "Fixtures";
-import request from "Lib/api-request";
+import { get } from "Lib/api-request";
 
 import { mocked } from "ts-jest/utils";
 
@@ -13,7 +13,7 @@ describe("List", function () {
   let fakeRequest: jest.SpyInstance;
 
   beforeEach(() => {
-    fakeRequest = mocked(request);
+    fakeRequest = mocked(get);
   });
 
   afterEach(() => {
@@ -75,9 +75,7 @@ describe("List", function () {
       const list = new List(fixtures.listOfCards);
 
       return list.next().then((list2) => {
-        expect(fakeRequest).toBeCalledWith({
-          endpoint: fixtures.listOfCards.next_page,
-        });
+        expect(fakeRequest).toBeCalledWith(fixtures.listOfCards.next_page);
         expect(list2[0].name).toBe(fixtures.listOfCardsPage2.data[0].name);
       });
     });

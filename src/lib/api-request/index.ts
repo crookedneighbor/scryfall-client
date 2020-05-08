@@ -1,53 +1,19 @@
-import wrapScryfallResponse from "Lib/wrap-scryfall-response";
-import getUrl from "./get-url";
-import enqueTask from "./enque-task";
-import sendRequest from "./send-request";
-import ScryfallError from "Models/scryfall-error";
-import type { ApiResponse } from "Types/api-response";
+import sendApiRequest from "Lib/api-request/send-request-to-api";
 
-type RequestOptions = {
-  endpoint: string;
-  method?: "get" | "post";
-  body?: Record<string, any>;
-  query?: Record<string, string>;
-};
+// TODO no any
+export function get<T>(url: string, query?: Record<string, any>): Promise<T> {
+  return sendApiRequest({
+    endpoint: url,
+    method: "get",
+    query,
+  });
+}
 
-export default function sendRequestToApi(
-  options: RequestOptions
-  // TODO no any
-): Promise<any> {
-  const url = getUrl(options.endpoint, options.query);
-
-  return enqueTask<ApiResponse>(() => {
-    return sendRequest({
-      url,
-      method: options.method,
-      body: options.body,
-    });
-  })
-    .then((response) => {
-      try {
-        return wrapScryfallResponse(response);
-      } catch (err) {
-        return Promise.reject(
-          new ScryfallError({
-            message:
-              "Something went wrong when wrapping the response from Scryfall",
-            thrownError: err,
-          })
-        );
-      }
-    })
-    .catch((err) => {
-      if (!(err instanceof ScryfallError)) {
-        err = new ScryfallError({
-          message:
-            "An unexpected error occurred when requesting resources from Scryfall.",
-          status: err.status,
-          originalError: err,
-        });
-      }
-
-      return Promise.reject(err);
-    });
+// TODO no any
+export function post<T>(url: string, body?: Record<string, any>): Promise<T> {
+  return sendApiRequest({
+    endpoint: url,
+    method: "post",
+    body,
+  });
 }

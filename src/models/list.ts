@@ -1,7 +1,7 @@
 "use strict";
 
 import ArrayLike from "./array-like";
-import request from "Lib/api-request";
+import { get } from "Lib/api-request";
 import type { ListApiResponse, ApiResponse } from "Types/api-response";
 import type SingularEntity from "Models/singular-entity";
 
@@ -29,8 +29,6 @@ export default class List<T> extends ArrayLike<SingularEntity> {
       return Promise.reject(new Error("No additional pages."));
     }
 
-    return request({
-      endpoint: this.next_page,
-    });
+    return get(this.next_page);
   }
 }

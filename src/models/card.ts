@@ -4,7 +4,7 @@ import SingularEntity from "Models/singular-entity";
 import type List from "Models/list";
 import type GenericScryfallResponse from "Models/generic-scryfall-response";
 import type MagicSet from "Models/magic-set";
-import request from "Lib/api-request";
+import { get } from "Lib/api-request";
 
 import type { CardApiResponse } from "Types/api-response";
 
@@ -207,21 +207,15 @@ export default class Card extends SingularEntity {
   }
 
   getRulings(): Promise<List<GenericScryfallResponse>> {
-    return request({
-      endpoint: this.rulings_uri as string,
-    });
+    return get(this.rulings_uri);
   }
 
   getSet(): Promise<MagicSet> {
-    return request({
-      endpoint: this.set_uri as string,
-    });
+    return get(this.set_uri);
   }
 
   getPrints(): Promise<List<Card>> {
-    return request({
-      endpoint: this.prints_search_uri as string,
-    });
+    return get(this.prints_search_uri);
   }
 
   isLegal(format?: string): boolean {
@@ -291,9 +285,7 @@ export default class Card extends SingularEntity {
 
     return Promise.all(
       this._tokens.map((token) => {
-        return request({
-          endpoint: token.uri as string,
-        });
+        return get<Card>(token.uri);
       })
     ).then((tokens: Card[]) => {
       if (tokens.length > 0) {

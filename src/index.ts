@@ -1,6 +1,6 @@
 "use strict";
 
-import request from "Lib/api-request";
+import { get, post } from "Lib/api-request";
 import {
   setTaskDelayTime,
   resetTaskDelayTime,
@@ -51,26 +51,6 @@ function setApiRequestDelayTime(waitTime: number): void {
 
 function resetApiRequestDelayTime(): void {
   resetTaskDelayTime();
-}
-
-// TODO return model type
-// TODO no any
-function get(url: string, query?: Record<string, any>) {
-  return request({
-    endpoint: url,
-    method: "get",
-    query,
-  });
-}
-
-// TODO return model type
-// TODO no any
-function post(url: string, body?: Record<string, any>) {
-  return request({
-    endpoint: url,
-    method: "post",
-    body,
-  });
 }
 
 function getSymbolUrl(symbol: string): string {

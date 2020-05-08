@@ -1,3 +1,2 @@
-const requestSpy = jest.fn().mockResolvedValue({});
-
-export default requestSpy;
+export const get = jest.fn().mockResolvedValue({});
+export const post = jest.fn().mockResolvedValue({});

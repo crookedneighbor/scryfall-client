@@ -4,7 +4,7 @@ import Card from "Models/card";
 import List from "Models/list";
 import MagicSet from "Models/magic-set";
 import GenericScryfallResponse from "Models/generic-scryfall-response";
-import request from "Lib/api-request";
+import { get } from "Lib/api-request";
 import wrapScryfallResponse from "Lib/wrap-scryfall-response";
 import fixtures from "Fixtures";
 
@@ -16,7 +16,7 @@ describe("Card", function () {
   let fakeRequest: jest.SpyInstance, card: Card;
 
   beforeEach(() => {
-    fakeRequest = mocked(request);
+    fakeRequest = mocked(get);
   });
 
   afterEach(() => {
@@ -61,10 +61,8 @@ describe("Card", function () {
         .getRulings()
         .then((rulings: List<GenericScryfallResponse>) => {
           expect(typeof fixtures.card.rulings_uri).toBe("string");
-          expect(request).toBeCalledTimes(1);
-          expect(request).toBeCalledWith({
-            endpoint: fixtures.card.rulings_uri,
-          });
+          expect(get).toBeCalledTimes(1);
+          expect(get).toBeCalledWith(fixtures.card.rulings_uri);
           expect(rulings[0].comment).toBe(
             fixtures.listOfRulings.data[0].comment
           );
@@ -81,7 +79,7 @@ describe("Card", function () {
     it("gets set for card", function () {
       return card.getSet().then((set: MagicSet) => {
         expect(typeof fixtures.card.set_uri).toBe("string");
-        expect(request).toBeCalledWith({ endpoint: fixtures.card.set_uri });
+        expect(get).toBeCalledWith(fixtures.card.set_uri);
         expect(set.code).toBe(fixtures.set.code);
       });
     });
@@ -98,9 +96,7 @@ describe("Card", function () {
     it("gets prints for card", function () {
       return card.getPrints().then((prints) => {
         expect(typeof fixtures.listOfPrints.data[0].name).toBe("string");
-        expect(request).toBeCalledWith({
-          endpoint: fixtures.card.prints_search_uri,
-        });
+        expect(get).toBeCalledWith(fixtures.card.prints_search_uri);
         expect(prints[0].name).toBe(fixtures.listOfPrints.data[0].name);
         expect(prints.length).toBe(fixtures.listOfPrints.data.length);
       });
@@ -351,19 +347,16 @@ describe("Card", function () {
       const card = new Card(fixtures.cardWithMultipleTokens);
 
       return card.getTokens().then((tokens: Card[]) => {
-        expect(request).toBeCalledTimes(3);
-        expect(request).toBeCalledWith({
-          endpoint:
-            "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
-        });
-        expect(request).toBeCalledWith({
-          endpoint:
-            "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
-        });
-        expect(request).toBeCalledWith({
-          endpoint:
-            "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
-        });
+        expect(get).toBeCalledTimes(3);
+        expect(get).toBeCalledWith(
+          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b"
+        );
+        expect(get).toBeCalledWith(
+          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830"
+        );
+        expect(get).toBeCalledWith(
+          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475"
+        );
 
         tokens.forEach((token: Card) => {
           expect(token).toBeInstanceOf(Card);
@@ -399,19 +392,16 @@ describe("Card", function () {
       return card.getTokens().then((tokens: Card[]) => {
         expect(card.getPrints).toBeCalledTimes(1);
 
-        expect(request).toBeCalledTimes(3);
-        expect(request).toBeCalledWith({
-          endpoint:
-            "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
-        });
-        expect(request).toBeCalledWith({
-          endpoint:
-            "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
-        });
-        expect(request).toBeCalledWith({
-          endpoint:
-            "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
-        });
+        expect(get).toBeCalledTimes(3);
+        expect(get).toBeCalledWith(
+          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b"
+        );
+        expect(get).toBeCalledWith(
+          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830"
+        );
+        expect(get).toBeCalledWith(
+          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475"
+        );
 
         tokens.forEach((token: Card) => {
           expect(token).toBeInstanceOf(Card);
@@ -431,7 +421,7 @@ describe("Card", function () {
       return card.getTokens().then((tokens: Card[]) => {
         expect(card.getPrints).toBeCalledTimes(1);
 
-        expect(request).toBeCalledTimes(0);
+        expect(get).toBeCalledTimes(0);
         expect(tokens).toEqual([]);
       });
     });

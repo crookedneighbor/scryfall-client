@@ -3,7 +3,7 @@
 import SingularEntity from "Models/singular-entity";
 import type Card from "Models/card";
 import type List from "Models/list";
-import request from "Lib/api-request";
+import { get } from "Lib/api-request";
 
 import type { SetApiResponse } from "Types/api-response";
 
@@ -19,8 +19,6 @@ export default class MagicSet extends SingularEntity {
   }
 
   getCards(): Promise<List<Card>> {
-    return request({
-      endpoint: this.search_uri as string,
-    });
+    return get(this.search_uri);
   }
 }
