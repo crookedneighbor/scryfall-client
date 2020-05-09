@@ -68,6 +68,149 @@ function wrap(body: ApiResponse): Model {
   return wrapScryfallResponse(body);
 }
 
+/****************************************
+ API Routes
+****************************************/
+/* Sets - https://scryfall.com/docs/api/sets */
+// TODO /sets
+// https://scryfall.com/docs/api/sets/all
+
+// https://scryfall.com/docs/api/sets/code
+function getSet(setName: string): Promise<MagicSet> {
+  return get(`sets/${setName}`);
+}
+
+// TODO /sets/tcgplayer/:id
+// https://scryfall.com/docs/api/sets/tcgplayer
+
+// TODO /sets/:id
+// https://scryfall.com/docs/api/sets/id
+
+/* Cards - https://scryfall.com/docs/api/cards */
+// TODO /cards
+// https://scryfall.com/docs/api/cards/all
+
+// https://scryfall.com/docs/api/cards/search
+// TODO support other query params
+function search(query: string): Promise<List<Card>> {
+  return get("cards/search", {
+    q: query,
+  });
+}
+
+// TODO /cards/named
+// https://scryfall.com/docs/api/cards/named
+
+// TODO /cards/autocomplete
+// https://scryfall.com/docs/api/cards/autocomplete
+
+// TODO /cards/random
+// https://scryfall.com/docs/api/cards/random
+
+// https://scryfall.com/docs/api/cards/collection
+type CardCollectionIdentifier =
+  | {
+      id: string;
+    }
+  | {
+      mtgo_id: number;
+    }
+  | {
+      multiverse_id: number;
+    }
+  | {
+      oracle_id: string;
+    }
+  | {
+      illustration_id: string;
+    }
+  | {
+      name: string;
+      set?: string;
+    }
+  | {
+      collector_number: string;
+      set: string;
+    };
+type CardCollectionIdentifiers = CardCollectionIdentifier[];
+
+function getCollection(
+  identifiers: CardCollectionIdentifiers
+): Promise<List<Card>> {
+  return post("cards/collection", {
+    identifiers,
+  });
+}
+
+// TODO /cards/:code/:number(/:lang)
+// https://scryfall.com/docs/api/cards/collector
+
+// TODO /cards/multiverse/:id
+// https://scryfall.com/docs/api/cards/multiverse
+
+// TODO /cards/mtgo/:id
+// https://scryfall.com/docs/api/cards/mtgo
+
+// TODO /cards/arena/:id
+// https://scryfall.com/docs/api/cards/arena
+
+// TODO /cards/tcgplayer/:id
+// https://scryfall.com/docs/api/cards/tcgplayer
+
+// https://scryfall.com/docs/api/cards/id
+function getCardByScryfallId(id: string): Promise<Card> {
+  return get(`cards/${id}`);
+}
+
+/* Rulings - https://scryfall.com/docs/api/rulings */
+// TODO /cards/multiverse/:id/rulings
+// https://scryfall.com/docs/api/rulings/multiverse
+
+// TODO /cards/mtgo/:id/rulings
+// https://scryfall.com/docs/api/rulings/mtgo
+
+// TODO /cards/arena/:id/rulings
+// https://scryfall.com/docs/api/rulings/arena
+
+// TODO /cards/:code/:number/rulings
+// https://scryfall.com/docs/api/rulings/collector
+
+// TODO /cards/:id/rulings
+// https://scryfall.com/docs/api/rulings/id
+
+/* Card Symbols - https://scryfall.com/docs/api/card-symbols */
+// TODO /symbology
+// https://scryfall.com/docs/api/card-symbols/all
+
+// TODO /symbology/parse-mana
+// https://scryfall.com/docs/api/card-symbols/parse-mana
+
+/* Catalog - https://scryfall.com/docs/api/catalogs */
+// These are return the same signature, a Catalog of strings
+// So we just expose one method for all the routes
+type CatalogType =
+  | "card-names"
+  | "artist-names"
+  | "word-bank"
+  | "creature-types"
+  | "planeswalker-types"
+  | "land-types"
+  | "artifact-types"
+  | "enchantment-types"
+  | "spell-types"
+  | "powers"
+  | "toughnesses"
+  | "loyalties"
+  | "watermarks";
+
+function getCatalog(catalog: CatalogType): Promise<Catalog> {
+  return get(`/catalog/${catalog}`);
+}
+
+/* Bulk Data - https://scryfall.com/docs/api/bulk-data */
+// TODO /bulk-data
+// https://scryfall.com/docs/api/bulk-data/all
+
 export = {
   setApiRequestDelayTime,
   resetApiRequestDelayTime,
@@ -79,4 +222,9 @@ export = {
   get,
   post,
   wrap,
+  getSet,
+  search,
+  getCollection,
+  getCardByScryfallId,
+  getCatalog,
 };

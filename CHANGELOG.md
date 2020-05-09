@@ -7,6 +7,9 @@
 - Add `resetTextTransform` method to reset text transformation
 - Add `setApiRequestDelayTime` method to set delay time between requests
 - Add `resetApiRequestDelayTime` method to reset delay time between requests to default (100 milliseconds)
+- Add `search` method to make basic searches easier
+- Add `getSet` method to make fetching a set object by set code easier
+- Add `getCollection` method to make looking up numerous cards easier
 
 _Breaking Changes_
 

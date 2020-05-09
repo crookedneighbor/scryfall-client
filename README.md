@@ -14,9 +14,100 @@ The module is a singleton object that can make requests to the Scryfall API.
 var scryfall = require("scryfall-client");
 ```
 
+# Why?
+
+For the most part, this is a wrapper around the Scryfall API that provides convenience methods for the resulting API objects.
+
+The goal is to provide a convenient way to get data from the Scryfall API in a succient manner. For the most part, each API object will mirror the documented properties on the Scryfall API and include a set of helper methods to make navigating the data easier.
+
+The one key difference between the response objects returned from the raw API and this module is that for endpoints that return the [list object](https://scryfall.com/docs/api/lists), the raw API returns an object with some properties about the list (`has_more`, `next_page`, `total_cards`) and a `data` property that is an array of other API objects (cards, prints, rulings, etc). This module returns an Array-like object of the data directly, with the properties attached to the object. Similiraly, endpoints that return the [catalog object](https://scryfall.com/docs/api/catalogs) returns an Array-like object containing the data, as well as the other properties on the catalog.
+
+```js
+scryfall.search("o:vigilance t:equipment").then(function (list) {
+  list.has_more; // whether or not there is an additional page of results, `true` or `false`
+  list.total_cards; // the total number of cards returned from search
+
+  var names = list.map(function (card) {
+    // the list object can use any Array method
+    return card.name;
+  });
+});
+```
+
+If your request returns no results or is otherwise unsuccessful, the Promise will reject.
+
+```js
+scryfall
+  .search("foobarbaz")
+  .then(function (list) {
+    // will never get here
+  })
+  .catch(function (err) {
+    err; // a 404 error
+  });
+```
+
+The other responses ([`Card`](#card), [`MagicSet`](#magicset), etc) are wrappers around the objects and any devitations or additional methods are noted in the [Models section](#models).
+
 # Basic Usage
 
-You can make a get request to any of the [API endpoints](https://scryfall.com/docs/api). It will return a Promise that resolves with the result.
+## search(query: string) -> Promise<[List](#list)<[Card](#card)>>
+
+Perform a [Scryfall search](https://scryfall.com/docs/api/cards/search), where `query` is the `q` parameter.
+
+```js
+scryfall.search("o:vigilance t:equipment").then(function (list) {
+  list.has_more; // whether or not there is an additional page of results, `true` or `false`
+  list.total_cards; // the total number of cards returned from search
+
+  var names = list.map(function (card) {
+    // the list object can use any Array method
+    return card.name;
+  });
+});
+```
+
+## getSet(setName: string) -> Promise<[MagicSet](#magicset)>
+
+Perform a [lookup for a particular Magic set by the code](https://scryfall.com/docs/api/sets/code).
+
+```js
+scryfall.getSet("dom").then(function (set) {
+  set.name; // "Dominaria"
+  set.code; // "dom"
+});
+```
+
+## getCollection(identifiers: object[]) -> Promise<[List](#list)<[Card](#card)>>
+
+Perform a [Scryfall collections request](https://scryfall.com/docs/api/cards/collection), where `identifiers` is the `identifiers` parameter.
+
+```js
+scryfall
+  .getCollection([
+    {
+      id: "683a5707-cddb-494d-9b41-51b4584ded69",
+    },
+    {
+      name: "Ancient Tomb",
+    },
+    {
+      set: "mrd",
+      collector_number: "150",
+    },
+  ])
+  .then(function (list) {
+    list[0].name; // Lodestone Golem
+    list[1].name; // Ancient Tomb
+    list[2].name; // Chalice of the Void
+  });
+```
+
+# Advanced Usage
+
+## get(url: string, query?: object) -> Promise
+
+If the exact API call you're looking for is missing, you can make a get request directly to any of the [API endpoints](https://scryfall.com/docs/api). It will return a Promise that resolves with the result.
 
 ```js
 scryfall.get("cards/random").then(function (card) {
@@ -38,7 +129,9 @@ scryfall
   });
 ```
 
-Yoy can also call `post` with a post body:
+## post(url: string, body?: object) -> Promise
+
+You can also call `post` with a post body:
 
 ```js
 scryfall
@@ -57,39 +150,6 @@ scryfall
     list.forEach(function (card) {
       console.log(card.name);
     });
-  });
-```
-
-There is one key difference between the response objects returned from the raw API and this module. For endpoints that return the [list object](https://scryfall.com/docs/api/lists), the raw API returns an object with some properties about the list (`has_more`, `next_page`, `total_cards`) and a `data` property that is an array of other API objects (cards, prints, rulings, etc). This module returns an Array-like object of the data directly, with the properties attached to the object. Similiraly, endpoints that return the [catalog object](https://scryfall.com/docs/api/catalogs) returns an Array-like object containing the data, as well as the other properties on the catalog.
-
-```js
-scryfall
-  .get("cards/search", {
-    q: "o:vigilance t:equipment",
-  })
-  .then(function (list) {
-    list.has_more; // whether or not there is an additional page of results, `true` or `false`
-    list.total_cards; // the total number of cards returned from search
-
-    var names = list.map(function (card) {
-      // the list object can use any Array method
-      return card.name;
-    });
-  });
-```
-
-If your request returns no results or is otherwise unsuccessful, the Promise will reject.
-
-```js
-scryfall
-  .get("cards/search", {
-    q: "foobarbaz",
-  })
-  .then(function (list) {
-    // will never get here
-  })
-  .catch(function (err) {
-    err; // a 404 error
   });
 ```
 
@@ -200,15 +260,15 @@ To reset the delay time back to the default, use `resetApiRequestDelayTime`.
 scryfall.resetApiRequestDelayTime();
 ```
 
-# API Objects
+# Models
 
 As a convenience, there are a number of API objects with special methods.
 
 ## Card
 
-Representing a [card object](https://scryfall.com/docs/api/cards). In additioan, all card objects will include a `card_faces` array, defaulting to the attributes from the card if the card does not have multiple faces.
+Representing a [card object](https://scryfall.com/docs/api/cards). Normally, only double faced cards will have a `card_faces` array, but the `Card` instance will always include a `card_faces` array, defaulting to the main attributes from the card if the card does not have multiple faces.
 
-### getRulings() -> Promise<List>
+### getRulings() -> Promise<[List](#list)>
 
 Returns a Promise that resolves with a list of [rulings objects](https://scryfall.com/docs/api/rulings)
 
@@ -228,7 +288,7 @@ scryfall
   });
 ```
 
-### getSet() -> Promise<Set>
+### getSet() -> Promise<[MagicSet](#magicset)>
 
 Returns a Promise that resolves with the [set object](https://scryfall.com/docs/api/sets) for the card.
 
@@ -433,7 +493,7 @@ An object representing a [catalog object](https://scryfall.com/docs/api/catalogs
 
 An object representing a [list object](https://scryfall.com/docs/api/lists). This is an Array like object where the entries are the `data` attribute from the raw API. The rest of the properties are present on the `List`.
 
-### next() -> Promise<List>
+### next() -> Promise<[List](#list>>
 
 If the `has_more` property is `true`, then `next()` can be called to get the next page of results.
 
@@ -463,11 +523,11 @@ scryfall
   });
 ```
 
-## Set
+## MagicSet
 
 An object represnting a [set object](https://scryfall.com/docs/api/sets).
 
-### getCards() -> List<Card>
+### getCards() -> [List](#list)<[Card](#card)>
 
 Resolves with a list containing all the cards in the set.
 
@@ -517,7 +577,7 @@ The module makes use of the [Promise](https://developer.mozilla.org/en-US/docs/W
 
 The code base uses [Prettier](https://prettier.io/). Run:
 
-```
+```sh
 npm run pretty
 ```
 
@@ -525,35 +585,36 @@ npm run pretty
 
 To lint and run the unit tests, simply run:
 
-```
+```sh
 npm test
 ```
 
 To run just the unit tests, run:
 
-```
+```sh
 npm run test:unit
-``
+```
 
 To run just the linting command, run:
 
-```
-
+```sh
 npm run lint
-``
+```
 
 To run the integration tests, run:
 
-```
+```sh
 npm run test:integration
 ```
 
 To run the publishing test, run:
 
-```
+```sh
 npm run test:publishing
 ```
 
 ## Bugs
 
 If you find a bug, feel free to [open an issue](https://github.com/crookedneighbor/scryfall-client/issues/new) or [a Pull Request](https://github.com/crookedneighbor/scryfall-client/compare).
+
+The same goes for missing Typescript properties. If the Scryfall API adds a new property, open an issue or PR to add it to the module.
