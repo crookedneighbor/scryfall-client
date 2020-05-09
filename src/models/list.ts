@@ -24,7 +24,7 @@ export default class List<T> extends ArrayLike<SingularEntity> {
     this.warnings = scrfallResponse.warnings;
   }
 
-  next(): Promise<List<SingularEntity>> {
+  next(): Promise<List<T>> {
     if (!this.has_more || !this.next_page) {
       return Promise.reject(new Error("No additional pages."));
     }
