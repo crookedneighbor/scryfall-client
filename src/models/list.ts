@@ -2,7 +2,7 @@
 
 import ArrayLike from "./array-like";
 import { get } from "Lib/api-request";
-import type { ListApiResponse, ApiResponse } from "Types/api-response";
+import type { ListApiResponse } from "Types/api-response";
 import type SingularEntity from "Models/singular-entity";
 
 export default class List<T> extends ArrayLike<SingularEntity> {
