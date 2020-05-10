@@ -9,11 +9,11 @@ import GenericScryfallResponse from "Models/generic-scryfall-response";
 import type { Model } from "Types/model";
 import type {
   ApiResponse,
-  CardApiResponse,
   ListApiResponse,
-  SetApiResponse,
   CatalogApiResponse,
 } from "Types/api-response";
+import CardApiResponse from "Types/api/card";
+import SetApiResponse from "Types/api/set";
 
 import { TextTransformFunction } from "Types/text-transform";
 
@@ -41,6 +41,7 @@ function wrapScryfallResponse(body: CardApiResponse): Card;
 function wrapScryfallResponse(body: ListApiResponse): List<SingularEntity>;
 function wrapScryfallResponse(body: SetApiResponse): MagicSet;
 function wrapScryfallResponse(body: CatalogApiResponse): Catalog;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function wrapScryfallResponse(response: any): any {
   if (typeof response === "string") {
     return transformFunction(response);

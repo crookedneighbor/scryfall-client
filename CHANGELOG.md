@@ -14,7 +14,8 @@
 _Breaking Changes_
 
 - Switch from class style module to singleton object
-- Rename `Set` model to `MagicSet` to avoid collision with global Set object
+- Rename `Set` model to `MagicSet` to avoid collision with global `Set` object
+- No longer throws an error for missing or unrecognized legality win `Card.isLegal` method.
 
 # 0.13.0
 

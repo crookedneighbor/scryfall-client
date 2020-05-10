@@ -108,22 +108,6 @@ describe("Card", function () {
       card = new Card(fixtures.card);
     });
 
-    it("throws an error if no format is provided", function () {
-      expect(() => {
-        card.isLegal();
-      }).toThrowError(
-        "Must provide format for checking legality. Use one of `standard`, `future`, `frontier`, `modern`, `legacy`, `pauper`, `vintage`, `penny`, `commander`, `duel`, `oldschool`."
-      );
-    });
-
-    it("throws an error if an unrecognized format is provided", function () {
-      expect(() => {
-        card.isLegal("foo");
-      }).toThrowError(
-        'Format "foo" is not recgonized. Use one of `standard`, `future`, `frontier`, `modern`, `legacy`, `pauper`, `vintage`, `penny`, `commander`, `duel`, `oldschool`.'
-      );
-    });
-
     it("returns true for legal card in provided format", function () {
       card.legalities.commander = "legal";
 

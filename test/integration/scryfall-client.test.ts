@@ -7,10 +7,13 @@ import MagicSet from "Models/magic-set";
 import Catalog from "Models/catalog";
 import List from "Models/list";
 
+import type { ListApiResponse } from "Types/api-response";
+import CardApiResponse from "Types/api/card";
+
 jest.setTimeout(90000);
 
-const fakeCard = fixtures.card;
-const fakeList = fixtures.listOfCards;
+const fakeCard: CardApiResponse = fixtures.card;
+const fakeList: ListApiResponse = fixtures.listOfCards;
 
 const budokaGardener = "49999b95-5e62-414c-b975-4191b9c1ab39";
 const windfall = "357cf802-2d66-49a4-bf43-ab3bc30ab825";

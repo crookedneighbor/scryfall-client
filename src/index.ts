@@ -17,11 +17,11 @@ import {
 import type { TextTransformFunction } from "Types/text-transform";
 import type {
   ApiResponse,
-  CardApiResponse,
   ListApiResponse,
-  SetApiResponse,
   CatalogApiResponse,
 } from "Types/api-response";
+import CardApiResponse from "Types/api/card";
+import SetApiResponse from "Types/api/set";
 import type { Model } from "Types/model";
 import type SingularEntity from "Models/singular-entity";
 import type Card from "Models/card";

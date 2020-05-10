@@ -5,20 +5,18 @@ import type Card from "Models/card";
 import type List from "Models/list";
 import { get } from "Lib/api-request";
 
-import type { SetApiResponse } from "Types/api-response";
+import type SetApiResponse from "Types/api/set";
 
-export default class MagicSet extends SingularEntity {
-  // Properties from https://scryfall.com/docs/api/sets
-  // that the class actively uses
-  search_uri: string; // A Scryfall API URI that you can request to begin paginating over the cards in this set.
-
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface MagicSet extends SetApiResponse {}
+class MagicSet extends SingularEntity {
   constructor(scryfallObject: SetApiResponse) {
     super(scryfallObject);
-
-    this.search_uri = scryfallObject.search_uri;
   }
 
   getCards(): Promise<List<Card>> {
     return get(this.search_uri);
   }
 }
+
+export default MagicSet;
