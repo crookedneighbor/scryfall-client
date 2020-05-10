@@ -62,6 +62,7 @@
       "./test/helpers/setup.ts"
     ],
     "moduleNameMapper": {
+      "^Api/(.*)$": "<rootDir>/src/api-routes/$1",
       "^Lib/(.*)$": "<rootDir>/src/lib/$1",
       "^Models/(.*)$": "<rootDir>/src/models/$1",
       "^Types/(.*)$": "<rootDir>/src/types/$1",

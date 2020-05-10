@@ -15,6 +15,7 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js"],
     alias: {
+      Api: path.resolve(__dirname, "src/api-routes/"),
       Lib: path.resolve(__dirname, "src/lib/"),
       Types: path.resolve(__dirname, "src/types/"),
       Models: path.resolve(__dirname, "src/models/"),

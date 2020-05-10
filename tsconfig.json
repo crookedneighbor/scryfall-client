@@ -4,6 +4,7 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
+      "Api/*": ["src/api-routes/*"],
       "Lib/*": ["src/lib/*"],
       "Models/*": ["src/models/*"],
       "Types/*": ["src/types/*"],
