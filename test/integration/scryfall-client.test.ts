@@ -312,6 +312,20 @@ describe("scryfallClient", function () {
         expect(result[0]).toBeInstanceOf(Card);
       });
     });
+
+    it("can pass additional query params", () => {
+      return client
+        .search("Rashmi, Eternities Crafter")
+        .then((result) => {
+          expect(result.length).toBe(1);
+          return client.search("Rashmi, Eternities Crafter", {
+            unique: "prints",
+          });
+        })
+        .then((result) => {
+          expect(result.length).toBeGreaterThan(1);
+        });
+    });
   });
 
   describe("getCollection", () => {

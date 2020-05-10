@@ -51,9 +51,9 @@ The other responses ([`Card`](#card), [`MagicSet`](#magicset), etc) are wrappers
 
 # Basic Usage
 
-## search(query: string) -> Promise<[List](#list)<[Card](#card)>>
+## search(searchString: string, options?: object) -> Promise<[List](#list)<[Card](#card)>>
 
-Perform a [Scryfall search](https://scryfall.com/docs/api/cards/search), where `query` is the `q` parameter.
+Perform a [Scryfall search](https://scryfall.com/docs/api/cards/search), where `searchString` is the `q` parameter.
 
 ```js
 scryfall.search("o:vigilance t:equipment").then(function (list) {
@@ -65,6 +65,24 @@ scryfall.search("o:vigilance t:equipment").then(function (list) {
     return card.name;
   });
 });
+```
+
+You can pass additional query params as an options object. `format` and `pretty` are not supported.
+
+```js
+scryfall
+  .search("o:vigilance t:equipment", {
+    unique: "prints",
+    order: "usd",
+    dir: "desc",
+    include_extras: true,
+    include_multilingual: true,
+    include_variations: true,
+    page: 2,
+  })
+  .then(function (list) {
+    // do something with list of cards
+  });
 ```
 
 ## getSet(setName: string) -> Promise<[MagicSet](#magicset)>

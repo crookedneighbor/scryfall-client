@@ -1,7 +1,34 @@
 import { get, post } from "Lib/api-request";
 
+import type { JsonMap } from "Types/json";
 import type Card from "Models/card";
 import type List from "Models/list";
+
+type UniqueOption = "cards" | "art" | "prints";
+type OrderOption =
+  | "name"
+  | "set"
+  | "released"
+  | "rarity"
+  | "color"
+  | "usd"
+  | "tix"
+  | "eur"
+  | "cmc"
+  | "power"
+  | "toughness"
+  | "edhrec"
+  | "artist";
+type DirectionOption = "auto" | "asc" | "desc";
+type SearchQueryOptions = {
+  unique?: UniqueOption;
+  order?: OrderOption;
+  dir?: DirectionOption;
+  include_extras?: boolean;
+  include_multilingual?: boolean;
+  include_variations?: boolean;
+  page?: number;
+};
 
 type CardCollectionIdentifier =
   | {
@@ -36,11 +63,16 @@ type CardCollectionIdentifier =
 // https://scryfall.com/docs/api/cards/all
 
 // https://scryfall.com/docs/api/cards/search
-// TODO support other query params
-export function search(query: string): Promise<List<Card>> {
-  return get("/cards/search", {
-    q: query,
-  });
+export function search(
+  searchString: string,
+  options: SearchQueryOptions = {}
+): Promise<List<Card>> {
+  const query = {
+    q: searchString,
+    ...(options as JsonMap),
+  };
+
+  return get("/cards/search", query);
 }
 
 // TODO /cards/named

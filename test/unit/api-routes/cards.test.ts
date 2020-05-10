@@ -28,6 +28,30 @@ describe("/cards", () => {
         });
       });
     });
+
+    it("can pass additional query params", () => {
+      return search("foo", {
+        unique: "prints",
+        order: "usd",
+        dir: "desc",
+        include_extras: true,
+        include_multilingual: true,
+        include_variations: false,
+        page: 123,
+      }).then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/search", {
+          q: "foo",
+          unique: "prints",
+          order: "usd",
+          dir: "desc",
+          include_extras: true,
+          include_multilingual: true,
+          include_variations: false,
+          page: 123,
+        });
+      });
+    });
   });
 
   describe("getCollection", () => {
