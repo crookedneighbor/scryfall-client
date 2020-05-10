@@ -4,17 +4,18 @@ import enqueTask from "./enque-task";
 import sendRequest from "./send-request";
 import ScryfallError from "Models/scryfall-error";
 import type { ApiResponse } from "Types/api-response";
+import type { AnyJson } from "Types/json";
 
 type RequestOptions = {
   endpoint: string;
   method?: "get" | "post";
-  body?: Record<string, any>;
+  body?: Record<string, AnyJson>;
   query?: Record<string, string>;
 };
 
 export default function sendRequestToApi(
   options: RequestOptions
-  // TODO no any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   const url = getUrl(options.endpoint, options.query);
 

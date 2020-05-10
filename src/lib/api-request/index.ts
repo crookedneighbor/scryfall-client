@@ -1,7 +1,10 @@
 import sendApiRequest from "Lib/api-request/send-request-to-api";
+import type { AnyJson } from "Types/json";
 
-// TODO no any
-export function get<T>(url: string, query?: Record<string, any>): Promise<T> {
+export function get<T>(
+  url: string,
+  query?: Record<string, string>
+): Promise<T> {
   return sendApiRequest({
     endpoint: url,
     method: "get",
@@ -9,8 +12,10 @@ export function get<T>(url: string, query?: Record<string, any>): Promise<T> {
   });
 }
 
-// TODO no any
-export function post<T>(url: string, body?: Record<string, any>): Promise<T> {
+export function post<T>(
+  url: string,
+  body?: Record<string, AnyJson>
+): Promise<T> {
   return sendApiRequest({
     endpoint: url,
     method: "post",

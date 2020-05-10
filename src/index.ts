@@ -126,16 +126,18 @@ type CardCollectionIdentifier =
     }
   | {
       name: string;
-      set?: string;
+    }
+  | {
+      name: string;
+      set: string;
     }
   | {
       collector_number: string;
       set: string;
     };
-type CardCollectionIdentifiers = CardCollectionIdentifier[];
 
 function getCollection(
-  identifiers: CardCollectionIdentifiers
+  identifiers: CardCollectionIdentifier[]
 ): Promise<List<Card>> {
   return post("cards/collection", {
     identifiers,

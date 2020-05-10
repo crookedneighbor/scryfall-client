@@ -3,9 +3,9 @@ import type { SuperAgentRequest } from "superagent";
 import ScryfallError from "Models/scryfall-error";
 
 import type { ApiResponse } from "Types/api-response";
+import type { AnyJson } from "Types/json";
 
-// TODO no any
-type PostBody = Record<string, any>;
+type PostBody = Record<string, AnyJson>;
 
 interface RequestOptions {
   url: string;
