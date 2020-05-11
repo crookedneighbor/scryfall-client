@@ -3,6 +3,7 @@ import { get, post } from "Lib/api-request";
 import type { JsonMap } from "Types/json";
 import type Card from "Models/card";
 import type List from "Models/list";
+import type Catalog from "Models/catalog";
 
 type UniqueOption = "cards" | "art" | "prints";
 type OrderOption =
@@ -28,6 +29,10 @@ type SearchQueryOptions = {
   include_multilingual?: boolean;
   include_variations?: boolean;
   page?: number;
+};
+
+type AutoCompleteOptions = {
+  include_extras?: boolean;
 };
 
 type CardCollectionIdentifier =
@@ -78,8 +83,18 @@ export function search(
 // TODO /cards/named
 // https://scryfall.com/docs/api/cards/named
 
-// TODO /cards/autocomplete
 // https://scryfall.com/docs/api/cards/autocomplete
+export function autocomplete(
+  searchString: string,
+  options: AutoCompleteOptions = {}
+): Promise<Catalog> {
+  const query = {
+    q: searchString,
+    ...(options as JsonMap),
+  };
+
+  return get("/cards/autocomplete", query);
+}
 
 // TODO /cards/random
 // https://scryfall.com/docs/api/cards/random

@@ -328,6 +328,33 @@ describe("scryfallClient", function () {
     });
   });
 
+  describe("autocomplete", () => {
+    it("can use the autocomplete endpoint", () => {
+      return client.autocomplete("Thalia").then((result) => {
+        expect(result).toBeInstanceOf(Catalog);
+        expect(result.length).toBeGreaterThan(3);
+        result.forEach((entry) => {
+          expect(entry).toBeTruthy();
+        });
+      });
+    });
+
+    it("can include extras", () => {
+      return client
+        .autocomplete("World Champion")
+        .then((result) => {
+          expect(result.length).toBe(0);
+
+          return client.autocomplete("World Champion", {
+            include_extras: true,
+          });
+        })
+        .then((result) => {
+          expect(result.length).toBeGreaterThan(3);
+        });
+    });
+  });
+
   describe("getCollection", () => {
     it("can find collection", () => {
       return client

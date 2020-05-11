@@ -85,6 +85,53 @@ scryfall
   });
 ```
 
+## autocomplete(searchString: string, options?: object) -> Promise<[Catalog](#catalog)>
+
+Perform a [Scryfall autocomplete search](https://scryfall.com/docs/api/cards/autocomplete), where `searchString` is the `q` parameter.
+
+```js
+scryfall.autocomplete("Thal").then(function (list) {
+  "Thallid",
+    "Thalakos Seer",
+    "Thalakos Scout",
+    "Thalakos Sentry",
+    "Thalia's Lancers",
+    "Thallid Devourer",
+    "Thallid Omnivore",
+    "Thalakos Drifters",
+    "Thalakos Mistfolk",
+    "Thalakos Lowlands",
+    "Thalakos Deceiver",
+    "Thallid Soothsayer",
+    "Thallid Germinator",
+    "Thalia's Lieutenant",
+    "Thalia's Geistcaller",
+    "Thallid Shell-Dweller",
+    "Thalia, Heretic Cathar",
+    "Thalakos Dreamsower",
+    "Thalia, Guardian of Thraben",
+    "Thorn Thallid";
+});
+```
+
+You can pass additional query params as an options object. `format` and `pretty` are not supported.
+
+```js
+scryfall
+  .search("o:vigilance t:equipment", {
+    unique: "prints",
+    order: "usd",
+    dir: "desc",
+    include_extras: true,
+    include_multilingual: true,
+    include_variations: true,
+    page: 2,
+  })
+  .then(function (list) {
+    // do something with list of cards
+  });
+```
+
 ## getSet(setName: string) -> Promise<[MagicSet](#magicset)>
 
 Perform a [lookup for a particular Magic set by the code](https://scryfall.com/docs/api/sets/code).

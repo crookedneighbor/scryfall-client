@@ -1,8 +1,6 @@
 "use strict";
 
-// TODO change this to import require when converted
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const scryfall = require("../../src/");
+import scryfall = require("../../src/");
 import debounce from "./debounce";
 
 const search = document.querySelector(
@@ -23,19 +21,15 @@ const modal = document.querySelector("#code-modal") as HTMLDivElement;
 search.addEventListener(
   "keyup",
   debounce(() => {
-    scryfall
-      .get("cards/autocomplete", {
-        q: search.value,
-      })
-      // TODO change this from any[]
-      .then((catalog: any[]) => {
-        autocompleteDatalist.innerHTML = "";
-        catalog.forEach((name) => {
-          const option = document.createElement("option") as HTMLOptionElement;
-          option.value = name;
-          autocompleteDatalist.appendChild(option);
-        });
+    scryfall.autocomplete(search.value).then((catalog) => {
+      autocompleteDatalist.innerHTML = "";
+
+      catalog.forEach((name) => {
+        const option = document.createElement("option") as HTMLOptionElement;
+        option.value = name;
+        autocompleteDatalist.appendChild(option);
       });
+    });
   })
 );
 

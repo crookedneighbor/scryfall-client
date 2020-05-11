@@ -14,7 +14,12 @@ import {
   discord as discordTransformer,
 } from "Lib/convert-symbols-to-emoji";
 
-import { search, getCollection, getCardByScryfallId } from "Api/cards";
+import {
+  autocomplete,
+  search,
+  getCollection,
+  getCardByScryfallId,
+} from "Api/cards";
 import { getSet } from "Api/sets";
 import { getCatalog } from "Api/catalog";
 
@@ -85,6 +90,7 @@ export = {
   wrap,
   getSet,
   search,
+  autocomplete,
   getCollection,
   getCardByScryfallId,
   getCatalog,

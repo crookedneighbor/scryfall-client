@@ -1,4 +1,9 @@
-import { search, getCollection, getCardByScryfallId } from "Api/cards";
+import {
+  autocomplete,
+  search,
+  getCollection,
+  getCardByScryfallId,
+} from "Api/cards";
 import { get, post } from "Lib/api-request";
 
 import { mocked } from "ts-jest/utils";
@@ -49,6 +54,27 @@ describe("/cards", () => {
           include_multilingual: true,
           include_variations: false,
           page: 123,
+        });
+      });
+    });
+  });
+
+  describe("autocomplete", () => {
+    it("requests the autocomplete endpoint", () => {
+      return autocomplete("foo").then((res) => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/autocomplete", {
+          q: "foo",
+        });
+      });
+    });
+
+    it("allows passing include_extras", () => {
+      return autocomplete("foo", { include_extras: true }).then((res) => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/autocomplete", {
+          q: "foo",
+          include_extras: true,
         });
       });
     });
