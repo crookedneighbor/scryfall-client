@@ -299,14 +299,45 @@ scryfall.getCards(5).then(function (cards) {
 });
 ```
 
-## getSet(setName: string) -> Promise<[MagicSet](#magicset)>
+### getSets() -> Promise<[List](#list)<[MagicSet](#magicset)>>
 
-Perform a [lookup for a particular Magic set by the code](https://scryfall.com/docs/api/sets/code).
+Perform a [lookup for all the sets](https://scryfall.com/docs/api/sets/all).
+
+
+```js
+scryfall.getSets().then(function (sets) {
+  sets.forEach(function (set) {
+    // do something with set
+  });
+});
+```
+
+## getSet(setCodeOrScryfallId: string) -> Promise<[MagicSet](#magicset)>
+
+Perform a [lookup for a particular Magic set by the code](https://scryfall.com/docs/api/sets/code) or [Scryfall ID](https://scryfall.com/docs/api/sets/id).
 
 ```js
 scryfall.getSet("dom").then(function (set) {
   set.name; // "Dominaria"
   set.code; // "dom"
+});
+```
+
+```js
+scryfall.getSet("2ec77b94-6d47-4891-a480-5d0b4e5c9372").then(function (set) {
+  set.name; // "Ultimate Masters"
+  set.code; // "uma"
+});
+```
+
+## getSetByTcgId(tcgId: number) -> Promise<[MagicSet](#magicset)>
+
+Perform a [lookup for a particular Magic set by the TCG Player ID](https://scryfall.com/docs/api/sets/tcgplayer).
+
+```js
+scryfall.getSetByTcgId(1909).then(function (set) {
+  set.name; // "Amonkhet Invocations"
+  set.code; // "mp2"
 });
 ```
 

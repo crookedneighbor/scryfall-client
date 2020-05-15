@@ -1,18 +1,21 @@
+/* Sets - https://scryfall.com/docs/api/sets */
 import { get } from "Lib/api-request";
 
+import type List from "Models/list";
 import type MagicSet from "Models/magic-set";
 
-/* Sets - https://scryfall.com/docs/api/sets */
-// TODO /sets
 // https://scryfall.com/docs/api/sets/all
-
-// https://scryfall.com/docs/api/sets/code
-export function getSet(setCode: string): Promise<MagicSet> {
-  return get(`/sets/${setCode}`);
+export function getSets(): Promise<List<MagicSet>> {
+  return get("/sets");
 }
 
-// TODO /sets/tcgplayer/:id
-// https://scryfall.com/docs/api/sets/tcgplayer
-
-// TODO /sets/:id
+// https://scryfall.com/docs/api/sets/code
 // https://scryfall.com/docs/api/sets/id
+export function getSet(setCodeOrId: string): Promise<MagicSet> {
+  return get(`/sets/${setCodeOrId}`);
+}
+
+// https://scryfall.com/docs/api/sets/tcgplayer
+export function getSetByTcgId(tcgId: number): Promise<MagicSet> {
+  return get(`/sets/tcgplayer/${tcgId}`);
+}

@@ -295,12 +295,41 @@ describe("scryfallClient", function () {
     });
   });
 
-  describe("getSet", () => {
+  describe("getSets", () => {
     it("gets a set", () => {
-      return client.getSet("dom").then((set) => {
+      return client.getSets().then((sets) => {
+        expect(sets).toBeInstanceOf(List);
+        expect(sets[0]).toBeInstanceOf(MagicSet);
+      });
+    });
+  });
+
+  describe("getSet", () => {
+    it("gets a set by set code", () => {
+      return client.getSet("mmq").then((set) => {
         expect(set).toBeInstanceOf(MagicSet);
-        expect(set.code).toBe("dom");
-        expect(set.name).toBe("Dominaria");
+        expect(set.code).toBe("mmq");
+        expect(set.name).toBe("Mercadian Masques");
+      });
+    });
+
+    it("gets a set by scryfall id", () => {
+      return client
+        .getSet("385e11a4-492b-4d07-b4a6-a1409ef829b8")
+        .then((set) => {
+          expect(set).toBeInstanceOf(MagicSet);
+          expect(set.code).toBe("mmq");
+          expect(set.name).toBe("Mercadian Masques");
+        });
+    });
+  });
+
+  describe("getSetByTcgId", () => {
+    it("gets a set by txg player id", () => {
+      return client.getSetByTcgId(1909).then((set) => {
+        expect(set).toBeInstanceOf(MagicSet);
+        expect(set.code).toBe("mp2");
+        expect(set.name).toBe("Amonkhet Invocations");
       });
     });
   });

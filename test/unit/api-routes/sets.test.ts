@@ -1,4 +1,4 @@
-import { getSet } from "Api/sets";
+import { getSets, getSet, getSetByTcgId } from "Api/sets";
 import { get } from "Lib/api-request";
 
 import { mocked } from "ts-jest/utils";
@@ -16,11 +16,29 @@ describe("/sets", () => {
     fakeGet.mockClear();
   });
 
+  describe("getSets", () => {
+    it("requests the sets endpoint", () => {
+      return getSets().then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/sets");
+      });
+    });
+  });
+
   describe("getSet", () => {
-    it("requests the set/:code endpoint", () => {
+    it("requests the sets/:code endpoint", () => {
       return getSet("foo").then(() => {
         expect(fakeGet).toBeCalledTimes(1);
         expect(fakeGet).toBeCalledWith("/sets/foo");
+      });
+    });
+  });
+
+  describe("getSetByTcgId", () => {
+    it("requests the sets/:code endpoint", () => {
+      return getSetByTcgId(123).then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/sets/tcgplayer/123");
       });
     });
   });

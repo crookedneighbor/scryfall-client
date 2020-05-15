@@ -23,7 +23,7 @@ import {
   getCardNamed,
   getCardBySetCodeAndCollectorNumber,
 } from "Api/cards";
-import { getSet } from "Api/sets";
+import { getSets, getSet, getSetByTcgId } from "Api/sets";
 import { getCatalog } from "Api/catalog";
 
 import type { TextTransformFunction } from "Types/text-transform";
@@ -91,7 +91,9 @@ export = {
   get,
   post,
   wrap,
+  getSets,
   getSet,
+  getSetByTcgId,
   search,
   autocomplete,
   getCollection,

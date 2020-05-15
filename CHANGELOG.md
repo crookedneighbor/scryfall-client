@@ -10,7 +10,9 @@
 - Add `search` method to make basic searches easier
 - Add `random` method to make random query easier
 - Add `autocomplete` method to make card name lookups easier
-- Add `getSet` method to make fetching a set object by set code easier
+- Add `getSets` method to make fetching all set objects easier
+- Add `getSet` method to make fetching a set object by set code or scryfall id easier
+- Add `getSetByTcgId` method to make fetching a set object by TCG Player id
 - Add `getCollection` method to make looking up numerous cards easier
 - Add `getCard` method to make looking up single card easier
 - Add `getCards` method to make looking up all cards easier
