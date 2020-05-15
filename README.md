@@ -303,7 +303,6 @@ scryfall.getCards(5).then(function (cards) {
 
 Perform a [lookup for all the sets](https://scryfall.com/docs/api/sets/all).
 
-
 ```js
 scryfall.getSets().then(function (sets) {
   sets.forEach(function (set) {
