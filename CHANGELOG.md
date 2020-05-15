@@ -1,4 +1,4 @@
-# unreleased
+# 0.14.0
 
 - Add typescript types
 - Add `setTextTransform` method to process text from request responses
