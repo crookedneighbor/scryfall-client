@@ -8,9 +8,14 @@
 - Add `setApiRequestDelayTime` method to set delay time between requests
 - Add `resetApiRequestDelayTime` method to reset delay time between requests to default (100 milliseconds)
 - Add `search` method to make basic searches easier
+- Add `random` method to make random query easier
 - Add `autocomplete` method to make card name lookups easier
 - Add `getSet` method to make fetching a set object by set code easier
 - Add `getCollection` method to make looking up numerous cards easier
+- Add `getCard` method to make looking up single card easier
+- Add `getCards` method to make looking up all cards easier
+- Add `getCardNamed` method to make looking up single card by name easier
+- Add `getCardBySetCodeAndCollectorNumber` method to make looking up single card by set code and collector number easier
 
 _Breaking Changes_
 

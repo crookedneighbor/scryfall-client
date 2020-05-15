@@ -39,20 +39,15 @@ search.addEventListener("input", () => {
 
   for (let i = 0; i < options.length; i++) {
     if (options[i].value === val) {
-      return (
-        scryfall
-          .get("cards/named", {
-            fuzzy: val,
-          })
-          // TODO change this from any
-          .then((card: any) => {
-            return card.getImage();
-          })
-          .then((img: string) => {
-            cardImage.src = img;
-            autocompleteDatalist.innerHTML = "";
-          })
-      );
+      return scryfall
+        .getCard(val, "name")
+        .then((card) => {
+          return card.getImage();
+        })
+        .then((img) => {
+          cardImage.src = img;
+          autocompleteDatalist.innerHTML = "";
+        });
     }
   }
 });

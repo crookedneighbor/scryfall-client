@@ -132,6 +132,173 @@ scryfall
   });
 ```
 
+## getCard(idOrName: string, kind?: string = "scryfall") -> Promise<[Card](#card)>
+
+You can get a card object through a variety of API routes. By default, just passing an ID will return a card by looking up the Scryfall ID.
+
+Available `kind` options are:
+
+- `id` (alias for `scryfall`)
+- `scryfall`
+- `multiverse`
+- `arena`
+- `mtgo` (Magic Online ID)
+- `tcg` (TCG Player ID)
+- `fuzzyName`
+- `name` (alias for `fuzzyName`)
+- `exactName`
+
+Find card by [Scryfall id](https://scryfall.com/docs/api/cards/id):
+
+```js
+scryfall.getCard("scryfall-id").then(function (card) {
+  // do something with card
+});
+
+// can also be expicit about it by providing a kind
+scryfall.getCard("scryfall-id", "scryfall").then(function (card) {
+  // do something with card
+});
+```
+
+Find card by [multiverse id](https://scryfall.com/docs/api/cards/multiverse):
+
+```js
+scryfall.getCard(1234, "multiverse").then(function (card) {
+  // do something with card
+});
+```
+
+Find card by [arena id](https://scryfall.com/docs/api/cards/arena):
+
+```js
+scryfall.getCard(1234, "arena").then(function (card) {
+  // do something with card
+});
+```
+
+Find card by [Magic Online id](https://scryfall.com/docs/api/cards/mtgo):
+
+```js
+scryfall.getCard(1234, "mtgo").then(function (card) {
+  // do something with card
+});
+```
+
+Find card by [TCG Player id](https://scryfall.com/docs/api/cards/tcgplayer):
+
+```js
+scryfall.getCard("id", "tcg").then(function (card) {
+  // do something with card
+});
+```
+
+Find card by [fuzzy name](https://scryfall.com/docs/api/cards/named):
+
+```js
+scryfall.getCard("fuzzy name", "fuzzyName").then(function (card) {
+  // do something with card
+});
+```
+
+Alternatively, just use `name` alias:
+
+```js
+scryfall.getCard("fuzzy name", "name").then(function (card) {
+  // do something with card
+});
+```
+
+Find card by [exact name](https://scryfall.com/docs/api/cards/named):
+
+```js
+scryfall.getCard("exact name", "exactName").then(function (card) {
+  // do something with card
+});
+```
+
+## getCardNamed(name: string, options?: object) -> Promise<[Card](#card)>
+
+```js
+scryfall.getCardNamed("fuzzy name").then(function (card) {
+  // do something with card
+});
+```
+
+Get exact name:
+
+```js
+scryfall.getCardNamed("exact name", { kind: "exact" }).then(function (card) {
+  // do something with card
+});
+```
+
+Get a card, but specify the printing based on set code:
+
+```js
+scryfall.getCardNamed("teferi time", { set: "dom" }).then(function (card) {
+  // do something with card
+});
+```
+
+## random(searchString?: string) -> Promise<[Card](#card)>
+
+Get a random card:
+
+```js
+scryfall.random().then(function (card) {
+  // do something with card
+});
+```
+
+Get a random card that matches a search string:
+
+```js
+scryfall.random("rarity:mythic").then(function (card) {
+  // random card that has been printed at mythic
+});
+```
+
+## getCardBySetCodeAndCollectorNumber(setCode: string, collectorNumber: string, lang?: string) -> Promise<[Card](#card)>
+
+Find a card by passing the set code and collector number.
+
+```js
+scryfall
+  .getCardBySetCodeAndCollectorNumber("set code", "123")
+  .then(function (card) {
+    // do something with card
+  });
+```
+
+Optionally pass a language parameter:
+
+```js
+scryfall
+  .getCardBySetCodeAndCollectorNumber("set code", "123", "es")
+  .then(function (card) {
+    // do something with card
+  });
+```
+
+## getCards(page: number = 1) -> Promise<[List](#list)<[Card](#card)>>
+
+Fetch all the cards:
+
+```js
+scryfall.getCards().then(function (cards) {
+  // do something with cards
+});
+```
+
+Fetch all the cards starting on a page other than 1:
+
+```js
+scryfall.getCards(5).then(function (cards) {
+  // do something with cards
+});
+```
+
 ## getSet(setName: string) -> Promise<[MagicSet](#magicset)>
 
 Perform a [lookup for a particular Magic set by the code](https://scryfall.com/docs/api/sets/code).

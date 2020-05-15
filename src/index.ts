@@ -18,7 +18,10 @@ import {
   autocomplete,
   search,
   getCollection,
-  getCardByScryfallId,
+  getCards,
+  getCard,
+  getCardNamed,
+  getCardBySetCodeAndCollectorNumber,
 } from "Api/cards";
 import { getSet } from "Api/sets";
 import { getCatalog } from "Api/catalog";
@@ -92,6 +95,9 @@ export = {
   search,
   autocomplete,
   getCollection,
-  getCardByScryfallId,
+  getCards,
+  getCard,
+  getCardNamed,
+  getCardBySetCodeAndCollectorNumber,
   getCatalog,
 };

@@ -1,3 +1,4 @@
+/* Cards - https://scryfall.com/docs/api/cards */
 import { get, post } from "Lib/api-request";
 
 import type { JsonMap } from "Types/json";
@@ -29,6 +30,11 @@ type SearchQueryOptions = {
   include_multilingual?: boolean;
   include_variations?: boolean;
   page?: number;
+};
+
+type NamedOptions = {
+  kind?: string;
+  set?: string;
 };
 
 type AutoCompleteOptions = {
@@ -63,9 +69,12 @@ type CardCollectionIdentifier =
       set: string;
     };
 
-/* Cards - https://scryfall.com/docs/api/cards */
-// TODO /cards
 // https://scryfall.com/docs/api/cards/all
+export function getCards(page = 1): Promise<List<Card>> {
+  return get("/cards", {
+    page: String(page),
+  });
+}
 
 // https://scryfall.com/docs/api/cards/search
 export function search(
@@ -80,8 +89,22 @@ export function search(
   return get("/cards/search", query);
 }
 
-// TODO /cards/named
 // https://scryfall.com/docs/api/cards/named
+export function getCardNamed(
+  name: string,
+  options: NamedOptions = {}
+): Promise<Card> {
+  const kind = options.kind || "fuzzy";
+  const query = {
+    [kind]: name,
+  };
+
+  if (options.set) {
+    query.set = options.set;
+  }
+
+  return get("/cards/named", query);
+}
 
 // https://scryfall.com/docs/api/cards/autocomplete
 export function autocomplete(
@@ -96,8 +119,16 @@ export function autocomplete(
   return get("/cards/autocomplete", query);
 }
 
-// TODO /cards/random
 // https://scryfall.com/docs/api/cards/random
+export function random(searchString?: string): Promise<List<Card>> {
+  if (!searchString) {
+    return get("/cards/random");
+  }
+
+  return get("/cards/random", {
+    q: searchString,
+  });
+}
 
 // https://scryfall.com/docs/api/cards/collection
 export function getCollection(
@@ -108,22 +139,80 @@ export function getCollection(
   });
 }
 
-// TODO /cards/:code/:number(/:lang)
 // https://scryfall.com/docs/api/cards/collector
+export function getCardBySetCodeAndCollectorNumber(
+  code: string,
+  collectorNumber: string,
+  lang?: string
+): Promise<Card> {
+  let url = `/cards/${code}/${collectorNumber}`;
 
-// TODO /cards/multiverse/:id
+  if (lang) {
+    url += `/${lang}`;
+  }
+
+  return get(url);
+}
+
 // https://scryfall.com/docs/api/cards/multiverse
+function getCardByMultiverseId(id: number | string): Promise<Card> {
+  return get(`/cards/multiverse/${id}`);
+}
 
-// TODO /cards/mtgo/:id
 // https://scryfall.com/docs/api/cards/mtgo
+function getCardByMtgoId(id: number | string): Promise<Card> {
+  return get(`/cards/mtgo/${id}`);
+}
 
-// TODO /cards/arena/:id
 // https://scryfall.com/docs/api/cards/arena
+function getCardByArenaId(id: number | string): Promise<Card> {
+  return get(`/cards/arena/${id}`);
+}
 
-// TODO /cards/tcgplayer/:id
 // https://scryfall.com/docs/api/cards/tcgplayer
+function getCardByTcgPlayerId(id: string): Promise<Card> {
+  return get(`/cards/tcgplayer/${id}`);
+}
 
 // https://scryfall.com/docs/api/cards/id
-export function getCardByScryfallId(id: string): Promise<Card> {
+function getCardByScryfallId(id: string): Promise<Card> {
   return get(`/cards/${id}`);
+}
+
+type GetCardKind =
+  | "id"
+  | "scryfall"
+  | "multiverse"
+  | "arena"
+  | "mtgo"
+  | "tcg"
+  | "name"
+  | "exactName"
+  | "fuzzyName";
+
+export function getCard(
+  idOrName: string | number,
+  kind: GetCardKind = "scryfall"
+): Promise<Card> {
+  const value = String(idOrName);
+
+  switch (kind) {
+    case "multiverse":
+      return getCardByMultiverseId(value);
+    case "arena":
+      return getCardByArenaId(value);
+    case "mtgo":
+      return getCardByMtgoId(value);
+    case "tcg":
+      return getCardByTcgPlayerId(value);
+    case "exactName":
+      return getCardNamed(value, { kind: "exact" });
+    case "name":
+    case "fuzzyName":
+      return getCardNamed(value, { kind: "fuzzy" });
+    case "id":
+    case "scryfall":
+    default:
+      return getCardByScryfallId(value);
+  }
 }

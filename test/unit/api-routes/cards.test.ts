@@ -2,7 +2,11 @@ import {
   autocomplete,
   search,
   getCollection,
-  getCardByScryfallId,
+  getCards,
+  getCard,
+  getCardNamed,
+  getCardBySetCodeAndCollectorNumber,
+  random,
 } from "Api/cards";
 import { get, post } from "Lib/api-request";
 
@@ -61,7 +65,7 @@ describe("/cards", () => {
 
   describe("autocomplete", () => {
     it("requests the autocomplete endpoint", () => {
-      return autocomplete("foo").then((res) => {
+      return autocomplete("foo").then(() => {
         expect(fakeGet).toBeCalledTimes(1);
         expect(fakeGet).toBeCalledWith("/cards/autocomplete", {
           q: "foo",
@@ -70,7 +74,7 @@ describe("/cards", () => {
     });
 
     it("allows passing include_extras", () => {
-      return autocomplete("foo", { include_extras: true }).then((res) => {
+      return autocomplete("foo", { include_extras: true }).then(() => {
         expect(fakeGet).toBeCalledTimes(1);
         expect(fakeGet).toBeCalledWith("/cards/autocomplete", {
           q: "foo",
@@ -128,11 +132,175 @@ describe("/cards", () => {
     });
   });
 
-  describe("getCardByScryfallId", () => {
+  describe("getCards", () => {
+    it("calls cards endpoint", () => {
+      return getCards().then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards", {
+          page: "1",
+        });
+      });
+    });
+
+    it("calls cards endpoint with page param", () => {
+      return getCards(5).then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards", {
+          page: "5",
+        });
+      });
+    });
+  });
+
+  describe("getCard", () => {
     it("requests the card id endpoint", () => {
-      return getCardByScryfallId("foo").then(() => {
+      return getCard("foo").then(() => {
         expect(fakeGet).toBeCalledTimes(1);
         expect(fakeGet).toBeCalledWith("/cards/foo");
+      });
+    });
+
+    it("requests the card id endpoint with `id` param", () => {
+      return getCard("foo", "id").then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/foo");
+      });
+    });
+
+    it("requests the card id endpoint with `scryfall` param", () => {
+      return getCard("foo", "scryfall").then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/foo");
+      });
+    });
+
+    it("requests the card multiverse endpoint with `multiverse` param", () => {
+      return getCard("foo", "multiverse").then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/multiverse/foo");
+      });
+    });
+
+    it("requests the card arena id endpoint with `arena` param", () => {
+      return getCard("foo", "arena").then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/arena/foo");
+      });
+    });
+
+    it("requests the card mtgo id endpoint with `mtgo` param", () => {
+      return getCard("foo", "mtgo").then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/mtgo/foo");
+      });
+    });
+
+    it("requests the card TCG Player id endpoint with `tcg` param", () => {
+      return getCard("foo", "tcg").then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/tcgplayer/foo");
+      });
+    });
+
+    it("requests the card name endpoint with `name` param", () => {
+      return getCard("foo", "name").then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/named", {
+          fuzzy: "foo",
+        });
+      });
+    });
+
+    it("requests the card name endpoint with `fuzzyName` param", () => {
+      return getCard("foo", "fuzzyName").then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/named", {
+          fuzzy: "foo",
+        });
+      });
+    });
+
+    it("requests the card name endpoint with `exactName` param", () => {
+      return getCard("foo", "exactName").then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/named", {
+          exact: "foo",
+        });
+      });
+    });
+  });
+
+  describe("getCardNamed", () => {
+    it("gets fuzzy name", () => {
+      return getCardNamed("foo").then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/named", {
+          fuzzy: "foo",
+        });
+      });
+    });
+
+    it("gets fuzzy name with kind parameter", () => {
+      return getCardNamed("foo", { kind: "fuzzy" }).then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/named", {
+          fuzzy: "foo",
+        });
+      });
+    });
+
+    it("gets exact name with kind parameter", () => {
+      return getCardNamed("foo", { kind: "exact" }).then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/named", {
+          exact: "foo",
+        });
+      });
+    });
+
+    it("can specify set", () => {
+      return getCardNamed("foo", { set: "aer" }).then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/named", {
+          fuzzy: "foo",
+          set: "aer",
+        });
+      });
+    });
+  });
+
+  describe("getCardBySetCodeAndCollectorNumber", () => {
+    it("calls set and number endpoint", () => {
+      return getCardBySetCodeAndCollectorNumber("foo", "123a").then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/foo/123a");
+      });
+    });
+
+    it("calls set and number endpoint with lang", () => {
+      return getCardBySetCodeAndCollectorNumber("foo", "123a", "es").then(
+        () => {
+          expect(fakeGet).toBeCalledTimes(1);
+          expect(fakeGet).toBeCalledWith("/cards/foo/123a/es");
+        }
+      );
+    });
+  });
+
+  describe("random", () => {
+    it("calls random endpoint", () => {
+      return random().then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/random");
+      });
+    });
+
+    it("calls random endpoint with search query", () => {
+      return random("foo").then(() => {
+        expect(fakeGet).toBeCalledTimes(1);
+        expect(fakeGet).toBeCalledWith("/cards/random", {
+          q: "foo",
+        });
       });
     });
   });
