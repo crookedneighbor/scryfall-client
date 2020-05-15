@@ -51,7 +51,7 @@ The other responses ([`Card`](#card), [`MagicSet`](#magicset), etc) are wrappers
 
 # Basic Usage
 
-## search(searchString: string, options?: object) -> Promise<[List](#list)<[Card](#card)>>
+## `search(searchString: string, options?: object)` -> Promise<[List](#list)<[Card](#card)>>
 
 Perform a [Scryfall search](https://scryfall.com/docs/api/cards/search), where `searchString` is the `q` parameter.
 
@@ -85,32 +85,34 @@ scryfall
   });
 ```
 
-## autocomplete(searchString: string, options?: object) -> Promise<[Catalog](#catalog)>
+## `autocomplete(searchString: string, options?: object)` -> Promise<[Catalog](#catalog)>
 
 Perform a [Scryfall autocomplete search](https://scryfall.com/docs/api/cards/autocomplete), where `searchString` is the `q` parameter.
 
 ```js
 scryfall.autocomplete("Thal").then(function (list) {
-  "Thallid",
-    "Thalakos Seer",
-    "Thalakos Scout",
-    "Thalakos Sentry",
-    "Thalia's Lancers",
-    "Thallid Devourer",
-    "Thallid Omnivore",
-    "Thalakos Drifters",
-    "Thalakos Mistfolk",
-    "Thalakos Lowlands",
-    "Thalakos Deceiver",
-    "Thallid Soothsayer",
-    "Thallid Germinator",
-    "Thalia's Lieutenant",
-    "Thalia's Geistcaller",
-    "Thallid Shell-Dweller",
-    "Thalia, Heretic Cathar",
-    "Thalakos Dreamsower",
-    "Thalia, Guardian of Thraben",
-    "Thorn Thallid";
+  // [
+  //   "Thallid",
+  //   "Thalakos Seer",
+  //   "Thalakos Scout",
+  //   "Thalakos Sentry",
+  //   "Thalia's Lancers",
+  //   "Thallid Devourer",
+  //   "Thallid Omnivore",
+  //   "Thalakos Drifters",
+  //   "Thalakos Mistfolk",
+  //   "Thalakos Lowlands",
+  //   "Thalakos Deceiver",
+  //   "Thallid Soothsayer",
+  //   "Thallid Germinator",
+  //   "Thalia's Lieutenant",
+  //   "Thalia's Geistcaller",
+  //   "Thallid Shell-Dweller",
+  //   "Thalia, Heretic Cathar",
+  //   "Thalakos Dreamsower",
+  //   "Thalia, Guardian of Thraben",
+  //   "Thorn Thallid"
+  // ]
 });
 ```
 
@@ -132,7 +134,7 @@ scryfall
   });
 ```
 
-## getCard(idOrName: string, kind?: string = "scryfall") -> Promise<[Card](#card)>
+## `getCard(idOrName: string, kind?: string = "scryfall")` -> Promise<[Card](#card)>
 
 You can get a card object through a variety of API routes. By default, just passing an ID will return a card by looking up the Scryfall ID.
 
@@ -217,7 +219,7 @@ scryfall.getCard("exact name", "exactName").then(function (card) {
 });
 ```
 
-## getCardNamed(name: string, options?: object) -> Promise<[Card](#card)>
+## `getCardNamed(name: string, options?: object)` -> Promise<[Card](#card)>
 
 ```js
 scryfall.getCardNamed("fuzzy name").then(function (card) {
@@ -241,7 +243,7 @@ scryfall.getCardNamed("teferi time", { set: "dom" }).then(function (card) {
 });
 ```
 
-## random(searchString?: string) -> Promise<[Card](#card)>
+## `random(searchString?: string)` -> Promise<[Card](#card)>
 
 Get a random card:
 
@@ -259,7 +261,7 @@ scryfall.random("rarity:mythic").then(function (card) {
 });
 ```
 
-## getCardBySetCodeAndCollectorNumber(setCode: string, collectorNumber: string, lang?: string) -> Promise<[Card](#card)>
+## `getCardBySetCodeAndCollectorNumber(setCode: string, collectorNumber: string, lang?: string)` -> Promise<[Card](#card)>
 
 Find a card by passing the set code and collector number.
 
@@ -281,7 +283,7 @@ scryfall
   });
 ```
 
-## getCards(page: number = 1) -> Promise<[List](#list)<[Card](#card)>>
+## `getCards(page: number = 1)` -> Promise<[List](#list)<[Card](#card)>>
 
 Fetch all the cards:
 
@@ -299,7 +301,7 @@ scryfall.getCards(5).then(function (cards) {
 });
 ```
 
-### getSets() -> Promise<[List](#list)<[MagicSet](#magicset)>>
+## `getSets()` -> Promise<[List](#list)<[MagicSet](#magicset)>>
 
 Perform a [lookup for all the sets](https://scryfall.com/docs/api/sets/all).
 
@@ -311,7 +313,7 @@ scryfall.getSets().then(function (sets) {
 });
 ```
 
-## getSet(setCodeOrScryfallId: string) -> Promise<[MagicSet](#magicset)>
+## `getSet(setCodeOrScryfallId: string)` -> Promise<[MagicSet](#magicset)>
 
 Perform a [lookup for a particular Magic set by the code](https://scryfall.com/docs/api/sets/code) or [Scryfall ID](https://scryfall.com/docs/api/sets/id).
 
@@ -329,7 +331,7 @@ scryfall.getSet("2ec77b94-6d47-4891-a480-5d0b4e5c9372").then(function (set) {
 });
 ```
 
-## getSetByTcgId(tcgId: number) -> Promise<[MagicSet](#magicset)>
+## `getSetByTcgId(tcgId: number)` -> Promise<[MagicSet](#magicset)>
 
 Perform a [lookup for a particular Magic set by the TCG Player ID](https://scryfall.com/docs/api/sets/tcgplayer).
 
@@ -340,7 +342,7 @@ scryfall.getSetByTcgId(1909).then(function (set) {
 });
 ```
 
-## getCollection(identifiers: object[]) -> Promise<[List](#list)<[Card](#card)>>
+## `getCollection(identifiers: object[])` -> Promise<[List](#list)<[Card](#card)>>
 
 Perform a [Scryfall collections request](https://scryfall.com/docs/api/cards/collection), where `identifiers` is the `identifiers` parameter.
 
@@ -367,7 +369,7 @@ scryfall
 
 # Advanced Usage
 
-## get(url: string, query?: object) -> Promise
+## `get(url: string, query?: object)` -> Promise
 
 If the exact API call you're looking for is missing, you can make a get request directly to any of the [API endpoints](https://scryfall.com/docs/api). It will return a Promise that resolves with the result.
 
@@ -391,7 +393,7 @@ scryfall
   });
 ```
 
-## post(url: string, body?: object) -> Promise
+## `post(url: string, body?: object)` -> Promise
 
 You can also call `post` with a post body:
 
@@ -415,7 +417,7 @@ scryfall
   });
 ```
 
-# getSymbolUrl
+## `getSymbolUrl`
 
 As a convenience, you can call `getSymbolUrl` with a symbol character to generate the Scryfall url for the symbols svg:
 
@@ -530,7 +532,7 @@ As a convenience, there are a number of API objects with special methods.
 
 Representing a [card object](https://scryfall.com/docs/api/cards). Normally, only double faced cards will have a `card_faces` array, but the `Card` instance will always include a `card_faces` array, defaulting to the main attributes from the card if the card does not have multiple faces.
 
-### getRulings() -> Promise<[List](#list)>
+### `getRulings()` -> Promise<[List](#list)>
 
 Returns a Promise that resolves with a list of [rulings objects](https://scryfall.com/docs/api/rulings)
 
@@ -550,7 +552,7 @@ scryfall
   });
 ```
 
-### getSet() -> Promise<[MagicSet](#magicset)>
+### `getSet()` -> Promise<[MagicSet](#magicset)>
 
 Returns a Promise that resolves with the [set object](https://scryfall.com/docs/api/sets) for the card.
 
@@ -567,7 +569,7 @@ scryfall
   });
 ```
 
-### getPrints() -> Promise<List>
+### `getPrints()` -> Promise<List>
 
 Returns a Promise that resolves with a list of [card objects](https://scryfall.com/docs/api/cards) for each printing of the card.
 
@@ -586,7 +588,7 @@ scryfall
   });
 ```
 
-### isLegal(String format) -> Boolean
+### `isLegal(String format)` -> `Boolean`
 
 Returns true or false for provided format. As of the writing of this documentation, the valid values are:
 
@@ -622,7 +624,7 @@ scryfall
   });
 ```
 
-### getImage(String size='normal') -> String
+### `getImage(String size='normal')` -> `String`
 
 Returns the image url of the specified size. Defaults to the `normal` size.
 
@@ -650,7 +652,7 @@ scryfall
   });
 ```
 
-### getBackImage(String size='normal') -> String
+### `getBackImage(String size='normal')` -> `String`
 
 Returns the image url of the back of the card. In almost all cases, this will return [Scryfall's URL for the backside of a card](https://img.scryfall.com/errors/missing.jpg). For [transform cards](https://scryfall.com/search?q=layout%3Atransform). It will return the image url for the back face of the card.
 
@@ -689,7 +691,7 @@ scryfall
   });
 ```
 
-### getPrice(String type) -> String
+### `getPrice(String type)` -> `String`
 
 Returns a string with the specifed price. If the price is not available for the specified type, `''` will be returned.
 
@@ -707,7 +709,7 @@ scryfall
   });
 ```
 
-### getTokens() -> Promise<List>
+### `getTokens()` -> Promise<List>
 
 Returns a Promise that resolves with a list of [card objects](https://scryfall.com/docs/api/cards) for each token associated with the card.
 
@@ -730,7 +732,7 @@ scryfall
   });
 ```
 
-### getTaggerUrl() -> String (beta)
+### `getTaggerUrl()` -> `String (beta)`
 
 Returns a url for the tagger page for the card. This is derived from the card attributes based on the structure of the current tagger urls. If the structure changes, this method will no longer point to the correct url.
 
@@ -755,7 +757,7 @@ An object representing a [catalog object](https://scryfall.com/docs/api/catalogs
 
 An object representing a [list object](https://scryfall.com/docs/api/lists). This is an Array like object where the entries are the `data` attribute from the raw API. The rest of the properties are present on the `List`.
 
-### next() -> Promise<[List](#list>>
+### `next()` -> Promise<[List](#list>>
 
 If the `has_more` property is `true`, then `next()` can be called to get the next page of results.
 
@@ -789,7 +791,7 @@ scryfall
 
 An object represnting a [set object](https://scryfall.com/docs/api/sets).
 
-### getCards() -> [List](#list)<[Card](#card)>
+### `getCards()` -> `[List](#list)<[Card](#card)>`
 
 Resolves with a list containing all the cards in the set.
 
