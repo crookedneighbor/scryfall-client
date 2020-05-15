@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "prepublishOnly": "typescript",
+    "prepublishOnly": "npm run typescript",
     "prebuild": "npm run pretty",
     "typescript": "tsc --declaration",
     "build": "webpack",
