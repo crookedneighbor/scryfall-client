@@ -42,10 +42,8 @@
           <code>
 'use strict'
 
-const ScryfallClient = require('scryfall-client')
+const scryfall = require('scryfall-client')
 const debounce = require('./path/to/your/debounce/function')
-
-const scryfall = new ScryfallClient();
 
 const search = document.querySelector(
   "#search-wrapper input"
@@ -65,10 +63,7 @@ const modal = document.querySelector("#code-modal");
 search.addEventListener(
   "keyup",
   debounce(() => {
-    scryfall
-      .get("cards/autocomplete", {
-        q: search.value,
-      })
+    scryfall.autocomplete(search.value)
       .then((catalog) => {
         autocompleteDatalist.innerHTML = "";
         catalog.forEach((name) => {
@@ -86,19 +81,15 @@ search.addEventListener("input", () => {
 
   for (var i = 0; i < options.length; i++) {
     if (options[i].value === val) {
-      return (
-        scryfall
-          .get("cards/named", {
-            fuzzy: val,
-          })
-          .then((card) => {
-            return card.getImage();
-          })
-          .then((img: string) => {
-            cardImage.src = img;
-            autocompleteDatalist.innerHTML = "";
-          })
-      );
+      return scryfall
+        .getCard(val, "name")
+        .then((card) => {
+          return card.getImage();
+        })
+        .then((img: string) => {
+          cardImage.src = img;
+          autocompleteDatalist.innerHTML = "";
+        })
     }
   }
 });
