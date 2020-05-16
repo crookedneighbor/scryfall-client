@@ -1,9 +1,9 @@
 "use strict";
 
 import ArrayLike from "./array-like";
-import { get } from "Lib/api-request";
-import type { ListApiResponse } from "Types/api-response";
-import type SingularEntity from "Models/singular-entity";
+import { get } from "../lib/api-request";
+import type { ListApiResponse } from "../types/api-response";
+import type SingularEntity from "./singular-entity";
 
 export default class List<T> extends ArrayLike<SingularEntity> {
   // From https://scryfall.com/docs/api/lists

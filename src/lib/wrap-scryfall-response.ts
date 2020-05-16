@@ -1,21 +1,21 @@
 "use strict";
 
-import type SingularEntity from "Models/singular-entity";
-import Card from "Models/card";
-import Catalog from "Models/catalog";
-import List from "Models/list";
-import MagicSet from "Models/magic-set";
-import GenericScryfallResponse from "Models/generic-scryfall-response";
-import type { Model } from "Types/model";
+import type SingularEntity from "../models/singular-entity";
+import Card from "../models/card";
+import Catalog from "../models/catalog";
+import List from "../models/list";
+import MagicSet from "../models/magic-set";
+import GenericScryfallResponse from "../models/generic-scryfall-response";
+import type { Model } from "../types/model";
 import type {
   ApiResponse,
   ListApiResponse,
   CatalogApiResponse,
-} from "Types/api-response";
-import CardApiResponse from "Types/api/card";
-import SetApiResponse from "Types/api/set";
+} from "../types/api-response";
+import CardApiResponse from "../types/api/card";
+import SetApiResponse from "../types/api/set";
 
-import { TextTransformFunction } from "Types/text-transform";
+import { TextTransformFunction } from "../types/text-transform";
 
 let transformFunction: TextTransformFunction;
 

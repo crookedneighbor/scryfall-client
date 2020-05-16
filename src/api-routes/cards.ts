@@ -1,10 +1,10 @@
 /* Cards - https://scryfall.com/docs/api/cards */
-import { get, post } from "Lib/api-request";
+import { get, post } from "../lib/api-request";
 
-import type { JsonMap } from "Types/json";
-import type Card from "Models/card";
-import type List from "Models/list";
-import type Catalog from "Models/catalog";
+import type { JsonMap } from "../types/json";
+import type Card from "../models/card";
+import type List from "../models/list";
+import type Catalog from "../models/catalog";
 
 type UniqueOption = "cards" | "art" | "prints";
 type OrderOption =

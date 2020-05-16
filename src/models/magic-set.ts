@@ -1,11 +1,11 @@
 "use strict";
 
-import SingularEntity from "Models/singular-entity";
-import type Card from "Models/card";
-import type List from "Models/list";
-import { get } from "Lib/api-request";
+import SingularEntity from "./singular-entity";
+import type Card from "./card";
+import type List from "./list";
+import { get } from "../lib/api-request";
 
-import type SetApiResponse from "Types/api/set";
+import type SetApiResponse from "../types/api/set";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface MagicSet extends SetApiResponse {}

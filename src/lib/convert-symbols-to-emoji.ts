@@ -1,4 +1,4 @@
-import type { TextTransformFunction } from "Types/text-transform";
+import type { TextTransformFunction } from "../types/text-transform";
 
 function createEmojiFunction(converter: string): TextTransformFunction {
   return function (text: string): string {

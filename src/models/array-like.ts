@@ -1,4 +1,4 @@
-import { ApiResponse } from "Types/api-response";
+import { ApiResponse } from "../types/api-response";
 
 interface ArrayLikeResponse extends ApiResponse {
   object: "list" | "catalog";

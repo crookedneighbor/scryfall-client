@@ -1,5 +1,5 @@
-import sendApiRequest from "Lib/api-request/send-request-to-api";
-import type { AnyJson } from "Types/json";
+import sendApiRequest from "../../lib/api-request/send-request-to-api";
+import type { AnyJson } from "../../types/json";
 
 export function get<T>(
   url: string,

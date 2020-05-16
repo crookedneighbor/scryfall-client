@@ -1,6 +1,6 @@
 /* Catalog - https://scryfall.com/docs/api/catalogs */
-import { get } from "Lib/api-request";
-import type Catalog from "Models/catalog";
+import { get } from "../lib/api-request";
+import type Catalog from "../models/catalog";
 
 // These are return the same signature, a Catalog of strings
 // So we just expose one method for all the routes

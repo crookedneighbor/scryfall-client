@@ -1,10 +1,10 @@
-import wrapScryfallResponse from "Lib/wrap-scryfall-response";
+import wrapScryfallResponse from "../../lib/wrap-scryfall-response";
 import getUrl from "./get-url";
 import enqueTask from "./enque-task";
 import sendRequest from "./send-request";
-import ScryfallError from "Models/scryfall-error";
-import type { ApiResponse } from "Types/api-response";
-import type { AnyJson } from "Types/json";
+import ScryfallError from "../../models/scryfall-error";
+import type { ApiResponse } from "../../types/api-response";
+import type { AnyJson } from "../../types/json";
 
 type RequestOptions = {
   endpoint: string;

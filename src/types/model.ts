@@ -1,9 +1,9 @@
-import type List from "Models/list";
-import type Card from "Models/card";
-import type MagicSet from "Models/magic-set";
-import type Catalog from "Models/catalog";
-import type GenericScryfallResponse from "Models/generic-scryfall-response";
-import type SingularEntity from "Models/singular-entity";
+import type List from "../models/list";
+import type Card from "../models/card";
+import type MagicSet from "../models/magic-set";
+import type Catalog from "../models/catalog";
+import type GenericScryfallResponse from "../models/generic-scryfall-response";
+import type SingularEntity from "../models/singular-entity";
 
 export type Model =
   | Card
