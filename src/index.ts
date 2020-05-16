@@ -1,18 +1,18 @@
 "use strict";
 
-import { get, post } from "Lib/api-request";
+import { get, post } from "./lib/api-request";
 import {
   setTaskDelayTime,
   resetTaskDelayTime,
-} from "Lib/api-request/enque-task";
+} from "./lib/api-request/enque-task";
 import wrapScryfallResponse, {
   setTextTransform as wrapTransform,
   resetTextTransform as wrapReset,
-} from "Lib/wrap-scryfall-response";
+} from "./lib/wrap-scryfall-response";
 import {
   slack as slackTransformer,
   discord as discordTransformer,
-} from "Lib/convert-symbols-to-emoji";
+} from "./lib/convert-symbols-to-emoji";
 
 import {
   autocomplete,
@@ -22,24 +22,24 @@ import {
   getCard,
   getCardNamed,
   getCardBySetCodeAndCollectorNumber,
-} from "Api/cards";
-import { getSets, getSet, getSetByTcgId } from "Api/sets";
-import { getCatalog } from "Api/catalog";
+} from "./api-routes/cards";
+import { getSets, getSet, getSetByTcgId } from "./api-routes/sets";
+import { getCatalog } from "./api-routes/catalog";
 
-import type { TextTransformFunction } from "Types/text-transform";
+import type { TextTransformFunction } from "./types/text-transform";
 import type {
   ApiResponse,
   ListApiResponse,
   CatalogApiResponse,
-} from "Types/api-response";
-import type CardApiResponse from "Types/api/card";
-import type SetApiResponse from "Types/api/set";
-import type { Model } from "Types/model";
-import type SingularEntity from "Models/singular-entity";
-import type Card from "Models/card";
-import type List from "Models/list";
-import type Catalog from "Models/catalog";
-import type MagicSet from "Models/magic-set";
+} from "./types/api-response";
+import type CardApiResponse from "./types/api/card";
+import type SetApiResponse from "./types/api/set";
+import type { Model } from "./types/model";
+import type SingularEntity from "./models/singular-entity";
+import type Card from "./models/card";
+import type List from "./models/list";
+import type Catalog from "./models/catalog";
+import type MagicSet from "./models/magic-set";
 
 function setTextTransform(func: TextTransformFunction): void {
   wrapTransform(func);

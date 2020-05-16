@@ -1,15 +1,15 @@
 "use strict";
 
-import SingularEntity from "Models/singular-entity";
-import type List from "Models/list";
-import type GenericScryfallResponse from "Models/generic-scryfall-response";
-import type MagicSet from "Models/magic-set";
-import { get } from "Lib/api-request";
+import SingularEntity from "./singular-entity";
+import type List from "./list";
+import type GenericScryfallResponse from "./generic-scryfall-response";
+import type MagicSet from "./magic-set";
+import { get } from "../lib/api-request";
 
-import type { ImageUris, Prices, Legalities } from "Types/api/constants";
-import type CardApiResponse from "Types/api/card";
-import type CardFaceApiResponse from "Types/api/card-face";
-import type RelatedCardApiResponse from "Types/api/related-card";
+import type { ImageUris, Prices, Legalities } from "../types/api/constants";
+import type CardApiResponse from "../types/api/card";
+import type CardFaceApiResponse from "../types/api/card-face";
+import type RelatedCardApiResponse from "../types/api/related-card";
 
 const SCRYFALL_CARD_BACK_IMAGE_URL =
   "https://img.scryfall.com/errors/missing.jpg";

@@ -1,9 +1,9 @@
 import superagent = require("superagent");
 import type { SuperAgentRequest } from "superagent";
-import ScryfallError from "Models/scryfall-error";
+import ScryfallError from "../../models/scryfall-error";
 
-import type { ApiResponse } from "Types/api-response";
-import type { AnyJson } from "Types/json";
+import type { ApiResponse } from "../../types/api-response";
+import type { AnyJson } from "../../types/json";
 
 type PostBody = Record<string, AnyJson>;
 

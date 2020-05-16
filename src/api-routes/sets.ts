@@ -1,8 +1,8 @@
 /* Sets - https://scryfall.com/docs/api/sets */
-import { get } from "Lib/api-request";
+import { get } from "../lib/api-request";
 
-import type List from "Models/list";
-import type MagicSet from "Models/magic-set";
+import type List from "../models/list";
+import type MagicSet from "../models/magic-set";
 
 // https://scryfall.com/docs/api/sets/all
 export function getSets(): Promise<List<MagicSet>> {

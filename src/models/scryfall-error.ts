@@ -1,5 +1,5 @@
 "use strict";
-import { ApiError } from "Types/api-error";
+import { ApiError } from "../types/api-error";
 
 class ExtendableError extends Error {
   constructor(message: string) {
