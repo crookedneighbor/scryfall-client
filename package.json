@@ -32,7 +32,6 @@
   "author": "blade <blade@crookedneighbor.com>",
   "license": "MIT",
   "devDependencies": {
-    "@braintree/extended-promise": "^0.3.0",
     "@types/jest": "^25.2.2",
     "@types/superagent": "^4.1.7",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
@@ -45,7 +44,7 @@
     "jest": "^26.0.1",
     "mkdirp": "^1.0.4",
     "prettier": "^2.0.5",
-    "ts-jest": "^25.5.1",
+    "ts-jest": "^26.0.0",
     "ts-loader": "^7.0.4",
     "typescript": "^3.9.2",
     "webpack": "^4.43.0",
@@ -53,6 +52,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@braintree/extended-promise": "^0.3.0",
     "superagent": "^5.2.2"
   },
   "jest": {
