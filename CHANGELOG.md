@@ -1,4 +1,4 @@
-# unreleased
+# 0.15.0
 
 - Add keywords to card model type
 - Add content_warning to card model type
