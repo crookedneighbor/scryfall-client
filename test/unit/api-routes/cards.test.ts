@@ -2,7 +2,6 @@ import {
   autocomplete,
   search,
   getCollection,
-  getCards,
   getCard,
   getCardNamed,
   getCardBySetCodeAndCollectorNumber,
@@ -127,26 +126,6 @@ describe("/cards", () => {
         expect(fakePost).toBeCalledTimes(1);
         expect(fakePost).toBeCalledWith("/cards/collection", {
           identifiers,
-        });
-      });
-    });
-  });
-
-  describe("getCards", () => {
-    it("calls cards endpoint", () => {
-      return getCards().then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards", {
-          page: "1",
-        });
-      });
-    });
-
-    it("calls cards endpoint with page param", () => {
-      return getCards(5).then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards", {
-          page: "5",
         });
       });
     });

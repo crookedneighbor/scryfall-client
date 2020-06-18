@@ -436,30 +436,6 @@ describe("scryfallClient", function () {
     });
   });
 
-  describe("getCards", () => {
-    it("gets call cards", () => {
-      return client.getCards().then((cards) => {
-        expect(cards).toBeInstanceOf(List);
-        expect(cards[0]).toBeInstanceOf(Card);
-      });
-    });
-
-    it("gets call cards by page", () => {
-      let firstCardId: string;
-
-      return client
-        .getCards()
-        .then((cards) => {
-          firstCardId = cards[0].id;
-
-          return client.getCards(5);
-        })
-        .then((cards) => {
-          expect(cards[0].id).not.toBe(firstCardId);
-        });
-    });
-  });
-
   describe("getCard", () => {
     it("gets a card by scryfall id", () => {
       return client.getCard(windfall).then((card) => {

@@ -96,6 +96,7 @@ export default interface CardApiResponse extends CardFaceResponse {
   edhrec_rank?: number; // This card’s overall rank/popularity on EDHREC. Not all cards are ranked.
   foil: boolean; // True if this printing exists in a foil version.
   hand_modifier?: string; // This card’s hand modifier, if it is Vanguard card. This value will contain a delta, such as -1.
+  keywords: string[]; // An array of keywords that this card uses, such as 'Flying' and 'Cumulative upkeep'.
   layout: Layout; // A code for this card’s layout.
   legalities: Legalities; // An object describing the legality of this card across play formats. Possible legalities are legal, not_legal, restricted, and banned.
   life_modifier?: string; // This card’s life modifier, if it is Vanguard card. This value will contain a delta, such as +2.
@@ -114,6 +115,7 @@ export default interface CardApiResponse extends CardFaceResponse {
   artist?: string; // The name of the illustrator of this card. Newly spoiled cards may not have this field yet.
   booster?: boolean; // Whether this card is found in boosters.
   border_color: "black" | "borderless" | "gold" | "silver" | "white"; // This card’s border color: black, borderless, gold, silver, or white.
+  content_warning?: boolean; // True if you should consider avoiding use of this print downstream.
   card_back_id: string; // The Scryfall ID for the card back design present on this card.
   collector_number: string; // This card’s collector number. Note that collector numbers can contain non-numeric characters, such as letters or ★.
   digital: boolean; // True if this is a digital card on Magic Online.

@@ -69,6 +69,12 @@ class Card extends SingularEntity {
       }
     });
 
+    // some boolean fields are incositently applied
+    // IE, they only are applied if the value is true
+    // and omitted if the value is false
+    this.booster = this.booster || false;
+    this.content_warning = this.content_warning || false;
+
     this._isDoublesided =
       this.layout === "transform" || this.layout === "double_faced_token";
   }

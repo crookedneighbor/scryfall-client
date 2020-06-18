@@ -69,13 +69,6 @@ type CardCollectionIdentifier =
       set: string;
     };
 
-// https://scryfall.com/docs/api/cards/all
-export function getCards(page = 1): Promise<List<Card>> {
-  return get("/cards", {
-    page: String(page),
-  });
-}
-
 // https://scryfall.com/docs/api/cards/search
 export function search(
   searchString: string,

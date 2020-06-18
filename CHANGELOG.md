@@ -1,3 +1,13 @@
+# unreleased
+
+- Add keywords to card model type
+- Add content_warning to card model type
+- Provide default values for booster and content_warning properties in card model
+
+_Breaking Changes_
+
+- Drop getCards method because the /cards endpoint is deprecated in the Scryfall API
+
 # 0.14.2
 
 - Fix issue where extended-promise module was not in dependencies
