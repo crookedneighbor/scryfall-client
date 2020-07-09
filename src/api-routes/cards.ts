@@ -126,7 +126,7 @@ export function random(searchString?: string): Promise<List<Card>> {
 // https://scryfall.com/docs/api/cards/collection
 export function getCollection(
   identifiers: CardCollectionIdentifier[]
-): Promise<List<Card>> {
+): Promise<Card[]> {
   const idBatches = identifiers.reduce(
     (array: CardCollectionIdentifier[][], entry, i) => {
       if (i % 75 !== 0) {
@@ -145,7 +145,7 @@ export function getCollection(
       })
     )
   ).then((collectionResults) => {
-    return collectionResults.flat() as List<Card>;
+    return collectionResults.flat() as Card[];
   });
 }
 
