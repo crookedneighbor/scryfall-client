@@ -342,7 +342,7 @@ scryfall.getSetByTcgId(1909).then(function (set) {
 });
 ```
 
-## `getCollection(identifiers: object[])` -> Promise<[List](#list)<[Card](#card)>>
+## `getCollection(identifiers: object[])` -> Promise<Array<[Card](#card)>>
 
 Perform a [Scryfall collections request](https://scryfall.com/docs/api/cards/collection), where `identifiers` is the `identifiers` parameter.
 
@@ -360,12 +360,14 @@ scryfall
       collector_number: "150",
     },
   ])
-  .then(function (list) {
-    list[0].name; // Lodestone Golem
-    list[1].name; // Ancient Tomb
-    list[2].name; // Chalice of the Void
+  .then(function (collection) {
+    collection[0].name; // Lodestone Golem
+    collection[1].name; // Ancient Tomb
+    collection[2].name; // Chalice of the Void
   });
 ```
+
+Normally, the collection API endpoint restricts requests to 75 identifiers. This module will automatically batch the requests in increments of 75 identifiers and then resolve with a flattened array of cards (not a List object).
 
 # Advanced Usage
 

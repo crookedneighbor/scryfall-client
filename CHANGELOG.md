@@ -1,3 +1,11 @@
+# unreleased
+
+- Automatically batch requests to the getCollection endpoint when identifiers exceed 75 entries
+
+_Breaking Changes_
+
+- `getCollection` returns an Array of Card objects instead of a List of Card objects
+
 # 0.15.0
 
 - Add keywords to card model type

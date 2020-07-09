@@ -11,7 +11,8 @@
       "Fixtures": ["test/fixtures"]
     },
     "module": "commonjs",
-    "target": "es5"
+    "target": "es5",
+    "lib": ["es2019"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/__mocks__/"]

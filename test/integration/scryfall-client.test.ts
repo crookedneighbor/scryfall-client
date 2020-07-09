@@ -417,7 +417,7 @@ describe("scryfallClient", function () {
           },
         ])
         .then((list) => {
-          expect(list).toBeInstanceOf(List);
+          expect(list).toBeInstanceOf(Array);
           expect(list[0].id).toBe("683a5707-cddb-494d-9b41-51b4584ded69");
           expect(list[1].mtgo_id).toBe(54957);
           expect(list[2].multiverse_ids).toContain(409574);

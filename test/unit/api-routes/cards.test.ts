@@ -129,6 +129,29 @@ describe("/cards", () => {
         });
       });
     });
+
+    it("batches requests when identifiers extends past 75 entries", () => {
+      const fakeEntry = {
+        set: "foo",
+        collector_number: "1",
+      };
+      const entries = [];
+      let i = 0;
+      while (i < 400) {
+        entries.push(fakeEntry);
+        i++;
+      }
+
+      return getCollection(entries).then(() => {
+        expect(fakePost).toBeCalledTimes(6);
+        expect(fakePost.mock.calls[0][1].identifiers.length).toBe(75);
+        expect(fakePost.mock.calls[1][1].identifiers.length).toBe(75);
+        expect(fakePost.mock.calls[2][1].identifiers.length).toBe(75);
+        expect(fakePost.mock.calls[3][1].identifiers.length).toBe(75);
+        expect(fakePost.mock.calls[4][1].identifiers.length).toBe(75);
+        expect(fakePost.mock.calls[5][1].identifiers.length).toBe(25);
+      });
+    });
   });
 
   describe("getCard", () => {
