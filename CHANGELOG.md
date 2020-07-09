@@ -1,3 +1,7 @@
+# unreleased
+
+- Automatically batch requests to the getCollection endpoint when identifiers exceed 75 entries
+
 # 0.15.0
 
 - Add keywords to card model type

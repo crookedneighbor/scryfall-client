@@ -367,6 +367,8 @@ scryfall
   });
 ```
 
+Normally, the collection API endpoint restricts requests to 75 identifiers. This module will automatically batch the requests in increments of 75 identifiers and then resolve with a flattened collection of cards.
+
 # Advanced Usage
 
 ## `get(url: string, query?: object)` -> Promise

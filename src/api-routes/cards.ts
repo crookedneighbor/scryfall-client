@@ -127,8 +127,25 @@ export function random(searchString?: string): Promise<List<Card>> {
 export function getCollection(
   identifiers: CardCollectionIdentifier[]
 ): Promise<List<Card>> {
-  return post("/cards/collection", {
-    identifiers,
+  const idBatches = identifiers.reduce(
+    (array: CardCollectionIdentifier[][], entry, i) => {
+      if (i % 75 !== 0) {
+        return array;
+      }
+
+      return array.concat([identifiers.slice(i, i + 75)]);
+    },
+    []
+  );
+
+  return Promise.all(
+    idBatches.map((ids) =>
+      post("/cards/collection", {
+        identifiers: ids,
+      })
+    )
+  ).then((collectionResults) => {
+    return collectionResults.flat() as List<Card>;
   });
 }
 
