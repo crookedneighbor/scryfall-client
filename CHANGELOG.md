@@ -1,4 +1,4 @@
-# unreleased
+# 0.16.0
 
 - Automatically batch requests to the getCollection endpoint when identifiers exceed 75 entries
 
