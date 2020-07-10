@@ -1,3 +1,12 @@
+# 0.17.0
+
+- Include `warnings` and `not_found` arrays in Lists resolved from `getCollection`
+
+_Breaking Changes_
+
+- `getCollection` returns an List of Card objects (reverting the previous releases breaking change)
+- Default `warnings` and `not_found` to empty arrays in Lists
+
 # 0.16.0
 
 - Automatically batch requests to the getCollection endpoint when identifiers exceed 75 entries

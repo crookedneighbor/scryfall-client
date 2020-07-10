@@ -3,8 +3,9 @@ import { get, post } from "../lib/api-request";
 
 import type { JsonMap } from "../types/json";
 import type Card from "../models/card";
-import type List from "../models/list";
+import List from "../models/list";
 import type Catalog from "../models/catalog";
+import type { CardCollectionIdentifier } from "../types/card-collection-identifier";
 
 type UniqueOption = "cards" | "art" | "prints";
 type OrderOption =
@@ -40,34 +41,6 @@ type NamedOptions = {
 type AutoCompleteOptions = {
   include_extras?: boolean;
 };
-
-type CardCollectionIdentifier =
-  | {
-      id: string;
-    }
-  | {
-      mtgo_id: number;
-    }
-  | {
-      multiverse_id: number;
-    }
-  | {
-      oracle_id: string;
-    }
-  | {
-      illustration_id: string;
-    }
-  | {
-      name: string;
-    }
-  | {
-      name: string;
-      set: string;
-    }
-  | {
-      collector_number: string;
-      set: string;
-    };
 
 // https://scryfall.com/docs/api/cards/search
 export function search(
@@ -126,7 +99,7 @@ export function random(searchString?: string): Promise<List<Card>> {
 // https://scryfall.com/docs/api/cards/collection
 export function getCollection(
   identifiers: CardCollectionIdentifier[]
-): Promise<Card[]> {
+): Promise<List<Card>> {
   const idBatches = identifiers.reduce(
     (array: CardCollectionIdentifier[][], entry, i) => {
       if (i % 75 !== 0) {
@@ -145,7 +118,24 @@ export function getCollection(
       })
     )
   ).then((collectionResults) => {
-    return collectionResults.flat() as Card[];
+    const warnings: string[] = [];
+    const notFound: CardCollectionIdentifier[] = [];
+
+    collectionResults.forEach((result) => {
+      const list = result as List<Card>;
+
+      warnings.push(...list.warnings);
+      notFound.push(...list.not_found);
+    });
+    const collection = collectionResults.flat() as Card[];
+
+    // coerce back into a List
+    return new List({
+      object: "list",
+      warnings,
+      not_found: notFound,
+      data: collection,
+    });
   });
 }
 

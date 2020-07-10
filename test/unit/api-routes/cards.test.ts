@@ -8,6 +8,8 @@ import {
   random,
 } from "Api/cards";
 import { get, post } from "Lib/api-request";
+import fixtures from "../../fixtures";
+import List from "Models/list";
 
 import { mocked } from "ts-jest/utils";
 
@@ -150,6 +152,70 @@ describe("/cards", () => {
         expect(fakePost.mock.calls[3][1].identifiers.length).toBe(75);
         expect(fakePost.mock.calls[4][1].identifiers.length).toBe(75);
         expect(fakePost.mock.calls[5][1].identifiers.length).toBe(25);
+      });
+    });
+
+    it("includes all not_found items in final array", () => {
+      const fakeEntry = {
+        set: "foo",
+        collector_number: "1",
+      };
+      const entries = [];
+      let i = 0;
+      while (i < 400) {
+        entries.push(fakeEntry);
+        i++;
+      }
+
+      const notFound1 = JSON.parse(JSON.stringify(fixtures.listOfCards));
+      const notFound2 = JSON.parse(JSON.stringify(fixtures.listOfCards));
+
+      notFound1.not_found = [{ name: "foo" }];
+      notFound2.not_found = [{ name: "bar" }, { name: "baz" }];
+
+      fakePost.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      fakePost.mockResolvedValueOnce(new List(notFound1));
+      fakePost.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      fakePost.mockResolvedValueOnce(new List(notFound2));
+      fakePost.mockResolvedValueOnce(new List(fixtures.listOfCards));
+
+      return getCollection(entries).then((result) => {
+        expect(result.not_found.length).toBe(3);
+        expect(result.not_found[0]).toEqual({ name: "foo" });
+        expect(result.not_found[1]).toEqual({ name: "bar" });
+        expect(result.not_found[2]).toEqual({ name: "baz" });
+      });
+    });
+
+    it("includes all warning items in final array", () => {
+      const fakeEntry = {
+        set: "foo",
+        collector_number: "1",
+      };
+      const entries = [];
+      let i = 0;
+      while (i < 400) {
+        entries.push(fakeEntry);
+        i++;
+      }
+
+      const warnings1 = JSON.parse(JSON.stringify(fixtures.listOfCards));
+      const warnings2 = JSON.parse(JSON.stringify(fixtures.listOfCards));
+
+      warnings1.warnings = ["foo"];
+      warnings2.warnings = ["bar", "baz"];
+
+      fakePost.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      fakePost.mockResolvedValueOnce(new List(warnings1));
+      fakePost.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      fakePost.mockResolvedValueOnce(new List(warnings2));
+      fakePost.mockResolvedValueOnce(new List(fixtures.listOfCards));
+
+      return getCollection(entries).then((result) => {
+        expect(result.warnings.length).toBe(3);
+        expect(result.warnings[0]).toEqual("foo");
+        expect(result.warnings[1]).toEqual("bar");
+        expect(result.warnings[2]).toEqual("baz");
       });
     });
   });
