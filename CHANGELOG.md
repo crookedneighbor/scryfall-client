@@ -1,3 +1,7 @@
+# 0.18.0
+
+- Provide types for models at `scryfall-client/dist/types/model`
+
 # 0.17.0
 
 - Include `warnings` and `not_found` arrays in Lists resolved from `getCollection`

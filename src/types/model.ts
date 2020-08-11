@@ -11,3 +11,12 @@ export type Model =
   | GenericScryfallResponse
   | List<SingularEntity>
   | MagicSet;
+
+export type {
+  List,
+  Card,
+  MagicSet,
+  Catalog,
+  GenericScryfallResponse,
+  SingularEntity,
+};
