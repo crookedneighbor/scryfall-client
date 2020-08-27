@@ -23,23 +23,23 @@ const brisela = "5a7a212e-e0b6-4f12-a95c-173cae023f93";
 const beastialMenace = "73c16134-692d-4fd1-bffa-f9342113cbd8";
 const originalProsh = "fc411c52-3ee2-4fe4-983d-3fa43b516237";
 
-describe("scryfallClient", function () {
-  describe("raw get/post", function () {
-    it("can make a get request", function () {
+describe("scryfallClient", () => {
+  describe("raw get/post", () => {
+    it("can make a get request", () => {
       return client.get<Card>("cards/random").then((card) => {
         expect(card).toBeInstanceOf(Card);
         expect(card.object).toBe("card");
       });
     });
 
-    it("handles errors", function () {
+    it("handles errors", () => {
       return expect(client.get("foo")).rejects.toMatchObject({
         message: expect.any(String),
         status: 404,
       });
     });
 
-    it("can send query params in get request", function () {
+    it("can send query params in get request", () => {
       return client
         .get<List<Card>>("cards/search", {
           q: "Budoka Gardener c:g",
@@ -49,7 +49,7 @@ describe("scryfallClient", function () {
         });
     });
 
-    it("can make a post request", function () {
+    it("can make a post request", () => {
       return client
         .post<List<Card>>("cards/collection", {
           identifiers: [
@@ -70,8 +70,8 @@ describe("scryfallClient", function () {
     });
   });
 
-  describe("List object", function () {
-    it("can get the next page of results", function () {
+  describe("List object", () => {
+    it("can get the next page of results", () => {
       return client
         .search("set:rix")
         .then((list) => {
@@ -84,7 +84,7 @@ describe("scryfallClient", function () {
         });
     });
 
-    it("can recursively call next", function () {
+    it("can recursively call next", () => {
       let totalCards: number;
 
       function collectCards(
@@ -97,28 +97,28 @@ describe("scryfallClient", function () {
           return Promise.resolve(allCards);
         }
 
-        return list.next().then(function (newList) {
+        return list.next().then((newList) => {
           return collectCards(newList, allCards);
         });
       }
 
       return client
         .search("format:standard r:r")
-        .then(function (list) {
+        .then((list) => {
           // TODO should have a CardList object that
           // has total_cards so we don't have to force it with non-null assertion
           totalCards = list.total_cards!;
 
           return collectCards(list);
         })
-        .then(function (allRareCardsInStandard) {
+        .then((allRareCardsInStandard) => {
           expect(allRareCardsInStandard.length).toBe(totalCards);
         });
     });
   });
 
-  describe("Set object", function () {
-    it("can get cards from set", function () {
+  describe("Set object", () => {
+    it("can get cards from set", () => {
       return client
         .getSet("dom")
         .then((set) => {
@@ -133,8 +133,8 @@ describe("scryfallClient", function () {
     });
   });
 
-  describe("Card object", function () {
-    it("can get rulings for card", function () {
+  describe("Card object", () => {
+    it("can get rulings for card", () => {
       return client
         .getCard(budokaGardener)
         .then((card) => {
@@ -146,7 +146,7 @@ describe("scryfallClient", function () {
         });
     });
 
-    it("can get set object for card", function () {
+    it("can get set object for card", () => {
       return client
         .getCard(budokaGardener)
         .then((card) => {
@@ -157,7 +157,7 @@ describe("scryfallClient", function () {
         });
     });
 
-    it("can get prints for card", function () {
+    it("can get prints for card", () => {
       return client
         .getCard(windfall)
         .then((card) => {
@@ -169,7 +169,7 @@ describe("scryfallClient", function () {
         });
     });
 
-    it("can check legality of a card", function () {
+    it("can check legality of a card", () => {
       return client.search("format:standard r:r").then((list) => {
         const card = list[0];
 
@@ -178,8 +178,8 @@ describe("scryfallClient", function () {
       });
     });
 
-    describe("card images", function () {
-      it("can get the image of a card", function () {
+    describe("card images", () => {
+      it("can get the image of a card", () => {
         let id: string;
 
         return client.getCard(windfall).then((card) => {
@@ -187,12 +187,12 @@ describe("scryfallClient", function () {
 
           const image = card.getImage();
           expect(typeof image).toBe("string");
-          expect(image).toEqual(expect.stringContaining("img.scryfall.com"));
+          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
 
-      it("can get the image of a transform card", function () {
+      it("can get the image of a transform card", () => {
         let id: string;
 
         return client.getCard(docentOfPerfection).then((card) => {
@@ -200,12 +200,12 @@ describe("scryfallClient", function () {
 
           const image = card.getImage();
           expect(typeof image).toBe("string");
-          expect(image).toEqual(expect.stringContaining("img.scryfall.com"));
+          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
 
-      it("can get the image of a meld card", function () {
+      it("can get the image of a meld card", () => {
         let id: string;
 
         return client.getCard(brunaFadingLight).then((card) => {
@@ -213,12 +213,12 @@ describe("scryfallClient", function () {
 
           const image = card.getImage();
           expect(typeof image).toBe("string");
-          expect(image).toEqual(expect.stringContaining("img.scryfall.com"));
+          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
 
-      it("can get the image of a melded card", function () {
+      it("can get the image of a melded card", () => {
         let id: string;
 
         return client.getCard(brisela).then((card) => {
@@ -226,39 +226,39 @@ describe("scryfallClient", function () {
 
           const image = card.getImage();
           expect(typeof image).toBe("string");
-          expect(image).toEqual(expect.stringContaining("img.scryfall.com"));
+          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
 
-      it("can get the backside image of a normal card (missing url)", function () {
+      it("can get the backside image of a normal card (missing url)", () => {
         return client.getCard(windfall).then((card) => {
           const image = card.getBackImage();
-          expect(image).toBe("https://img.scryfall.com/errors/missing.jpg");
+          expect(image).toBe("https://c1.scryfall.com/errors/missing.jpg");
         });
       });
 
-      it("can get the backside image of a meld card (missing url)", function () {
+      it("can get the backside image of a meld card (missing url)", () => {
         return client.getCard(brunaFadingLight).then((card) => {
           const image = card.getBackImage();
-          expect(image).toBe("https://img.scryfall.com/errors/missing.jpg");
+          expect(image).toBe("https://c1.scryfall.com/errors/missing.jpg");
         });
       });
 
-      it("can get the backside image of a transform card", function () {
+      it("can get the backside image of a transform card", () => {
         let id: string;
 
         return client.getCard(docentOfPerfection).then((card) => {
           id = card.id;
 
           const image = card.getBackImage();
-          expect(image).toEqual(expect.stringContaining("img.scryfall.com"));
+          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
     });
 
-    it("can get price for a card", function () {
+    it("can get price for a card", () => {
       return client.getCard(beastialMenace).then((card) => {
         const price = Number(card.getPrice());
 
@@ -266,7 +266,7 @@ describe("scryfallClient", function () {
       });
     });
 
-    it("can get tokens for a card", function () {
+    it("can get tokens for a card", () => {
       return client
         .getCard(beastialMenace)
         .then((card) => {
@@ -282,7 +282,7 @@ describe("scryfallClient", function () {
         });
     });
 
-    it("can get tokens for a card where the print does not have tokens", function () {
+    it("can get tokens for a card where the print does not have tokens", () => {
       return client
         .getCard(originalProsh)
         .then((card) => {
@@ -558,29 +558,29 @@ describe("scryfallClient", function () {
     });
   });
 
-  describe("getSymbolUrl", function () {
-    it("returns the url for a character representing a symbol", function () {
+  describe("getSymbolUrl", () => {
+    it("returns the url for a character representing a symbol", () => {
       expect(client.getSymbolUrl("W")).toBe(
-        "https://img.scryfall.com/symbology/W.svg"
+        "https://c1.scryfall.com/symbology/W.svg"
       );
     });
 
-    it("returns the url for symbol in curly braces", function () {
+    it("returns the url for symbol in curly braces", () => {
       expect(client.getSymbolUrl("{U}")).toBe(
-        "https://img.scryfall.com/symbology/U.svg"
+        "https://c1.scryfall.com/symbology/U.svg"
       );
     });
   });
 
-  describe("wrap", function () {
-    it("can wrap saved response object into scryfall response", function () {
+  describe("wrap", () => {
+    it("can wrap saved response object into scryfall response", () => {
       const card = client.wrap(fakeCard);
 
       expect(card).toBeInstanceOf(Card);
       expect(card.name).toBe("Windfall");
     });
 
-    it("can wrap saved list response object into scryfall response", function () {
+    it("can wrap saved list response object into scryfall response", () => {
       const list = client.wrap(fakeList);
 
       expect(list).toBeInstanceOf(List);
@@ -589,12 +589,12 @@ describe("scryfallClient", function () {
     });
   });
 
-  describe("text transformations", function () {
+  describe("text transformations", () => {
     afterEach(() => {
       client.resetTextTransform();
     });
 
-    it("can set custom text transform function", function () {
+    it("can set custom text transform function", () => {
       client.setTextTransform((text) => {
         return text.toUpperCase();
       });
@@ -604,7 +604,7 @@ describe("scryfallClient", function () {
       });
     });
 
-    it("can set text transform to slack emoji", function () {
+    it("can set text transform to slack emoji", () => {
       client.slackify();
 
       return client.getCard(originalProsh).then((card) => {
@@ -612,7 +612,7 @@ describe("scryfallClient", function () {
       });
     });
 
-    it("can set text transform to discord emoji", function () {
+    it("can set text transform to discord emoji", () => {
       client.discordify();
 
       return client.getCard(originalProsh).then((card) => {

@@ -18,14 +18,14 @@ module.exports = {
       layout: "normal",
       highres_image: true,
       image_uris: {
-        small: "https://img.scryfall.com/cards/small/en/w16/2.jpg?1517813031",
-        normal: "https://img.scryfall.com/cards/normal/en/w16/2.jpg?1517813031",
-        large: "https://img.scryfall.com/cards/large/en/w16/2.jpg?1517813031",
-        png: "https://img.scryfall.com/cards/png/en/w16/2.png?1517813031",
+        small: "https://c1.scryfall.com/cards/small/en/w16/2.jpg?1517813031",
+        normal: "https://c1.scryfall.com/cards/normal/en/w16/2.jpg?1517813031",
+        large: "https://c1.scryfall.com/cards/large/en/w16/2.jpg?1517813031",
+        png: "https://c1.scryfall.com/cards/png/en/w16/2.png?1517813031",
         art_crop:
-          "https://img.scryfall.com/cards/art_crop/en/w16/2.jpg?1517813031",
+          "https://c1.scryfall.com/cards/art_crop/en/w16/2.jpg?1517813031",
         border_crop:
-          "https://img.scryfall.com/cards/border_crop/en/w16/2.jpg?1517813031",
+          "https://c1.scryfall.com/cards/border_crop/en/w16/2.jpg?1517813031",
       },
       cmc: 4.0,
       type_line: "Enchantment — Aura",
@@ -114,15 +114,14 @@ module.exports = {
       layout: "normal",
       highres_image: true,
       image_uris: {
-        small: "https://img.scryfall.com/cards/small/en/fut/13.jpg?1517813031",
-        normal:
-          "https://img.scryfall.com/cards/normal/en/fut/13.jpg?1517813031",
-        large: "https://img.scryfall.com/cards/large/en/fut/13.jpg?1517813031",
-        png: "https://img.scryfall.com/cards/png/en/fut/13.png?1517813031",
+        small: "https://c1.scryfall.com/cards/small/en/fut/13.jpg?1517813031",
+        normal: "https://c1.scryfall.com/cards/normal/en/fut/13.jpg?1517813031",
+        large: "https://c1.scryfall.com/cards/large/en/fut/13.jpg?1517813031",
+        png: "https://c1.scryfall.com/cards/png/en/fut/13.png?1517813031",
         art_crop:
-          "https://img.scryfall.com/cards/art_crop/en/fut/13.jpg?1517813031",
+          "https://c1.scryfall.com/cards/art_crop/en/fut/13.jpg?1517813031",
         border_crop:
-          "https://img.scryfall.com/cards/border_crop/en/fut/13.jpg?1517813031",
+          "https://c1.scryfall.com/cards/border_crop/en/fut/13.jpg?1517813031",
       },
       cmc: 3.0,
       type_line: "Sorcery",

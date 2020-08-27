@@ -1,7 +1,7 @@
 module.exports = {
   object: "card_symbol",
   symbol: "{T}",
-  svg_uri: "https://img.scryfall.com/symbology/T.svg",
+  svg_uri: "https://c1.scryfall.com/symbology/T.svg",
   loose_variant: null,
   english: "tap this permanent",
   transposable: false,

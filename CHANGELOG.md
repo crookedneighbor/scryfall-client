@@ -1,3 +1,7 @@
+# unreleased
+
+- Update img.scryfall.com domains to c1.scryfall.com
+
 # 0.18.0
 
 - Provide types for models at `scryfall-client/dist/types/model`

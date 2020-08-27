@@ -65,7 +65,7 @@ describe("wrapScryfallResponse", function () {
     );
 
     expect(wrappedResponse).toBeInstanceOf(Card);
-    expect(wrappedResponse.image_uris.small).toContain("img.scryfall.com");
+    expect(wrappedResponse.image_uris.small).toContain("c1.scryfall.com");
     expect(wrappedResponse.all_parts[0]).toBeInstanceOf(
       GenericScryfallResponse
     );

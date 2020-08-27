@@ -16,17 +16,17 @@ module.exports = {
   highres_image: true,
   image_uris: {
     small:
-      "https://img.scryfall.com/cards/small/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.jpg?1562263761",
+      "https://c1.scryfall.com/cards/small/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.jpg?1562263761",
     normal:
-      "https://img.scryfall.com/cards/normal/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.jpg?1562263761",
+      "https://c1.scryfall.com/cards/normal/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.jpg?1562263761",
     large:
-      "https://img.scryfall.com/cards/large/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.jpg?1562263761",
+      "https://c1.scryfall.com/cards/large/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.jpg?1562263761",
     png:
-      "https://img.scryfall.com/cards/png/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.png?1562263761",
+      "https://c1.scryfall.com/cards/png/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.png?1562263761",
     art_crop:
-      "https://img.scryfall.com/cards/art_crop/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.jpg?1562263761",
+      "https://c1.scryfall.com/cards/art_crop/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.jpg?1562263761",
     border_crop:
-      "https://img.scryfall.com/cards/border_crop/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.jpg?1562263761",
+      "https://c1.scryfall.com/cards/border_crop/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.jpg?1562263761",
   },
   mana_cost: "{3}{G}{G}",
   cmc: 5,

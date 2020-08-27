@@ -68,7 +68,7 @@ function getSymbolUrl(symbol: string): string {
   const match = symbol.match(/{?(.)}?/);
   const character = match ? match[1] : symbol;
 
-  return "https://img.scryfall.com/symbology/" + character + ".svg";
+  return "https://c1.scryfall.com/symbology/" + character + ".svg";
 }
 
 function wrap(body: CardApiResponse): Card;

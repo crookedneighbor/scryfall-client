@@ -15,14 +15,14 @@ module.exports = {
     layout: "token",
     highres_image: true,
     image_uris: {
-      small: "https://img.scryfall.com/cards/small/en/tmm2/9.jpg?1517813031",
-      normal: "https://img.scryfall.com/cards/normal/en/tmm2/9.jpg?1517813031",
-      large: "https://img.scryfall.com/cards/large/en/tmm2/9.jpg?1517813031",
-      png: "https://img.scryfall.com/cards/png/en/tmm2/9.png?1517813031",
+      small: "https://c1.scryfall.com/cards/small/en/tmm2/9.jpg?1517813031",
+      normal: "https://c1.scryfall.com/cards/normal/en/tmm2/9.jpg?1517813031",
+      large: "https://c1.scryfall.com/cards/large/en/tmm2/9.jpg?1517813031",
+      png: "https://c1.scryfall.com/cards/png/en/tmm2/9.png?1517813031",
       art_crop:
-        "https://img.scryfall.com/cards/art_crop/en/tmm2/9.jpg?1517813031",
+        "https://c1.scryfall.com/cards/art_crop/en/tmm2/9.jpg?1517813031",
       border_crop:
-        "https://img.scryfall.com/cards/border_crop/en/tmm2/9.jpg?1517813031",
+        "https://c1.scryfall.com/cards/border_crop/en/tmm2/9.jpg?1517813031",
     },
     mana_cost: "",
     cmc: 0.0,

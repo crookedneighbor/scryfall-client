@@ -16,5 +16,5 @@ module.exports = {
   foil_only: false,
   block_code: "chk",
   block: "Kamigawa",
-  icon_svg_uri: "https://img.scryfall.com/sets/chk.svg?1563163200",
+  icon_svg_uri: "https://c1.scryfall.com/sets/chk.svg?1563163200",
 };

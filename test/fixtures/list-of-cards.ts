@@ -20,14 +20,14 @@ module.exports = {
       layout: "normal",
       highres_image: true,
       image_uris: {
-        small: "https://img.scryfall.com/cards/small/en/isd/1.jpg?1517813031",
-        normal: "https://img.scryfall.com/cards/normal/en/isd/1.jpg?1517813031",
-        large: "https://img.scryfall.com/cards/large/en/isd/1.jpg?1517813031",
-        png: "https://img.scryfall.com/cards/png/en/isd/1.png?1517813031",
+        small: "https://c1.scryfall.com/cards/small/en/isd/1.jpg?1517813031",
+        normal: "https://c1.scryfall.com/cards/normal/en/isd/1.jpg?1517813031",
+        large: "https://c1.scryfall.com/cards/large/en/isd/1.jpg?1517813031",
+        png: "https://c1.scryfall.com/cards/png/en/isd/1.png?1517813031",
         art_crop:
-          "https://img.scryfall.com/cards/art_crop/en/isd/1.jpg?1517813031",
+          "https://c1.scryfall.com/cards/art_crop/en/isd/1.jpg?1517813031",
         border_crop:
-          "https://img.scryfall.com/cards/border_crop/en/isd/1.jpg?1517813031",
+          "https://c1.scryfall.com/cards/border_crop/en/isd/1.jpg?1517813031",
       },
       cmc: 4.0,
       type_line: "Creature — Griffin",
@@ -117,14 +117,14 @@ module.exports = {
       layout: "normal",
       highres_image: true,
       image_uris: {
-        small: "https://img.scryfall.com/cards/small/en/frf/3.jpg?1517813031",
-        normal: "https://img.scryfall.com/cards/normal/en/frf/3.jpg?1517813031",
-        large: "https://img.scryfall.com/cards/large/en/frf/3.jpg?1517813031",
-        png: "https://img.scryfall.com/cards/png/en/frf/3.png?1517813031",
+        small: "https://c1.scryfall.com/cards/small/en/frf/3.jpg?1517813031",
+        normal: "https://c1.scryfall.com/cards/normal/en/frf/3.jpg?1517813031",
+        large: "https://c1.scryfall.com/cards/large/en/frf/3.jpg?1517813031",
+        png: "https://c1.scryfall.com/cards/png/en/frf/3.png?1517813031",
         art_crop:
-          "https://img.scryfall.com/cards/art_crop/en/frf/3.jpg?1517813031",
+          "https://c1.scryfall.com/cards/art_crop/en/frf/3.jpg?1517813031",
         border_crop:
-          "https://img.scryfall.com/cards/border_crop/en/frf/3.jpg?1517813031",
+          "https://c1.scryfall.com/cards/border_crop/en/frf/3.jpg?1517813031",
       },
       cmc: 3.0,
       type_line: "Enchantment — Aura",

@@ -18,15 +18,14 @@ module.exports = {
       layout: "normal",
       highres_image: true,
       image_uris: {
-        small: "https://img.scryfall.com/cards/small/en/ima/77.jpg?1517813031",
-        normal:
-          "https://img.scryfall.com/cards/normal/en/ima/77.jpg?1517813031",
-        large: "https://img.scryfall.com/cards/large/en/ima/77.jpg?1517813031",
-        png: "https://img.scryfall.com/cards/png/en/ima/77.png?1517813031",
+        small: "https://c1.scryfall.com/cards/small/en/ima/77.jpg?1517813031",
+        normal: "https://c1.scryfall.com/cards/normal/en/ima/77.jpg?1517813031",
+        large: "https://c1.scryfall.com/cards/large/en/ima/77.jpg?1517813031",
+        png: "https://c1.scryfall.com/cards/png/en/ima/77.png?1517813031",
         art_crop:
-          "https://img.scryfall.com/cards/art_crop/en/ima/77.jpg?1517813031",
+          "https://c1.scryfall.com/cards/art_crop/en/ima/77.jpg?1517813031",
         border_crop:
-          "https://img.scryfall.com/cards/border_crop/en/ima/77.jpg?1517813031",
+          "https://c1.scryfall.com/cards/border_crop/en/ima/77.jpg?1517813031",
       },
       cmc: 3.0,
       type_line: "Sorcery",
@@ -112,15 +111,15 @@ module.exports = {
       layout: "normal",
       highres_image: true,
       image_uris: {
-        small: "https://img.scryfall.com/cards/small/en/c16/104.jpg?1517813031",
+        small: "https://c1.scryfall.com/cards/small/en/c16/104.jpg?1517813031",
         normal:
-          "https://img.scryfall.com/cards/normal/en/c16/104.jpg?1517813031",
-        large: "https://img.scryfall.com/cards/large/en/c16/104.jpg?1517813031",
-        png: "https://img.scryfall.com/cards/png/en/c16/104.png?1517813031",
+          "https://c1.scryfall.com/cards/normal/en/c16/104.jpg?1517813031",
+        large: "https://c1.scryfall.com/cards/large/en/c16/104.jpg?1517813031",
+        png: "https://c1.scryfall.com/cards/png/en/c16/104.png?1517813031",
         art_crop:
-          "https://img.scryfall.com/cards/art_crop/en/c16/104.jpg?1517813031",
+          "https://c1.scryfall.com/cards/art_crop/en/c16/104.jpg?1517813031",
         border_crop:
-          "https://img.scryfall.com/cards/border_crop/en/c16/104.jpg?1517813031",
+          "https://c1.scryfall.com/cards/border_crop/en/c16/104.jpg?1517813031",
       },
       cmc: 3.0,
       type_line: "Sorcery",
@@ -204,15 +203,15 @@ module.exports = {
       layout: "normal",
       highres_image: true,
       image_uris: {
-        small: "https://img.scryfall.com/cards/small/en/c15/111.jpg?1519044787",
+        small: "https://c1.scryfall.com/cards/small/en/c15/111.jpg?1519044787",
         normal:
-          "https://img.scryfall.com/cards/normal/en/c15/111.jpg?1519044787",
-        large: "https://img.scryfall.com/cards/large/en/c15/111.jpg?1519044787",
-        png: "https://img.scryfall.com/cards/png/en/c15/111.png?1519044787",
+          "https://c1.scryfall.com/cards/normal/en/c15/111.jpg?1519044787",
+        large: "https://c1.scryfall.com/cards/large/en/c15/111.jpg?1519044787",
+        png: "https://c1.scryfall.com/cards/png/en/c15/111.png?1519044787",
         art_crop:
-          "https://img.scryfall.com/cards/art_crop/en/c15/111.jpg?1519044787",
+          "https://c1.scryfall.com/cards/art_crop/en/c15/111.jpg?1519044787",
         border_crop:
-          "https://img.scryfall.com/cards/border_crop/en/c15/111.jpg?1519044787",
+          "https://c1.scryfall.com/cards/border_crop/en/c15/111.jpg?1519044787",
       },
       cmc: 3.0,
       type_line: "Sorcery",
@@ -300,15 +299,14 @@ module.exports = {
       layout: "normal",
       highres_image: true,
       image_uris: {
-        small: "https://img.scryfall.com/cards/small/en/cmd/70.jpg?1517813031",
-        normal:
-          "https://img.scryfall.com/cards/normal/en/cmd/70.jpg?1517813031",
-        large: "https://img.scryfall.com/cards/large/en/cmd/70.jpg?1517813031",
-        png: "https://img.scryfall.com/cards/png/en/cmd/70.png?1517813031",
+        small: "https://c1.scryfall.com/cards/small/en/cmd/70.jpg?1517813031",
+        normal: "https://c1.scryfall.com/cards/normal/en/cmd/70.jpg?1517813031",
+        large: "https://c1.scryfall.com/cards/large/en/cmd/70.jpg?1517813031",
+        png: "https://c1.scryfall.com/cards/png/en/cmd/70.png?1517813031",
         art_crop:
-          "https://img.scryfall.com/cards/art_crop/en/cmd/70.jpg?1517813031",
+          "https://c1.scryfall.com/cards/art_crop/en/cmd/70.jpg?1517813031",
         border_crop:
-          "https://img.scryfall.com/cards/border_crop/en/cmd/70.jpg?1517813031",
+          "https://c1.scryfall.com/cards/border_crop/en/cmd/70.jpg?1517813031",
       },
       cmc: 3.0,
       type_line: "Sorcery",
@@ -397,16 +395,16 @@ module.exports = {
       highres_image: false,
       image_uris: {
         small:
-          "https://img.scryfall.com/cards/small/en/prm/62529.jpg?1517813031",
+          "https://c1.scryfall.com/cards/small/en/prm/62529.jpg?1517813031",
         normal:
-          "https://img.scryfall.com/cards/normal/en/prm/62529.jpg?1517813031",
+          "https://c1.scryfall.com/cards/normal/en/prm/62529.jpg?1517813031",
         large:
-          "https://img.scryfall.com/cards/large/en/prm/62529.jpg?1517813031",
-        png: "https://img.scryfall.com/cards/png/en/prm/62529.png?1517813031",
+          "https://c1.scryfall.com/cards/large/en/prm/62529.jpg?1517813031",
+        png: "https://c1.scryfall.com/cards/png/en/prm/62529.png?1517813031",
         art_crop:
-          "https://img.scryfall.com/cards/art_crop/en/prm/62529.jpg?1517813031",
+          "https://c1.scryfall.com/cards/art_crop/en/prm/62529.jpg?1517813031",
         border_crop:
-          "https://img.scryfall.com/cards/border_crop/en/prm/62529.jpg?1517813031",
+          "https://c1.scryfall.com/cards/border_crop/en/prm/62529.jpg?1517813031",
       },
       cmc: 3.0,
       type_line: "Sorcery",
@@ -490,15 +488,14 @@ module.exports = {
       layout: "normal",
       highres_image: true,
       image_uris: {
-        small: "https://img.scryfall.com/cards/small/en/brb/99.jpg?1517813031",
-        normal:
-          "https://img.scryfall.com/cards/normal/en/brb/99.jpg?1517813031",
-        large: "https://img.scryfall.com/cards/large/en/brb/99.jpg?1517813031",
-        png: "https://img.scryfall.com/cards/png/en/brb/99.png?1517813031",
+        small: "https://c1.scryfall.com/cards/small/en/brb/99.jpg?1517813031",
+        normal: "https://c1.scryfall.com/cards/normal/en/brb/99.jpg?1517813031",
+        large: "https://c1.scryfall.com/cards/large/en/brb/99.jpg?1517813031",
+        png: "https://c1.scryfall.com/cards/png/en/brb/99.png?1517813031",
         art_crop:
-          "https://img.scryfall.com/cards/art_crop/en/brb/99.jpg?1517813031",
+          "https://c1.scryfall.com/cards/art_crop/en/brb/99.jpg?1517813031",
         border_crop:
-          "https://img.scryfall.com/cards/border_crop/en/brb/99.jpg?1517813031",
+          "https://c1.scryfall.com/cards/border_crop/en/brb/99.jpg?1517813031",
       },
       cmc: 3.0,
       type_line: "Sorcery",
@@ -586,15 +583,15 @@ module.exports = {
       layout: "normal",
       highres_image: true,
       image_uris: {
-        small: "https://img.scryfall.com/cards/small/en/usg/111.jpg?1517813031",
+        small: "https://c1.scryfall.com/cards/small/en/usg/111.jpg?1517813031",
         normal:
-          "https://img.scryfall.com/cards/normal/en/usg/111.jpg?1517813031",
-        large: "https://img.scryfall.com/cards/large/en/usg/111.jpg?1517813031",
-        png: "https://img.scryfall.com/cards/png/en/usg/111.png?1517813031",
+          "https://c1.scryfall.com/cards/normal/en/usg/111.jpg?1517813031",
+        large: "https://c1.scryfall.com/cards/large/en/usg/111.jpg?1517813031",
+        png: "https://c1.scryfall.com/cards/png/en/usg/111.png?1517813031",
         art_crop:
-          "https://img.scryfall.com/cards/art_crop/en/usg/111.jpg?1517813031",
+          "https://c1.scryfall.com/cards/art_crop/en/usg/111.jpg?1517813031",
         border_crop:
-          "https://img.scryfall.com/cards/border_crop/en/usg/111.jpg?1517813031",
+          "https://c1.scryfall.com/cards/border_crop/en/usg/111.jpg?1517813031",
       },
       cmc: 3.0,
       type_line: "Sorcery",
