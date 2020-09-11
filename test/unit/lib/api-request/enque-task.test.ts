@@ -1,4 +1,4 @@
-import * as ExtendedPromise from "@braintree/extended-promise";
+import ExtendedPromise from "@braintree/extended-promise";
 import enqueTask, { clearQueue } from "Lib/api-request/enque-task";
 import Task from "Lib/api-request/task";
 

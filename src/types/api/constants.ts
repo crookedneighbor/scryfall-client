@@ -10,10 +10,10 @@ export type ImageUris = {
 };
 
 export type Prices = {
-  usd: string;
-  usd_foil: string;
-  eur: string;
-  tix: string;
+  usd: string | null;
+  usd_foil: string | null;
+  eur: string | null;
+  tix: string | null;
 };
 
 export type Legality = "legal" | "not_legal" | "restricted" | "banned";

@@ -1,4 +1,4 @@
-import * as ExtendedPromise from "@braintree/extended-promise";
+import ExtendedPromise from "@braintree/extended-promise";
 export type TaskFunction<T> = () => T | Promise<T>;
 
 export default class Task<T> {

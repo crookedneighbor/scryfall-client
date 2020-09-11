@@ -278,37 +278,37 @@ describe("Card", function () {
     });
 
     it("returns the foil price if no usd price is available and no argument is given", function () {
-      delete card.prices.usd;
+      card.prices.usd = null;
 
       expect(card.getPrice()).toBe(originalPrices.usd_foil);
     });
 
     it("returns the eur price if no usd or foil price available", function () {
-      delete card.prices.usd;
-      delete card.prices.usd_foil;
+      card.prices.usd = null;
+      card.prices.usd_foil = null;
 
       expect(card.getPrice()).toBe(originalPrices.eur);
     });
 
     it("returns the tix price if no usd or foil or eur price available", function () {
-      delete card.prices.usd;
-      delete card.prices.usd_foil;
-      delete card.prices.eur;
+      card.prices.usd = null;
+      card.prices.usd_foil = null;
+      card.prices.eur = null;
 
       expect(card.getPrice()).toBe(originalPrices.tix);
     });
 
     it("returns an empty string if no pricing is available", function () {
-      delete card.prices.usd;
-      delete card.prices.usd_foil;
-      delete card.prices.eur;
-      delete card.prices.tix;
+      card.prices.usd = null;
+      card.prices.usd_foil = null;
+      card.prices.eur = null;
+      card.prices.tix = null;
 
       expect(card.getPrice()).toBe("");
     });
 
     it("returns an empty string if the specified type is not available", function () {
-      delete card.prices.usd_foil;
+      card.prices.usd_foil = null;
 
       expect(card.getPrice("usd_foil")).toBe("");
     });
