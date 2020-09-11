@@ -3,6 +3,7 @@
     "outDir": "./dist/",
     "strict": true,
     "baseUrl": ".",
+    "esModuleInterop": true,
     "paths": {
       "Api/*": ["src/api-routes/*"],
       "Lib/*": ["src/lib/*"],

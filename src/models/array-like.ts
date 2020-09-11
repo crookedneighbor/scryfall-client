@@ -16,7 +16,7 @@ export default abstract class ArrayLike<T> extends Array {
   }
 
   // built-in methods will use this as the constructor
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   static get [Symbol.species]() {
     return Array;
   }

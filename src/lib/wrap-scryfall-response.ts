@@ -33,15 +33,13 @@ export function resetTextTransform(): void {
 
 resetTextTransform();
 
-type passthrough<T> = (arg: T) => (c: T) => T;
-
 function wrapScryfallResponse<T>(response: T): T;
 function wrapScryfallResponse(body: ApiResponse): Model;
 function wrapScryfallResponse(body: CardApiResponse): Card;
 function wrapScryfallResponse(body: ListApiResponse): List<SingularEntity>;
 function wrapScryfallResponse(body: SetApiResponse): MagicSet;
 function wrapScryfallResponse(body: CatalogApiResponse): Catalog;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
 function wrapScryfallResponse(response: any): any {
   if (typeof response === "string") {
     return transformFunction(response);
