@@ -570,6 +570,12 @@ describe("scryfallClient", () => {
         expect.stringMatching(/https:\/\/.*scryfall.*U.svg/)
       );
     });
+
+    it("returns the correct url for symbol in lowercase", () => {
+      expect(client.getSymbolUrl("r")).toEqual(
+        expect.stringMatching(/https:\/\/.*scryfall.*R.svg/)
+      );
+    });
   });
 
   describe("wrap", () => {

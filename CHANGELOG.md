@@ -1,3 +1,7 @@
+# 0.18.3
+
+- Fix `getSymbolUrl` to handle lowercase mana symbols
+
 # 0.18.2
 
 - Fix `getSymbolUrl` to return the correct url prefix

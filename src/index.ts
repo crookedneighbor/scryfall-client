@@ -82,7 +82,7 @@ function getSymbolUrl(symbol: string): string {
   const match = symbol.match(/{?(.)}?/);
   const character = match ? match[1] : symbol;
 
-  return SYMBOL_URL_PREFIX + character + ".svg";
+  return SYMBOL_URL_PREFIX + character.toUpperCase() + ".svg";
 }
 
 function wrap(body: CardApiResponse): Card;
