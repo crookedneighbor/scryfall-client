@@ -35,10 +35,24 @@ import type CardApiResponse from "./types/api/card";
 import type SetApiResponse from "./types/api/set";
 import type { Model } from "./types/model";
 import type SingularEntity from "./models/singular-entity";
+import type CardSymbol from "./models/card-symbol";
 import type Card from "./models/card";
 import type List from "./models/list";
 import type Catalog from "./models/catalog";
 import type MagicSet from "./models/magic-set";
+
+const DEFAULT_SYMBOL_URI_PREFIX =
+  "https://c2.scryfall.com/file/scryfall-symbols/card-symbols/";
+let SYMBOL_URL_PREFIX = DEFAULT_SYMBOL_URI_PREFIX;
+
+// we don't know what the best cdn for the region to use will
+// be so we start off assuming c2, but make a request out to
+// find the best one when the module gets loaded
+get<CardSymbol[]>("/symbology").then((result) => {
+  const fullUri = result[0].svg_uri;
+
+  SYMBOL_URL_PREFIX = fullUri.replace(/[^/]*.svg/, "");
+});
 
 function setTextTransform(func: TextTransformFunction): void {
   wrapTransform(func);
@@ -68,7 +82,7 @@ function getSymbolUrl(symbol: string): string {
   const match = symbol.match(/{?(.)}?/);
   const character = match ? match[1] : symbol;
 
-  return "https://c1.scryfall.com/symbology/" + character + ".svg";
+  return SYMBOL_URL_PREFIX + character + ".svg";
 }
 
 function wrap(body: CardApiResponse): Card;

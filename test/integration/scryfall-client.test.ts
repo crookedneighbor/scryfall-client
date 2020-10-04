@@ -560,14 +560,14 @@ describe("scryfallClient", () => {
 
   describe("getSymbolUrl", () => {
     it("returns the url for a character representing a symbol", () => {
-      expect(client.getSymbolUrl("W")).toBe(
-        "https://c1.scryfall.com/symbology/W.svg"
+      expect(client.getSymbolUrl("W")).toEqual(
+        expect.stringMatching(/https:\/\/.*scryfall.*W.svg/)
       );
     });
 
     it("returns the url for symbol in curly braces", () => {
-      expect(client.getSymbolUrl("{U}")).toBe(
-        "https://c1.scryfall.com/symbology/U.svg"
+      expect(client.getSymbolUrl("{U}")).toEqual(
+        expect.stringMatching(/https:\/\/.*scryfall.*U.svg/)
       );
     });
   });

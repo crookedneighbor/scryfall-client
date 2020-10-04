@@ -1,3 +1,7 @@
+# 0.18.2
+
+- Fix `getSymbolUrl` to return the correct url prefix
+
 # 0.18.1
 
 - Update img.scryfall.com domains to c1.scryfall.com
