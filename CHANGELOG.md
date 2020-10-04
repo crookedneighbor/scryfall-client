@@ -1,4 +1,4 @@
-# unreleased
+# 0.18.1
 
 - Update img.scryfall.com domains to c1.scryfall.com
 - Update prices type to be strings or null
