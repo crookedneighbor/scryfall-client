@@ -234,14 +234,18 @@ describe("scryfallClient", () => {
       it("can get the backside image of a normal card (missing url)", () => {
         return client.getCard(windfall).then((card) => {
           const image = card.getBackImage();
-          expect(image).toBe("https://c1.scryfall.com/errors/missing.jpg");
+          expect(image).toBe(
+            "https://c2.scryfall.com/file/scryfall-errors/missing.jpg"
+          );
         });
       });
 
       it("can get the backside image of a meld card (missing url)", () => {
         return client.getCard(brunaFadingLight).then((card) => {
           const image = card.getBackImage();
-          expect(image).toBe("https://c1.scryfall.com/errors/missing.jpg");
+          expect(image).toBe(
+            "https://c2.scryfall.com/file/scryfall-errors/missing.jpg"
+          );
         });
       });
 
