@@ -1,3 +1,7 @@
+# 0.18.4
+
+- Fix back face constant for cards without a back face
+
 # 0.18.3
 
 - Fix `getSymbolUrl` to handle lowercase mana symbols
