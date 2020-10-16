@@ -1,3 +1,7 @@
+# 0.18.5
+
+- Fix issue where `getSybmolUrl` could not parse symbols longer than one character
+
 # 0.18.4
 
 - Fix back face constant for cards without a back face

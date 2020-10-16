@@ -580,6 +580,12 @@ describe("scryfallClient", () => {
         expect.stringMatching(/https:\/\/.*scryfall.*R.svg/)
       );
     });
+
+    it("returns the correct url for symbol with long name", () => {
+      expect(client.getSymbolUrl("iNfiniTey")).toEqual(
+        expect.stringMatching(/https:\/\/.*scryfall.*INFINITEY.svg/)
+      );
+    });
   });
 
   describe("wrap", () => {

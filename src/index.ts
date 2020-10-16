@@ -79,7 +79,7 @@ function resetApiRequestDelayTime(): void {
 }
 
 function getSymbolUrl(symbol: string): string {
-  const match = symbol.match(/{?(.)}?/);
+  const match = symbol.match(/{?([^{}]+)}?/);
   const character = match ? match[1] : symbol;
 
   return SYMBOL_URL_PREFIX + character.toUpperCase() + ".svg";
