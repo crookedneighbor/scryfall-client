@@ -1,6 +1,14 @@
-import querystring = require("querystring");
-
 const SCRYFALL_API_ENDPOINT = "https://api.scryfall.com/";
+
+function stringifyParams(params: Record<string, string>): string {
+  return Object.keys(params).reduce((accum, param) => {
+    if (accum) {
+      accum += "&";
+    }
+
+    return (accum += `${param}=${params[param]}`);
+  }, "");
+}
 
 function isFullScryfallUrl(url: string): boolean {
   return url.indexOf(SCRYFALL_API_ENDPOINT) === 0;
@@ -29,7 +37,7 @@ export default function getUrl(
   let url = getBaseUrl(endpoint);
 
   if (query) {
-    const queryParams = querystring.stringify(query);
+    const queryParams = stringifyParams(query);
 
     if (url.indexOf("?") > -1) {
       url += "&";

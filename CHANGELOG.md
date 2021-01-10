@@ -1,3 +1,7 @@
+# unreleased
+
+- Remove use of Node's querystring module to support current versions of Webpack
+
 # 0.18.5
 
 - Fix issue where `getSybmolUrl` could not parse symbols longer than one character
