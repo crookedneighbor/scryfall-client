@@ -1,4 +1,4 @@
-# unreleased
+# 0.18.6
 
 - Remove use of Node's querystring module to support current versions of Webpack
 
