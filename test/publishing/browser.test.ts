@@ -9,10 +9,10 @@ const config = require("../../webpack.config");
 import path = require("path");
 import fs = require("fs");
 
-describe("built file (be patient, this can take a while)", function () {
+describe("built file (be patient, this can take a while)", () => {
   let pathToBuild: string;
 
-  beforeAll(function (done) {
+  beforeAll((done) => {
     config.entry = path.resolve(__dirname, "..", "..", "src", "index.ts");
     config.output.path = path.resolve(
       __dirname,
@@ -38,12 +38,12 @@ describe("built file (be patient, this can take a while)", function () {
     });
   });
 
-  it("is es5 compliant", function (done) {
+  it("is es5 compliant", (done) => {
     checkES5(pathToBuild, done);
   });
 
-  it("is less then 90 KiB unminified", function (done) {
-    fs.stat(pathToBuild, function (err, stats) {
+  it("is less then 90 KiB unminified", (done) => {
+    fs.stat(pathToBuild, (err, stats) => {
       if (err) {
         done(err);
 
