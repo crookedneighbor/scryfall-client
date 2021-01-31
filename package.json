@@ -57,10 +57,8 @@
   },
   "jest": {
     "preset": "ts-jest",
+    "restoreMocks": true,
     "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "./test/helpers/setup.ts"
-    ],
     "moduleNameMapper": {
       "^Api/(.*)$": "<rootDir>/src/api-routes/$1",
       "^Lib/(.*)$": "<rootDir>/src/lib/$1",
