@@ -107,7 +107,7 @@ describe("scryfallClient", () => {
         .then((list) => {
           // TODO should have a CardList object that
           // has total_cards so we don't have to force it with non-null assertion
-          totalCards = list.total_cards!;
+          totalCards = list.total_cards as number;
 
           return collectCards(list);
         })
