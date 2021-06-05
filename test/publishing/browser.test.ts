@@ -9,6 +9,8 @@ const config = require("../../webpack.config");
 import path = require("path");
 import fs = require("fs");
 
+jest.setTimeout(90000);
+
 describe("built file (be patient, this can take a while)", () => {
   let pathToBuild: string;
 

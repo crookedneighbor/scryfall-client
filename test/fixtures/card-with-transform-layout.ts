@@ -40,8 +40,7 @@ module.exports = {
           "https://c1.scryfall.com/cards/normal/front/0/2/02d6d693-f1f3-4317-bcc0-c21fa8490d38.jpg?1562005031",
         large:
           "https://c1.scryfall.com/cards/large/front/0/2/02d6d693-f1f3-4317-bcc0-c21fa8490d38.jpg?1562005031",
-        png:
-          "https://c1.scryfall.com/cards/png/front/0/2/02d6d693-f1f3-4317-bcc0-c21fa8490d38.png?1562005031",
+        png: "https://c1.scryfall.com/cards/png/front/0/2/02d6d693-f1f3-4317-bcc0-c21fa8490d38.png?1562005031",
         art_crop:
           "https://c1.scryfall.com/cards/art_crop/front/0/2/02d6d693-f1f3-4317-bcc0-c21fa8490d38.jpg?1562005031",
         border_crop:
@@ -67,8 +66,7 @@ module.exports = {
           "https://img.scryfall.com/cards/normal/back/0/2/02d6d693-f1f3-4317-bcc0-c21fa8490d38.jpg?1562005031",
         large:
           "https://img.scryfall.com/cards/large/back/0/2/02d6d693-f1f3-4317-bcc0-c21fa8490d38.jpg?1562005031",
-        png:
-          "https://img.scryfall.com/cards/png/back/0/2/02d6d693-f1f3-4317-bcc0-c21fa8490d38.png?1562005031",
+        png: "https://img.scryfall.com/cards/png/back/0/2/02d6d693-f1f3-4317-bcc0-c21fa8490d38.png?1562005031",
         art_crop:
           "https://img.scryfall.com/cards/art_crop/back/0/2/02d6d693-f1f3-4317-bcc0-c21fa8490d38.jpg?1562005031",
         border_crop:
@@ -84,8 +82,7 @@ module.exports = {
       name: "Jace, Vryn's Prodigy // Jace, Telepath Unbound",
       type_line:
         "Legendary Creature — Human Wizard // Legendary Planeswalker — Jace",
-      uri:
-        "https://api.scryfall.com/cards/02d6d693-f1f3-4317-bcc0-c21fa8490d38",
+      uri: "https://api.scryfall.com/cards/02d6d693-f1f3-4317-bcc0-c21fa8490d38",
     },
     {
       object: "related_card",
@@ -93,8 +90,7 @@ module.exports = {
       component: "combo_piece",
       name: "Jace, Telepath Unbound Emblem",
       type_line: "Emblem — Jace",
-      uri:
-        "https://api.scryfall.com/cards/458e37b1-a849-41ae-b63c-3e09ffd814e4",
+      uri: "https://api.scryfall.com/cards/458e37b1-a849-41ae-b63c-3e09ffd814e4",
     },
   ],
   legalities: {

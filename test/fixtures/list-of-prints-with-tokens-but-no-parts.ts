@@ -16,8 +16,7 @@ module.exports = {
       name: "Ophiomancer",
       lang: "en",
       released_at: "2013-11-01",
-      uri:
-        "https://api.scryfall.com/cards/66d80dd1-b944-4cb2-8578-b4dbcabbbc1e",
+      uri: "https://api.scryfall.com/cards/66d80dd1-b944-4cb2-8578-b4dbcabbbc1e",
       scryfall_uri:
         "https://scryfall.com/card/c13/84/ophiomancer?utm_source=api",
       layout: "normal",
@@ -29,8 +28,7 @@ module.exports = {
           "https://c1.scryfall.com/cards/normal/front/6/6/66d80dd1-b944-4cb2-8578-b4dbcabbbc1e.jpg?1562916501",
         large:
           "https://c1.scryfall.com/cards/large/front/6/6/66d80dd1-b944-4cb2-8578-b4dbcabbbc1e.jpg?1562916501",
-        png:
-          "https://c1.scryfall.com/cards/png/front/6/6/66d80dd1-b944-4cb2-8578-b4dbcabbbc1e.png?1562916501",
+        png: "https://c1.scryfall.com/cards/png/front/6/6/66d80dd1-b944-4cb2-8578-b4dbcabbbc1e.png?1562916501",
         art_crop:
           "https://c1.scryfall.com/cards/art_crop/front/6/6/66d80dd1-b944-4cb2-8578-b4dbcabbbc1e.jpg?1562916501",
         border_crop:

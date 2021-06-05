@@ -20,8 +20,7 @@ module.exports = {
       "https://c1.scryfall.com/cards/normal/front/2/7/27907985-b5f6-4098-ab43-15a0c2bf94d5.jpg?1562728142",
     large:
       "https://c1.scryfall.com/cards/large/front/2/7/27907985-b5f6-4098-ab43-15a0c2bf94d5.jpg?1562728142",
-    png:
-      "https://c1.scryfall.com/cards/png/front/2/7/27907985-b5f6-4098-ab43-15a0c2bf94d5.png?1562728142",
+    png: "https://c1.scryfall.com/cards/png/front/2/7/27907985-b5f6-4098-ab43-15a0c2bf94d5.png?1562728142",
     art_crop:
       "https://c1.scryfall.com/cards/art_crop/front/2/7/27907985-b5f6-4098-ab43-15a0c2bf94d5.jpg?1562728142",
     border_crop:
@@ -43,8 +42,7 @@ module.exports = {
       component: "meld_part",
       name: "Bruna, the Fading Light",
       type_line: "Legendary Creature — Angel Horror",
-      uri:
-        "https://api.scryfall.com/cards/27907985-b5f6-4098-ab43-15a0c2bf94d5",
+      uri: "https://api.scryfall.com/cards/27907985-b5f6-4098-ab43-15a0c2bf94d5",
     },
     {
       object: "related_card",
@@ -52,8 +50,7 @@ module.exports = {
       component: "meld_result",
       name: "Brisela, Voice of Nightmares",
       type_line: "Legendary Creature — Eldrazi Angel",
-      uri:
-        "https://api.scryfall.com/cards/5a7a212e-e0b6-4f12-a95c-173cae023f93",
+      uri: "https://api.scryfall.com/cards/5a7a212e-e0b6-4f12-a95c-173cae023f93",
     },
     {
       object: "related_card",
@@ -61,8 +58,7 @@ module.exports = {
       component: "meld_part",
       name: "Gisela, the Broken Blade",
       type_line: "Legendary Creature — Angel Horror",
-      uri:
-        "https://api.scryfall.com/cards/c75c035a-7da9-4b36-982d-fca8220b1797",
+      uri: "https://api.scryfall.com/cards/c75c035a-7da9-4b36-982d-fca8220b1797",
     },
   ],
   legalities: {

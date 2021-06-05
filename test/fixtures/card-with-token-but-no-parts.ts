@@ -20,8 +20,7 @@ module.exports = {
       "https://c1.scryfall.com/cards/normal/front/6/6/66d80dd1-b944-4cb2-8578-b4dbcabbbc1e.jpg?1562916501",
     large:
       "https://c1.scryfall.com/cards/large/front/6/6/66d80dd1-b944-4cb2-8578-b4dbcabbbc1e.jpg?1562916501",
-    png:
-      "https://c1.scryfall.com/cards/png/front/6/6/66d80dd1-b944-4cb2-8578-b4dbcabbbc1e.png?1562916501",
+    png: "https://c1.scryfall.com/cards/png/front/6/6/66d80dd1-b944-4cb2-8578-b4dbcabbbc1e.png?1562916501",
     art_crop:
       "https://c1.scryfall.com/cards/art_crop/front/6/6/66d80dd1-b944-4cb2-8578-b4dbcabbbc1e.jpg?1562916501",
     border_crop:

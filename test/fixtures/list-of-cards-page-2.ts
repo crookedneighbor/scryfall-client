@@ -87,8 +87,7 @@ module.exports = {
       purchase_uris: {
         amazon:
           "https://www.amazon.com/gp/search?ie=UTF8&index=toys-and-games&keywords=Marked+by+Honor&tag=scryfall-20",
-        ebay:
-          "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Marked+by+Honor&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
+        ebay: "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Marked+by+Honor&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
         tcgplayer: "https://scryfall.com/s/tcgplayer/116786",
         magiccardmarket: "https://scryfall.com/s/mcm/289555",
         cardhoarder:
@@ -182,8 +181,7 @@ module.exports = {
       purchase_uris: {
         amazon:
           "https://www.amazon.com/gp/search?ie=UTF8&index=toys-and-games&keywords=Marshaling+Cry&tag=scryfall-20",
-        ebay:
-          "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Marshaling+Cry&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
+        ebay: "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Marshaling+Cry&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
         tcgplayer: "https://scryfall.com/s/tcgplayer/14937",
         magiccardmarket: "https://scryfall.com/s/mcm/15005",
         cardhoarder:

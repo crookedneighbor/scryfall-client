@@ -39,8 +39,7 @@ module.exports = {
         component: "combo_piece",
         name: "Bestial Menace",
         type_line: "Sorcery",
-        uri:
-          "https://api.scryfall.com/cards/73c16134-692d-4fd1-bffa-f9342113cbd8",
+        uri: "https://api.scryfall.com/cards/73c16134-692d-4fd1-bffa-f9342113cbd8",
       },
       {
         object: "related_card",
@@ -48,8 +47,7 @@ module.exports = {
         component: "token",
         name: "Elephant",
         type_line: "Token Creature — Elephant",
-        uri:
-          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
+        uri: "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
       },
       {
         object: "related_card",
@@ -57,8 +55,7 @@ module.exports = {
         component: "token",
         name: "Snake",
         type_line: "Token Creature — Snake",
-        uri:
-          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
+        uri: "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
       },
       {
         object: "related_card",
@@ -66,8 +63,7 @@ module.exports = {
         component: "token",
         name: "Wolf",
         type_line: "Token Creature — Wolf",
-        uri:
-          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
+        uri: "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
       },
     ],
     legalities: {
@@ -170,8 +166,7 @@ module.exports = {
         component: "combo_piece",
         name: "Bestial Menace",
         type_line: "Sorcery",
-        uri:
-          "https://api.scryfall.com/cards/73c16134-692d-4fd1-bffa-f9342113cbd8",
+        uri: "https://api.scryfall.com/cards/73c16134-692d-4fd1-bffa-f9342113cbd8",
       },
       {
         object: "related_card",
@@ -179,8 +174,7 @@ module.exports = {
         component: "combo_piece",
         name: "Wolfbriar Elemental",
         type_line: "Creature — Elemental",
-        uri:
-          "https://api.scryfall.com/cards/fb10f5be-a82f-4f4f-8653-2d6927ac0ca8",
+        uri: "https://api.scryfall.com/cards/fb10f5be-a82f-4f4f-8653-2d6927ac0ca8",
       },
       {
         object: "related_card",
@@ -188,8 +182,7 @@ module.exports = {
         component: "token",
         name: "Elephant",
         type_line: "Token Creature — Elephant",
-        uri:
-          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
+        uri: "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
       },
       {
         object: "related_card",
@@ -197,8 +190,7 @@ module.exports = {
         component: "token",
         name: "Snake",
         type_line: "Token Creature — Snake",
-        uri:
-          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
+        uri: "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
       },
       {
         object: "related_card",
@@ -206,8 +198,7 @@ module.exports = {
         component: "token",
         name: "Wolf",
         type_line: "Token Creature — Wolf",
-        uri:
-          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
+        uri: "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
       },
     ],
     legalities: {
@@ -310,8 +301,7 @@ module.exports = {
         component: "combo_piece",
         name: "Bestial Menace",
         type_line: "Sorcery",
-        uri:
-          "https://api.scryfall.com/cards/73c16134-692d-4fd1-bffa-f9342113cbd8",
+        uri: "https://api.scryfall.com/cards/73c16134-692d-4fd1-bffa-f9342113cbd8",
       },
       {
         object: "related_card",
@@ -319,8 +309,7 @@ module.exports = {
         component: "token",
         name: "Elephant",
         type_line: "Token Creature — Elephant",
-        uri:
-          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
+        uri: "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
       },
       {
         object: "related_card",
@@ -328,8 +317,7 @@ module.exports = {
         component: "token",
         name: "Snake",
         type_line: "Token Creature — Snake",
-        uri:
-          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
+        uri: "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
       },
       {
         object: "related_card",
@@ -337,8 +325,7 @@ module.exports = {
         component: "token",
         name: "Wolf",
         type_line: "Token Creature — Wolf",
-        uri:
-          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
+        uri: "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
       },
     ],
     legalities: {

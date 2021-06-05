@@ -87,8 +87,7 @@ module.exports = {
       purchase_uris: {
         amazon:
           "https://www.amazon.com/gp/search?ie=UTF8&index=toys-and-games&keywords=Windfall&tag=scryfall-20",
-        ebay:
-          "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
+        ebay: "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
         tcgplayer: "https://scryfall.com/s/tcgplayer/145439",
         magiccardmarket: "https://scryfall.com/s/mcm/301587",
         cardhoarder:
@@ -179,8 +178,7 @@ module.exports = {
       purchase_uris: {
         amazon:
           "https://www.amazon.com/gp/search?ie=UTF8&index=toys-and-games&keywords=Windfall&tag=scryfall-20",
-        ebay:
-          "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
+        ebay: "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
         tcgplayer: "https://scryfall.com/s/tcgplayer/124202",
         magiccardmarket: "https://scryfall.com/s/mcm/293537",
         cardhoarder:
@@ -273,8 +271,7 @@ module.exports = {
       purchase_uris: {
         amazon:
           "https://www.amazon.com/gp/search?ie=UTF8&index=toys-and-games&keywords=Windfall&tag=scryfall-20",
-        ebay:
-          "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
+        ebay: "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
         tcgplayer: "https://scryfall.com/s/tcgplayer/108074",
         magiccardmarket: "https://scryfall.com/s/mcm/285866",
         cardhoarder:
@@ -369,8 +366,7 @@ module.exports = {
       purchase_uris: {
         amazon:
           "https://www.amazon.com/gp/search?ie=UTF8&index=toys-and-games&keywords=Windfall&tag=scryfall-20",
-        ebay:
-          "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
+        ebay: "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
         tcgplayer: "https://scryfall.com/s/tcgplayer/47518",
         magiccardmarket: "https://scryfall.com/s/mcm/247387",
         cardhoarder:
@@ -461,8 +457,7 @@ module.exports = {
       purchase_uris: {
         amazon:
           "https://www.amazon.com/gp/search?ie=UTF8&index=toys-and-games&keywords=Windfall&tag=scryfall-20",
-        ebay:
-          "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
+        ebay: "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
         tcgplayer:
           "https://shop.tcgplayer.com/magic/product/show?ProductName=Windfall&partner=Scryfall",
         magiccardmarket:
@@ -557,8 +552,7 @@ module.exports = {
       purchase_uris: {
         amazon:
           "https://www.amazon.com/gp/search?ie=UTF8&index=toys-and-games&keywords=Windfall&tag=scryfall-20",
-        ebay:
-          "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
+        ebay: "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
         tcgplayer: "https://scryfall.com/s/tcgplayer/37644",
         magiccardmarket: "https://scryfall.com/s/mcm/14706",
         cardhoarder:
@@ -654,8 +648,7 @@ module.exports = {
       purchase_uris: {
         amazon:
           "https://www.amazon.com/gp/search?ie=UTF8&index=toys-and-games&keywords=Windfall&tag=scryfall-20",
-        ebay:
-          "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
+        ebay: "http://rover.ebay.com/rover/1/711-53200-19255-0/1?campid=5337966903&icep_catId=19107&icep_ff3=10&icep_sortBy=12&icep_uq=Windfall&icep_vectorid=229466&ipn=psmain&kw=lg&kwid=902099&mtid=824&pub=5575230669&toolid=10001",
         tcgplayer: "https://scryfall.com/s/tcgplayer/7110",
         magiccardmarket: "https://scryfall.com/s/mcm/10318",
         cardhoarder:

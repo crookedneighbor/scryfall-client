@@ -15,8 +15,7 @@ module.exports = {
       name: "Prossh, Skyraider of Kher",
       lang: "en",
       released_at: "2018-03-16",
-      uri:
-        "https://api.scryfall.com/cards/889c1a0f-7df2-4497-8058-04358173d7e8",
+      uri: "https://api.scryfall.com/cards/889c1a0f-7df2-4497-8058-04358173d7e8",
       scryfall_uri:
         "https://scryfall.com/card/a25/214/prossh-skyraider-of-kher?utm_source=api",
       layout: "normal",
@@ -28,8 +27,7 @@ module.exports = {
           "https://c1.scryfall.com/cards/normal/front/8/8/889c1a0f-7df2-4497-8058-04358173d7e8.jpg?1562438016",
         large:
           "https://c1.scryfall.com/cards/large/front/8/8/889c1a0f-7df2-4497-8058-04358173d7e8.jpg?1562438016",
-        png:
-          "https://c1.scryfall.com/cards/png/front/8/8/889c1a0f-7df2-4497-8058-04358173d7e8.png?1562438016",
+        png: "https://c1.scryfall.com/cards/png/front/8/8/889c1a0f-7df2-4497-8058-04358173d7e8.png?1562438016",
         art_crop:
           "https://c1.scryfall.com/cards/art_crop/front/8/8/889c1a0f-7df2-4497-8058-04358173d7e8.jpg?1562438016",
         border_crop:
@@ -51,8 +49,7 @@ module.exports = {
           component: "combo_piece",
           name: "Prossh, Skyraider of Kher",
           type_line: "Legendary Creature — Dragon",
-          uri:
-            "https://api.scryfall.com/cards/889c1a0f-7df2-4497-8058-04358173d7e8",
+          uri: "https://api.scryfall.com/cards/889c1a0f-7df2-4497-8058-04358173d7e8",
         },
         {
           object: "related_card",
@@ -60,8 +57,7 @@ module.exports = {
           component: "token",
           name: "Kobolds of Kher Keep",
           type_line: "Token Creature — Kobold",
-          uri:
-            "https://api.scryfall.com/cards/dfc03591-1114-4e36-a397-0bb3db8a153c",
+          uri: "https://api.scryfall.com/cards/dfc03591-1114-4e36-a397-0bb3db8a153c",
         },
       ],
       legalities: {
@@ -147,8 +143,7 @@ module.exports = {
       name: "Prossh, Skyraider of Kher",
       lang: "en",
       released_at: "2013-11-01",
-      uri:
-        "https://api.scryfall.com/cards/e6d5e182-1c99-475e-9468-5ed2fb4bfd71",
+      uri: "https://api.scryfall.com/cards/e6d5e182-1c99-475e-9468-5ed2fb4bfd71",
       scryfall_uri:
         "https://scryfall.com/card/oc13/204/prossh-skyraider-of-kher?utm_source=api",
       layout: "normal",
@@ -160,8 +155,7 @@ module.exports = {
           "https://c1.scryfall.com/cards/normal/front/e/6/e6d5e182-1c99-475e-9468-5ed2fb4bfd71.jpg?1561813402",
         large:
           "https://c1.scryfall.com/cards/large/front/e/6/e6d5e182-1c99-475e-9468-5ed2fb4bfd71.jpg?1561813402",
-        png:
-          "https://c1.scryfall.com/cards/png/front/e/6/e6d5e182-1c99-475e-9468-5ed2fb4bfd71.png?1561813402",
+        png: "https://c1.scryfall.com/cards/png/front/e/6/e6d5e182-1c99-475e-9468-5ed2fb4bfd71.png?1561813402",
         art_crop:
           "https://c1.scryfall.com/cards/art_crop/front/e/6/e6d5e182-1c99-475e-9468-5ed2fb4bfd71.jpg?1561813402",
         border_crop:
@@ -258,8 +252,7 @@ module.exports = {
       name: "Prossh, Skyraider of Kher",
       lang: "en",
       released_at: "2013-11-01",
-      uri:
-        "https://api.scryfall.com/cards/fc411c52-3ee2-4fe4-983d-3fa43b516237",
+      uri: "https://api.scryfall.com/cards/fc411c52-3ee2-4fe4-983d-3fa43b516237",
       scryfall_uri:
         "https://scryfall.com/card/c13/204/prossh-skyraider-of-kher?utm_source=api",
       layout: "normal",
@@ -271,8 +264,7 @@ module.exports = {
           "https://c1.scryfall.com/cards/normal/front/f/c/fc411c52-3ee2-4fe4-983d-3fa43b516237.jpg?1562948423",
         large:
           "https://c1.scryfall.com/cards/large/front/f/c/fc411c52-3ee2-4fe4-983d-3fa43b516237.jpg?1562948423",
-        png:
-          "https://c1.scryfall.com/cards/png/front/f/c/fc411c52-3ee2-4fe4-983d-3fa43b516237.png?1562948423",
+        png: "https://c1.scryfall.com/cards/png/front/f/c/fc411c52-3ee2-4fe4-983d-3fa43b516237.png?1562948423",
         art_crop:
           "https://c1.scryfall.com/cards/art_crop/front/f/c/fc411c52-3ee2-4fe4-983d-3fa43b516237.jpg?1562948423",
         border_crop:

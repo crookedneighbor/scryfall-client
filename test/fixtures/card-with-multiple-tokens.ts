@@ -21,8 +21,7 @@ module.exports = {
       "https://c1.scryfall.com/cards/normal/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.jpg?1562263761",
     large:
       "https://c1.scryfall.com/cards/large/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.jpg?1562263761",
-    png:
-      "https://c1.scryfall.com/cards/png/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.png?1562263761",
+    png: "https://c1.scryfall.com/cards/png/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.png?1562263761",
     art_crop:
       "https://c1.scryfall.com/cards/art_crop/front/7/3/73c16134-692d-4fd1-bffa-f9342113cbd8.jpg?1562263761",
     border_crop:
@@ -42,8 +41,7 @@ module.exports = {
       component: "combo_piece",
       name: "Bestial Menace",
       type_line: "Sorcery",
-      uri:
-        "https://api.scryfall.com/cards/73c16134-692d-4fd1-bffa-f9342113cbd8",
+      uri: "https://api.scryfall.com/cards/73c16134-692d-4fd1-bffa-f9342113cbd8",
     },
     {
       object: "related_card",
@@ -51,8 +49,7 @@ module.exports = {
       component: "token",
       name: "Elephant",
       type_line: "Token Creature — Elephant",
-      uri:
-        "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
+      uri: "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
     },
     {
       object: "related_card",
@@ -60,8 +57,7 @@ module.exports = {
       component: "token",
       name: "Snake",
       type_line: "Token Creature — Snake",
-      uri:
-        "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
+      uri: "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
     },
     {
       object: "related_card",
@@ -69,8 +65,7 @@ module.exports = {
       component: "token",
       name: "Wolf",
       type_line: "Token Creature — Wolf",
-      uri:
-        "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
+      uri: "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
     },
   ],
   legalities: {
