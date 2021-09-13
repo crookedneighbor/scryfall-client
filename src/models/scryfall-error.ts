@@ -24,9 +24,9 @@ class ScryfallError extends ExtendableError {
   type?: string;
   warnings?: string[];
 
-  constructor(scryfallResponse: ApiError | Error | Record<string, string>) {
-    const message =
-      scryfallResponse.message || (scryfallResponse as ApiError).details;
+  constructor(scryfallResponse: ApiError | Error | Record<string, unknown>) {
+    const message = (scryfallResponse.message ||
+      (scryfallResponse as ApiError).details) as string;
 
     super(message);
 
