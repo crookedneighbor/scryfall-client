@@ -1,4 +1,4 @@
-# unreleased
+# 0.19.0
 
 - Add `finishes` attribute to Card object (#29)
 
