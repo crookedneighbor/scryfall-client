@@ -127,7 +127,15 @@ class Card extends SingularEntity {
     const prices = this.prices;
 
     if (!type) {
-      return prices.usd || prices.usd_foil || prices.eur || prices.tix || "";
+      return (
+        prices.usd ||
+        prices.usd_foil ||
+        prices.usd_etched ||
+        prices.eur ||
+        prices.eur_foil ||
+        prices.tix ||
+        ""
+      );
     }
 
     return prices[type] || "";

@@ -1,3 +1,7 @@
+# unreleased
+
+- Add `finishes` attribute to Card object (#29)
+
 # 0.18.6
 
 - Remove use of Node's querystring module to support current versions of Webpack

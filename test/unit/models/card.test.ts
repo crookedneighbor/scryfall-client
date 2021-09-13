@@ -291,17 +291,36 @@ describe("Card", function () {
       expect(card.getPrice()).toBe(originalPrices.usd_foil);
     });
 
-    it("returns the eur price if no usd or foil price available", function () {
+    it("returns the etched price if no usd or foil price is available and no argument is given", function () {
       card.prices.usd = null;
       card.prices.usd_foil = null;
+
+      expect(card.getPrice()).toBe(originalPrices.usd_etched);
+    });
+
+    it("returns the eur price if no usd or foil or etched price available", function () {
+      card.prices.usd = null;
+      card.prices.usd_foil = null;
+      card.prices.usd_etched = null;
 
       expect(card.getPrice()).toBe(originalPrices.eur);
     });
 
-    it("returns the tix price if no usd or foil or eur price available", function () {
+    it("returns foil eur price if no usd or eur price is available", function () {
       card.prices.usd = null;
       card.prices.usd_foil = null;
+      card.prices.usd_etched = null;
       card.prices.eur = null;
+
+      expect(card.getPrice()).toBe(originalPrices.eur_foil);
+    });
+
+    it("returns the tix price if no usd eur price available", function () {
+      card.prices.usd = null;
+      card.prices.usd_foil = null;
+      card.prices.usd_etched = null;
+      card.prices.eur = null;
+      card.prices.eur_foil = null;
 
       expect(card.getPrice()).toBe(originalPrices.tix);
     });
@@ -309,7 +328,9 @@ describe("Card", function () {
     it("returns an empty string if no pricing is available", function () {
       card.prices.usd = null;
       card.prices.usd_foil = null;
+      card.prices.usd_etched = null;
       card.prices.eur = null;
+      card.prices.eur_foil = null;
       card.prices.tix = null;
 
       expect(card.getPrice()).toBe("");

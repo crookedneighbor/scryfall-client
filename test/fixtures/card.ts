@@ -82,7 +82,9 @@ module.exports = {
   prices: {
     usd: "2.25",
     usd_foil: "5.98",
+    usd_etched: "1.23",
     eur: "0.40",
+    eur_foil: "1.43",
     tix: "0.90",
   },
   related_uris: {

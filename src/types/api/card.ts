@@ -45,6 +45,7 @@ type Layout =
   | "art_series" // Art Series collectable double-faced cards
   | "double_sided"; // A Magic card with two sides that are unrelated
 
+type Finish = "foil" | "nonfoil" | "etched" | "glossy";
 type Frame =
   | "1993" // The original Magic card frame, starting from Limited Edition Alpha.
   | "1997" // The updated classic frame starting from Mirage block
@@ -119,6 +120,7 @@ export default interface CardApiResponse extends CardFaceResponse {
   card_back_id: string; // The Scryfall ID for the card back design present on this card.
   collector_number: string; // This card’s collector number. Note that collector numbers can contain non-numeric characters, such as letters or ★.
   digital: boolean; // True if this is a digital card on Magic Online.
+  finishes: Finish[]; // An array of computer-readable flags that indicate if this card can come in foil, nonfoil, etched, or glossy finishes.
   flavor_name?: string; // The just-for-fun name printed on the card (such as for Godzilla series cards).
   flavor_text?: string; // The flavor text, if any.
   frame_effects?: FrameEffect[]; // This card’s frame effects, if any.
