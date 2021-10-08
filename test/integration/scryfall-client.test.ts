@@ -491,6 +491,21 @@ describe("scryfallClient", () => {
     });
   });
 
+  describe("random", () => {
+    it("gets a random card", () => {
+      return client.random().then((card) => {
+        expect(card).toBeInstanceOf(Card);
+      });
+    });
+
+    it("gets a random card that matches search criteria", () => {
+      return client.random("name='Spidery Grasp'").then((card) => {
+        expect(card).toBeInstanceOf(Card);
+        expect(card.name).toBe("Spidery Grasp");
+      });
+    });
+  });
+
   describe("getCardNamed", () => {
     it("gets card by fuzzy name", () => {
       return client.getCardNamed("Rash etern cRafT").then((card) => {

@@ -86,7 +86,7 @@ export function autocomplete(
 }
 
 // https://scryfall.com/docs/api/cards/random
-export function random(searchString?: string): Promise<List<Card>> {
+export function random(searchString?: string): Promise<Card> {
   if (!searchString) {
     return get("/cards/random");
   }

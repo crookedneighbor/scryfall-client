@@ -16,6 +16,7 @@ import {
 
 import {
   autocomplete,
+  random,
   search,
   getCollection,
   getCard,
@@ -109,6 +110,7 @@ export = {
   getSetByTcgId,
   search,
   autocomplete,
+  random,
   getCollection,
   getCard,
   getCardNamed,

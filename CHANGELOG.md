@@ -1,3 +1,7 @@
+# 0.19.1
+
+- Include documented `random` method in client module (#30)
+
 # 0.19.0
 
 - Add `finishes` attribute to Card object (#29)
