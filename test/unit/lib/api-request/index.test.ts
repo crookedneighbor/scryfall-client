@@ -1,15 +1,13 @@
 import { get, post } from "Lib/api-request";
 import sendApiRequest from "Lib/api-request/send-request-to-api";
 
-import { mocked } from "ts-jest/utils";
-
 jest.mock("Lib/api-request/send-request-to-api");
 
 describe("request", () => {
   let requestSpy: jest.SpyInstance;
 
   beforeEach(() => {
-    requestSpy = mocked(sendApiRequest);
+    requestSpy = jest.mocked(sendApiRequest);
   });
 
   afterEach(() => {

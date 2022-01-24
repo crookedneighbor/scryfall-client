@@ -2,8 +2,6 @@ import sendRequest from "Lib/api-request/send-request";
 import ScryfallError from "Models/scryfall-error";
 import superagent = require("superagent");
 
-import { mocked } from "ts-jest/utils";
-
 let mockResponse: {
   text: string;
 };
@@ -22,10 +20,10 @@ jest.mock("superagent", () => {
   };
 });
 
-const getSpy = mocked(superagent.get);
-const postSpy = mocked(superagent.post);
+const getSpy = jest.mocked(superagent.get);
+const postSpy = jest.mocked(superagent.post);
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const sendSpy = mocked((superagent as any).send);
+const sendSpy = jest.mocked((superagent as any).send);
 
 describe("sendRequest", () => {
   beforeEach(() => {

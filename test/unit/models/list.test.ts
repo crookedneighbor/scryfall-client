@@ -5,15 +5,13 @@ import List from "Models/list";
 import fixtures from "Fixtures";
 import { get } from "Lib/api-request";
 
-import { mocked } from "ts-jest/utils";
-
 jest.mock("Lib/api-request");
 
 describe("List", function () {
   let fakeRequest: jest.SpyInstance;
 
   beforeEach(() => {
-    fakeRequest = mocked(get);
+    fakeRequest = jest.mocked(get);
   });
 
   afterEach(() => {

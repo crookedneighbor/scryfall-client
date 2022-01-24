@@ -1,15 +1,13 @@
 import { getSets, getSet, getSetByTcgId } from "Api/sets";
 import { get } from "Lib/api-request";
 
-import { mocked } from "ts-jest/utils";
-
 jest.mock("Lib/api-request");
 
 describe("/sets", () => {
   let fakeGet: jest.SpyInstance;
 
   beforeEach(() => {
-    fakeGet = mocked(get);
+    fakeGet = jest.mocked(get);
   });
 
   afterEach(() => {

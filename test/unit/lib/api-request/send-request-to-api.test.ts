@@ -6,8 +6,6 @@ import ScryfallError from "Models/scryfall-error";
 import wrapScryfallResponse from "Lib/wrap-scryfall-response";
 import fixtures from "Fixtures";
 
-import { mocked } from "ts-jest/utils";
-
 jest.mock("Lib/api-request/send-request");
 jest.mock("Lib/api-request/enque-task");
 jest.mock("Lib/api-request/get-url");
@@ -20,10 +18,10 @@ describe("apiRequest", () => {
   let wrapSpy: jest.SpyInstance;
 
   beforeEach(() => {
-    enqueSpy = mocked(enqueTask);
-    requestSpy = mocked(sendRequest);
-    urlSpy = mocked(getUrl);
-    wrapSpy = mocked(wrapScryfallResponse);
+    enqueSpy = jest.mocked(enqueTask);
+    requestSpy = jest.mocked(sendRequest);
+    urlSpy = jest.mocked(getUrl);
+    wrapSpy = jest.mocked(wrapScryfallResponse);
 
     requestSpy.mockResolvedValue(fixtures.card);
   });

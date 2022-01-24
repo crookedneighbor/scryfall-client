@@ -1,3 +1,8 @@
+# unrelased
+
+_Potentially Breaking Changes_
+- Update `superagent` to `v7` (see [the changelog for `superagent@v7`](https://github.com/visionmedia/superagent/releases/tag/v7.0.0) for details)
+
 # 0.19.1
 
 - Include documented `random` method in client module (#30)

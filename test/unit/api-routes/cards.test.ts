@@ -11,8 +11,6 @@ import { get, post } from "Lib/api-request";
 import fixtures from "../../fixtures";
 import List from "Models/list";
 
-import { mocked } from "ts-jest/utils";
-
 jest.mock("Lib/api-request");
 
 describe("/cards", () => {
@@ -20,8 +18,8 @@ describe("/cards", () => {
   let fakePost: jest.SpyInstance;
 
   beforeEach(() => {
-    fakeGet = mocked(get);
-    fakePost = mocked(post);
+    fakeGet = jest.mocked(get);
+    fakePost = jest.mocked(post);
   });
 
   afterEach(() => {
