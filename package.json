@@ -6,6 +6,10 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crookedneighbor/scryfall-client.git"
+  },
   "scripts": {
     "prepublishOnly": "npm run typescript",
     "prebuild": "npm run pretty",
