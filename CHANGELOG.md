@@ -1,4 +1,4 @@
-# unrelased
+# 0.20.0
 
 - Add `flavor_name` to top level of card object for cards with more than one face
 
