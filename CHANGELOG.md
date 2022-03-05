@@ -1,5 +1,7 @@
 # unrelased
 
+- Add `flavor_name` to top level of card object for cards with more than one face
+
 _Potentially Breaking Changes_
 
 - Update `superagent` to `v7` (see [the changelog for `superagent@v7`](https://github.com/visionmedia/superagent/releases/tag/v7.0.0) for details)

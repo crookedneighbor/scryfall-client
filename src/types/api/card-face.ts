@@ -5,6 +5,7 @@ export default interface CardFaceResponse {
   color_indicator?: Color[]; // The colors in this face’s color indicator, if any.
   colors?: Color[]; // This face’s colors, if the game defines colors for the individual face of this card.
   flavor_text?: string; // The flavor text printed on this face, if any.
+  flavor_name?: string; // The just-for-fun name printed on the card (such as for Godzilla series cards).
   illustration_id?: string; // A unique identifier for the card face artwork that remains consistent across reprints. Newly spoiled cards may not have this field yet.
   image_uris?: ImageUris; // An object providing URIs to imagery for this face, if this is a double-sided card. If this card is not double-sided, then the image_uris property will be part of the parent object instead.
   loyalty?: string; // This face’s loyalty, if any.

@@ -43,6 +43,7 @@ class Card extends SingularEntity {
       face.color_indicator = face.color_indicator || this.color_indicator;
       face.colors = face.colors || this.colors;
       face.flavor_text = face.flavor_text || this.flavor_text;
+      face.flavor_name = face.flavor_name || this.flavor_name;
       face.illustration_id = face.illustration_id || this.illustration_id;
       face.image_uris = face.image_uris || this.image_uris;
       face.loyalty = face.loyalty || this.loyalty;
@@ -74,6 +75,15 @@ class Card extends SingularEntity {
     // and omitted if the value is false
     this.booster = this.booster || false;
     this.content_warning = this.content_warning || false;
+
+    // flavor names of cards are not on the top level if the card
+    // has multiple sides, so we create a flavor name in the same
+    // style as the regular card name: the two sides, separated by //
+    if (this.card_faces.length > 1 && this.card_faces[0].flavor_name) {
+      this.flavor_name = this.card_faces
+        .map((face) => face.flavor_name)
+        .join(" // ");
+    }
 
     this._isDoublesided =
       this.layout === "transform" || this.layout === "double_faced_token";

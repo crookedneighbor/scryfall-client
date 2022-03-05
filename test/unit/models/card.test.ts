@@ -24,6 +24,9 @@ describe("Card", function () {
   it("normalizes card faces", function () {
     const cardWithoutFaces = new Card(fixtures.card);
     const cardWithFaces = new Card(fixtures.cardWithTransformLayout);
+    const cardWithFlavorNameOnMultipleFaces = new Card(
+      fixtures.cardWithFlavorNameOnMultipleFaces
+    );
 
     expect(cardWithoutFaces.card_faces).not.toBe(fixtures.card.card_faces);
     expect(cardWithoutFaces.card_faces.length).toBe(1);
@@ -43,6 +46,12 @@ describe("Card", function () {
     expect(cardWithFaces.card_faces.length).toBe(2);
     expect(cardWithFaces.card_faces).toBe(
       fixtures.cardWithTransformLayout.card_faces
+    );
+
+    expect(cardWithFlavorNameOnMultipleFaces.flavor_name).toBe(
+      fixtures.cardWithFlavorNameOnMultipleFaces.card_faces[0].flavor_name +
+        " // " +
+        cardWithFlavorNameOnMultipleFaces.card_faces[1].flavor_name
     );
   });
 
