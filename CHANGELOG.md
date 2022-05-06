@@ -1,3 +1,8 @@
+# 0.21.0
+
+- Fix typings for oracle id, where it may not be present at the top level in some circumstances
+- Apply oracle id to card faces, so card face always has a record of the oracle id
+
 # 0.20.0
 
 - Add `flavor_name` to top level of card object for cards with more than one face

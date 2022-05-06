@@ -32,6 +32,7 @@ describe("Card", function () {
     expect(cardWithoutFaces.card_faces.length).toBe(1);
     expect(cardWithoutFaces.card_faces[0]).toEqual({
       object: "card_face",
+      oracle_id: "08becc07-28bc-4a2f-a6b0-28a2998d2f50",
       name: cardWithoutFaces.name,
       mana_cost: cardWithoutFaces.mana_cost,
       flavor_text: cardWithoutFaces.flavor_text,

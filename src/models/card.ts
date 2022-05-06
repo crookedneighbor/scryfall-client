@@ -49,6 +49,7 @@ class Card extends SingularEntity {
       face.loyalty = face.loyalty || this.loyalty;
       face.mana_cost = face.mana_cost || this.mana_cost;
       face.name = face.name || this.name;
+      face.oracle_id = face.oracle_id || this.oracle_id;
       face.oracle_text = face.oracle_text || this.oracle_text;
       face.power = face.power || this.power;
       face.printed_name = face.printed_name || this.printed_name;

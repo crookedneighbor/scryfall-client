@@ -13,6 +13,7 @@ export default interface CardFaceResponse {
   name: string; // The name of this particular face.
   object?: string; // A content type for this object, always card_face.
   oracle_text?: string; // The Oracle text for this face, if any.
+  oracle_id?: string; // The oracle id for the card face. Right now, only applicable for cards with the same oracle id on both faces of the card, such as the SLD Krark's Thumb
   power?: string; // This face’s power, if any. Note that some cards have powers that are not numeric, such as *.
   printed_name?: string; // The localized name printed on this face, if any.
   printed_text?: string; // The localized text printed on this face, if any.

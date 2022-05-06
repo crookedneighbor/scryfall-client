@@ -81,7 +81,7 @@ export default interface CardApiResponse extends CardFaceResponse {
   mtgo_foil_id?: number; // This card’s foil Magic Online ID (also known as the Catalog ID), if any. A large percentage of cards are not available on Magic Online and do not have this ID.
   multiverse_ids?: string; //g[] This card’s multiverse IDs on Gatherer, if any, as an array of integers. Note that Scryfall includes many promo cards, tokens, and other esoteric objects that do not have these identifiers.
   tcgplayer_id?: number; // This card’s ID on TCGplayer’s API, also known as the productId.
-  oracle_id: string; // A unique ID for this card’s oracle identity. This value is consistent across reprinted card editions, and unique among different cards with the same name (tokens, Unstable variants, etc).
+  oracle_id?: string; // A unique ID for this card’s oracle identity. This value is consistent across reprinted card editions, and unique among different cards with the same name (tokens, Unstable variants, etc).
   prints_search_uri: string; // A link to where you can begin paginating all re/prints for this card on Scryfall’s API.
   rulings_uri: string; // A link to this card’s rulings list on Scryfall’s API.
   scryfall_uri: string; // A link to this card’s permapage on Scryfall’s website.
