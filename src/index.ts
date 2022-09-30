@@ -38,7 +38,6 @@ import type CardApiResponse from "./types/api/card";
 import type SetApiResponse from "./types/api/set";
 import type { Model } from "./types/model";
 import type SingularEntity from "./models/singular-entity";
-import type CardSymbol from "./models/card-symbol";
 import type Card from "./models/card";
 import type List from "./models/list";
 import type Catalog from "./models/catalog";
