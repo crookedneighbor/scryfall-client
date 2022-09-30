@@ -1,4 +1,4 @@
-# unreleased
+# 0.21.1
 
 - Drop support for ES5 browsers
 - Drop support for node v12
