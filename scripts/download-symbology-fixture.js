@@ -18,7 +18,10 @@ superagent
   .then((data) => {
     const symbols = data.body.data.reduce((accum, data) => {
       const char = data.symbol.replace(/[{}]/g, "");
-      accum[char] = data.svg_uri;
+      // the .com -> .io replacement is a temporary measure while we wait for
+      // Scryfall to fix an error in their symbology endpoint that is displaying
+      // the wrong domain for the svg_uri property
+      accum[char] = data.svg_uri.replace("scryfall.com", "scryfall.io");
       return accum;
     }, {});
     const existingModule = fs.readFileSync(pathToFixture, "utf8");
