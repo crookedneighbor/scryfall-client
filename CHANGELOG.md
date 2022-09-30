@@ -1,3 +1,9 @@
+# unreleased
+
+- Drop support for ES5 browsers
+- Drop support for node v12
+- Fix issue where some symbols would return incorrect value when calling `getSymbolUrl`
+
 # 0.21.0
 
 - Fix typings for oracle id, where it may not be present at the top level in some circumstances

@@ -187,7 +187,7 @@ describe("scryfallClient", () => {
 
           const image = card.getImage();
           expect(typeof image).toBe("string");
-          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
+          expect(image).toEqual(expect.stringMatching(/scryfall/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
@@ -200,7 +200,7 @@ describe("scryfallClient", () => {
 
           const image = card.getImage();
           expect(typeof image).toBe("string");
-          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
+          expect(image).toEqual(expect.stringMatching(/scryfall/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
@@ -213,7 +213,7 @@ describe("scryfallClient", () => {
 
           const image = card.getImage();
           expect(typeof image).toBe("string");
-          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
+          expect(image).toEqual(expect.stringMatching(/scryfall/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
@@ -226,7 +226,7 @@ describe("scryfallClient", () => {
 
           const image = card.getImage();
           expect(typeof image).toBe("string");
-          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
+          expect(image).toEqual(expect.stringMatching(/scryfall/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
@@ -234,18 +234,14 @@ describe("scryfallClient", () => {
       it("can get the backside image of a normal card (missing url)", () => {
         return client.getCard(windfall).then((card) => {
           const image = card.getBackImage();
-          expect(image).toBe(
-            "https://c2.scryfall.com/file/scryfall-errors/missing.jpg"
-          );
+          expect(image).toBe("http://cards.scryfall.io/back.png");
         });
       });
 
       it("can get the backside image of a meld card (missing url)", () => {
         return client.getCard(brunaFadingLight).then((card) => {
           const image = card.getBackImage();
-          expect(image).toBe(
-            "https://c2.scryfall.com/file/scryfall-errors/missing.jpg"
-          );
+          expect(image).toBe("http://cards.scryfall.io/back.png");
         });
       });
 
@@ -256,7 +252,7 @@ describe("scryfallClient", () => {
           id = card.id;
 
           const image = card.getBackImage();
-          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
+          expect(image).toEqual(expect.stringMatching(/scryfall/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
@@ -597,9 +593,24 @@ describe("scryfallClient", () => {
     });
 
     it("returns the correct url for symbol with long name", () => {
-      expect(client.getSymbolUrl("iNfiniTey")).toEqual(
-        expect.stringMatching(/https:\/\/.*scryfall.*INFINITEY.svg/)
+      expect(client.getSymbolUrl("∞")).toEqual(
+        expect.stringMatching(/https:\/\/.*scryfall.*INFINITY.svg/)
       );
+      expect(client.getSymbolUrl("ChaOs")).toEqual(
+        expect.stringMatching(/https:\/\/.*scryfall.*CHAOS.svg/)
+      );
+    });
+
+    it("throws an error when symbol is not recognized", () => {
+      expect.assertions(1);
+
+      try {
+        client.getSymbolUrl("not a real symbol");
+      } catch (err) {
+        expect((err as Error).message).toEqual(
+          'Symbol "not a real symbol" not found. The scryfall-client module may need an update.'
+        );
+      }
     });
   });
 
