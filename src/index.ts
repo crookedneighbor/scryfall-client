@@ -69,7 +69,9 @@ function resetApiRequestDelayTime(): void {
 
 function getSymbolUrl(symbol: string): string {
   const match = symbol.match(/{?([^{}]+)}?/);
-  const character = (match ? match[1] : symbol).toUpperCase();
+  const character = (match ? match[1] : symbol)
+    .toUpperCase()
+    .replace(/\//g, "");
   const url = symbology[character] as string;
 
   if (!url) {

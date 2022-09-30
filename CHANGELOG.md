@@ -1,3 +1,7 @@
+# 0.22.0
+
+- Allow symbols that get passed in to `getSymbolUrl` to be flexible around `/` usage
+
 # 0.21.1
 
 - Drop support for ES5 browsers

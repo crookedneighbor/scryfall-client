@@ -601,6 +601,12 @@ describe("scryfallClient", () => {
       );
     });
 
+    it("ignores slashes in symbol name", () => {
+      expect(client.getSymbolUrl("C/H/A/O/////S")).toEqual(
+        expect.stringMatching(/https:\/\/.*scryfall.*CHAOS.svg/)
+      );
+    });
+
     it("throws an error when symbol is not recognized", () => {
       expect.assertions(1);
 

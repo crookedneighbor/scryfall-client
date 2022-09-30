@@ -17,7 +17,11 @@ superagent
   .get("https://api.scryfall.com/symbology?pretty=true")
   .then((data) => {
     const symbols = data.body.data.reduce((accum, data) => {
-      const char = data.symbol.replace(/[{}]/g, "");
+      const char = data.symbol.replace(/[{}\/]/g, "");
+
+      if (char in accum) {
+        throw new Error(`Unexpected duplicate symbol ${char}`);
+      }
       // the .com -> .io replacement is a temporary measure while we wait for
       // Scryfall to fix an error in their symbology endpoint that is displaying
       // the wrong domain for the svg_uri property
