@@ -26,6 +26,8 @@ import {
 import { getSets, getSet, getSetByTcgId } from "./api-routes/sets";
 import { getCatalog } from "./api-routes/catalog";
 
+import symbology from "./lib/fixtures/symbology";
+
 import type { TextTransformFunction } from "./types/text-transform";
 import type {
   ApiResponse,
@@ -41,19 +43,6 @@ import type Card from "./models/card";
 import type List from "./models/list";
 import type Catalog from "./models/catalog";
 import type MagicSet from "./models/magic-set";
-
-const DEFAULT_SYMBOL_URI_PREFIX =
-  "https://c2.scryfall.com/file/scryfall-symbols/card-symbols/";
-let SYMBOL_URL_PREFIX = DEFAULT_SYMBOL_URI_PREFIX;
-
-// we don't know what the best cdn for the region to use will
-// be so we start off assuming c2, but make a request out to
-// find the best one when the module gets loaded
-get<CardSymbol[]>("/symbology").then((result) => {
-  const fullUri = result[0].svg_uri;
-
-  SYMBOL_URL_PREFIX = fullUri.replace(/[^/]*.svg/, "");
-});
 
 function setTextTransform(func: TextTransformFunction): void {
   wrapTransform(func);
@@ -81,9 +70,16 @@ function resetApiRequestDelayTime(): void {
 
 function getSymbolUrl(symbol: string): string {
   const match = symbol.match(/{?([^{}]+)}?/);
-  const character = match ? match[1] : symbol;
+  const character = (match ? match[1] : symbol).toUpperCase();
+  const url = symbology[character] as string;
 
-  return SYMBOL_URL_PREFIX + character.toUpperCase() + ".svg";
+  if (!url) {
+    throw new Error(
+      `Symbol "${symbol}" not found. The scryfall-client module may need an update.`
+    );
+  }
+
+  return url;
 }
 
 function wrap(body: CardApiResponse): Card;

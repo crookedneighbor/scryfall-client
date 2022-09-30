@@ -597,9 +597,24 @@ describe("scryfallClient", () => {
     });
 
     it("returns the correct url for symbol with long name", () => {
-      expect(client.getSymbolUrl("iNfiniTey")).toEqual(
-        expect.stringMatching(/https:\/\/.*scryfall.*INFINITEY.svg/)
+      expect(client.getSymbolUrl("∞")).toEqual(
+        expect.stringMatching(/https:\/\/.*scryfall.*INFINITY.svg/)
       );
+      expect(client.getSymbolUrl("ChaOs")).toEqual(
+        expect.stringMatching(/https:\/\/.*scryfall.*CHAOS.svg/)
+      );
+    });
+
+    it("throws an error when symbol is not recognized", () => {
+      expect.assertions(1);
+
+      try {
+        client.getSymbolUrl("not a real symbol");
+      } catch (err) {
+        expect((err as Error).message).toEqual(
+          'Symbol "not a real symbol" not found. The scryfall-client module may need an update.'
+        );
+      }
     });
   });
 
