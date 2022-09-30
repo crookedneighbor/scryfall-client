@@ -241,9 +241,7 @@ describe("scryfallClient", () => {
       it("can get the backside image of a meld card (missing url)", () => {
         return client.getCard(brunaFadingLight).then((card) => {
           const image = card.getBackImage();
-          expect(image).toBe(
-            "https://c2.scryfall.com/file/scryfall-errors/missing.jpg"
-          );
+          expect(image).toBe("http://cards.scryfall.io/back.png");
         });
       });
 

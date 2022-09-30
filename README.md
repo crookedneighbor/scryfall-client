@@ -656,7 +656,7 @@ scryfall
 
 ### `getBackImage(String size='normal')` -> `String`
 
-Returns the image url of the back of the card. In almost all cases, this will return [Scryfall's URL for the backside of a card](https://img.scryfall.com/errors/missing.jpg). For [transform cards](https://scryfall.com/search?q=layout%3Atransform). It will return the image url for the back face of the card.
+Returns the image url of the back of the card. In almost all cases, this will return [Scryfall's URL for the backside of a card](http://cards.scryfall.io/back.png). For [transform cards](https://scryfall.com/search?q=layout%3Atransform). It will return the image url for the back face of the card.
 
 The default format parameter is `'normal'`. As of the writing of this documentation, the valid values are:
 
@@ -680,7 +680,7 @@ scryfall
     exact: "windfall",
   })
   .then(function (card) {
-    const img = card.getBackImage(); // https://img.scryfall.com/errors/missing.jpg
+    const img = card.getBackImage(); // http://cards.scryfall.io/back.png
   });
 
 // A transform card

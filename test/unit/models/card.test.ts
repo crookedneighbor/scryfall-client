@@ -206,23 +206,17 @@ describe("Card", function () {
       const card = new Card(fixtures.card);
 
       const img = card.getBackImage();
-      expect(img).toBe(
-        "https://c2.scryfall.com/file/scryfall-errors/missing.jpg"
-      );
+      expect(img).toBe("http://cards.scryfall.io/back.png");
     });
 
     it("returns with the same scryfall back image for normal layout cards regardless of type passed in", function () {
       const card = new Card(fixtures.card);
 
       let img = card.getBackImage("normal");
-      expect(img).toBe(
-        "https://c2.scryfall.com/file/scryfall-errors/missing.jpg"
-      );
+      expect(img).toBe("http://cards.scryfall.io/back.png");
 
       img = card.getBackImage("small");
-      expect(img).toBe(
-        "https://c2.scryfall.com/file/scryfall-errors/missing.jpg"
-      );
+      expect(img).toBe("http://cards.scryfall.io/back.png");
     });
 
     it("rejects with an error if card does not have image uris", function () {
@@ -262,9 +256,7 @@ describe("Card", function () {
       const card = new Card(fixtures.cardWithFlipLayout);
 
       const img = card.getBackImage();
-      expect(img).toBe(
-        "https://c2.scryfall.com/file/scryfall-errors/missing.jpg"
-      );
+      expect(img).toBe("http://cards.scryfall.io/back.png");
     });
   });
 
