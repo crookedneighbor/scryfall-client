@@ -30,7 +30,10 @@ superagent
 export default ${JSON.stringify(symbols, null, 2)} as Record<string, string>`;
 
     if (existingModule !== module) {
-      console.log("New symbolpogy data downloaded. Symbology fixture updated.");
       fs.writeFileSync(pathToFixture, module, "utf8");
+      console.log(
+        "New symbolpogy data downloaded. Symbology fixture updated. Aborting pre-publish task so the new file can be committed."
+      );
+      process.exit(1);
     }
   });
