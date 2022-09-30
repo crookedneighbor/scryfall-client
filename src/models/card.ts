@@ -11,8 +11,7 @@ import type CardApiResponse from "../types/api/card";
 import type CardFaceApiResponse from "../types/api/card-face";
 import type RelatedCardApiResponse from "../types/api/related-card";
 
-const SCRYFALL_CARD_BACK_IMAGE_URL =
-  "https://c2.scryfall.com/file/scryfall-errors/missing.jpg";
+const SCRYFALL_CARD_BACK_IMAGE_URL = "http://cards.scryfall.io/back.png";
 
 interface Card extends CardApiResponse {
   card_faces: CardFaceApiResponse[];

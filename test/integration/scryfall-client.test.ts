@@ -187,7 +187,7 @@ describe("scryfallClient", () => {
 
           const image = card.getImage();
           expect(typeof image).toBe("string");
-          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
+          expect(image).toEqual(expect.stringMatching(/scryfall/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
@@ -200,7 +200,7 @@ describe("scryfallClient", () => {
 
           const image = card.getImage();
           expect(typeof image).toBe("string");
-          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
+          expect(image).toEqual(expect.stringMatching(/scryfall/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
@@ -213,7 +213,7 @@ describe("scryfallClient", () => {
 
           const image = card.getImage();
           expect(typeof image).toBe("string");
-          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
+          expect(image).toEqual(expect.stringMatching(/scryfall/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
@@ -226,7 +226,7 @@ describe("scryfallClient", () => {
 
           const image = card.getImage();
           expect(typeof image).toBe("string");
-          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
+          expect(image).toEqual(expect.stringMatching(/scryfall/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
@@ -234,9 +234,7 @@ describe("scryfallClient", () => {
       it("can get the backside image of a normal card (missing url)", () => {
         return client.getCard(windfall).then((card) => {
           const image = card.getBackImage();
-          expect(image).toBe(
-            "https://c2.scryfall.com/file/scryfall-errors/missing.jpg"
-          );
+          expect(image).toBe("http://cards.scryfall.io/back.png");
         });
       });
 
@@ -256,7 +254,7 @@ describe("scryfallClient", () => {
           id = card.id;
 
           const image = card.getBackImage();
-          expect(image).toEqual(expect.stringMatching(/c\d\.scryfall\.com/));
+          expect(image).toEqual(expect.stringMatching(/scryfall/));
           expect(image).toEqual(expect.stringContaining(id));
         });
       });
