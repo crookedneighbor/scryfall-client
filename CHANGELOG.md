@@ -1,3 +1,7 @@
+# 0.23.0
+
+- Allow symbols that get passed in to `getSymbolUrl` to be flexible around ordering of WUBRG characters. (IE: passing `WG` will give you the symbol url for `GW`, `W2` will give you the symbol url for `2W`, `GRP` will give you the symbol url for `RGP`, and so on)
+
 # 0.22.0
 
 - Allow symbols that get passed in to `getSymbolUrl` to be flexible around `/` usage

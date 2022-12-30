@@ -601,6 +601,18 @@ describe("scryfallClient", () => {
       );
     });
 
+    it("returns the correct url for compound WUBRG symbol that is ordered backwords", () => {
+      expect(client.getSymbolUrl("WG")).toEqual(
+        expect.stringMatching(/https:\/\/.*scryfall.*GW.svg/)
+      );
+      expect(client.getSymbolUrl("W2")).toEqual(
+        expect.stringMatching(/https:\/\/.*scryfall.*2W.svg/)
+      );
+      expect(client.getSymbolUrl("GRP")).toEqual(
+        expect.stringMatching(/https:\/\/.*scryfall.*RGP.svg/)
+      );
+    });
+
     it("ignores slashes in symbol name", () => {
       expect(client.getSymbolUrl("C/H/A/O/////S")).toEqual(
         expect.stringMatching(/https:\/\/.*scryfall.*CHAOS.svg/)

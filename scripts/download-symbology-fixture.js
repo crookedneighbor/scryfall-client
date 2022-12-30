@@ -25,7 +25,28 @@ superagent
       // the .com -> .io replacement is a temporary measure while we wait for
       // Scryfall to fix an error in their symbology endpoint that is displaying
       // the wrong domain for the svg_uri property
-      accum[char] = data.svg_uri.replace("scryfall.com", "scryfall.io");
+      const uri = data.svg_uri.replace("scryfall.com", "scryfall.io");
+      accum[char] = uri;
+
+      // if character is one of the Hybrid WUBRG Symbol
+      // or 2 Mana + WUBRG
+      // or WUBRG + WUBRG + Phyrexian
+      // then reverse the first two symbols in the key
+      // so that people don't have to remember the exact
+      // order that the symbols go in to use them
+      if (/^[WUBRG2][WUBRG](P)?$/.test(char)) {
+        const firstTwoCharactersInKeyReversed = char
+          .substring(0, 2)
+          .split("")
+          .reverse()
+          .join("");
+        const restOfKey = char.substring(2);
+        const commonMisspellingOfKey =
+          firstTwoCharactersInKeyReversed + restOfKey;
+
+        accum[commonMisspellingOfKey] = uri;
+      }
+
       return accum;
     }, {});
     const existingModule = fs.readFileSync(pathToFixture, "utf8");
