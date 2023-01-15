@@ -6,13 +6,13 @@ import wrapScryfallResponse from "Lib/wrap-scryfall-response";
 import { get } from "Lib/api-request";
 import fixtures from "Fixtures";
 
-jest.mock("Lib/api-request");
+vi.mock("Lib/api-request");
 
 describe("Set", function () {
-  let fakeRequest: jest.SpyInstance, set: MagicSet;
+  let fakeRequest: vi.SpyInstance, set: MagicSet;
 
   beforeEach(() => {
-    fakeRequest = jest.mocked(get);
+    fakeRequest = vi.mocked(get);
   });
 
   afterEach(() => {

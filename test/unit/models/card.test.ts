@@ -8,17 +8,13 @@ import { get } from "Lib/api-request";
 import wrapScryfallResponse from "Lib/wrap-scryfall-response";
 import fixtures from "Fixtures";
 
-jest.mock("Lib/api-request");
+vi.mock("Lib/api-request");
 
 describe("Card", function () {
-  let fakeRequest: jest.SpyInstance, card: Card;
+  let fakeRequest, card: Card;
 
   beforeEach(() => {
-    fakeRequest = jest.mocked(get);
-  });
-
-  afterEach(() => {
-    fakeRequest.mockReset();
+    fakeRequest = vi.mocked(get);
   });
 
   it("normalizes card faces", function () {
@@ -392,7 +388,7 @@ describe("Card", function () {
       ) as List<Card>;
       const card = list.find((c) => !c.all_parts);
 
-      jest.spyOn(card, "getPrints").mockResolvedValue(
+      vi.spyOn(card, "getPrints").mockResolvedValue(
         wrapScryfallResponse({
           object: "list",
           data: [
@@ -429,7 +425,7 @@ describe("Card", function () {
       );
       const card = list[0];
 
-      jest.spyOn(card, "getPrints").mockResolvedValue(list);
+      vi.spyOn(card, "getPrints").mockResolvedValue(list);
 
       return card.getTokens().then((tokens: Card[]) => {
         expect(card.getPrints).toBeCalledTimes(1);

@@ -1,6 +1,6 @@
 "use strict";
 
-import client = require("../../src/");
+import * as client from "../../src/";
 import fixtures from "Fixtures";
 import Card from "Models/card";
 import MagicSet from "Models/magic-set";
@@ -9,8 +9,6 @@ import List from "Models/list";
 
 import type { ListApiResponse } from "Types/api-response";
 import CardApiResponse from "Types/api/card";
-
-jest.setTimeout(90000);
 
 const fakeCard: CardApiResponse = fixtures.card;
 const fakeList: ListApiResponse = fixtures.listOfCards;

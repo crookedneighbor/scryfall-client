@@ -1,3 +1,3 @@
-export default jest.fn((val) => {
+export default vi.fn((val) => {
   return val;
 });
