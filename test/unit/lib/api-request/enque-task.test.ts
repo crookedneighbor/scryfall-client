@@ -4,7 +4,7 @@ import Task from "Lib/api-request/task";
 
 describe("enqueTask", () => {
   beforeEach(() => {
-    jest.spyOn(Task.prototype, "start");
+    vi.spyOn(Task.prototype, "start");
   });
 
   afterEach(() => {
@@ -12,7 +12,7 @@ describe("enqueTask", () => {
   });
 
   it("starts task when it is the first in the queue", async () => {
-    const task = jest.fn().mockReturnValue("result");
+    const task = vi.fn().mockReturnValue("result");
 
     const promise = enqueTask(task);
     expect(Task.prototype.start).toBeCalledTimes(1);
@@ -25,8 +25,8 @@ describe("enqueTask", () => {
     expect.assertions(7);
 
     const delayedPromise = new ExtendedPromise();
-    const delayedTask = jest.fn().mockReturnValue(delayedPromise);
-    const task = jest.fn().mockReturnValue("result");
+    const delayedTask = vi.fn().mockReturnValue(delayedPromise);
+    const task = vi.fn().mockReturnValue("result");
 
     const promise1 = enqueTask(delayedTask);
     const promise2 = enqueTask(task);
@@ -53,6 +53,7 @@ describe("enqueTask", () => {
   });
 
   // TODO jest fake timers don't play well with promises
+  // now that we've moved to vitest, try again!
   // it('TODO: delays between tasks', () => {
   // });
 });

@@ -21,7 +21,7 @@ describe("Task", () => {
 
   describe("start", () => {
     it("runs a function that returns a promise", async () => {
-      const spy = jest.fn().mockResolvedValue("foo");
+      const spy = vi.fn().mockResolvedValue("foo");
       const t = new Task(spy);
 
       expect.assertions(2);
@@ -36,7 +36,7 @@ describe("Task", () => {
     });
 
     it("runs a function that returns a promise", async () => {
-      const spy = jest.fn().mockReturnValue("foo");
+      const spy = vi.fn().mockReturnValue("foo");
       const t = new Task(spy);
 
       expect.assertions(2);
@@ -52,7 +52,7 @@ describe("Task", () => {
 
     it("rejects the pending promise if function rejects", async () => {
       const err = new Error("some error");
-      const spy = jest.fn().mockRejectedValue(err);
+      const spy = vi.fn().mockRejectedValue(err);
       const t = new Task(spy);
 
       expect.assertions(2);
@@ -70,7 +70,7 @@ describe("Task", () => {
 
     it("rejects the pending promise if function throws an error", async () => {
       const err = new Error("some error");
-      const spy = jest.fn().mockImplementation(() => {
+      const spy = vi.fn().mockImplementation(() => {
         throw err;
       });
       const t = new Task(spy);

@@ -6,31 +6,20 @@ import ScryfallError from "Models/scryfall-error";
 import wrapScryfallResponse from "Lib/wrap-scryfall-response";
 import fixtures from "Fixtures";
 
-jest.mock("Lib/api-request/send-request");
-jest.mock("Lib/api-request/enque-task");
-jest.mock("Lib/api-request/get-url");
-jest.mock("Lib/wrap-scryfall-response");
+vi.mock("Lib/api-request/send-request");
+vi.mock("Lib/api-request/enque-task");
+vi.mock("Lib/api-request/get-url");
+vi.mock("Lib/wrap-scryfall-response");
 
 describe("apiRequest", () => {
-  let enqueSpy: jest.SpyInstance;
-  let requestSpy: jest.SpyInstance;
-  let urlSpy: jest.SpyInstance;
-  let wrapSpy: jest.SpyInstance;
-
   beforeEach(() => {
-    enqueSpy = jest.mocked(enqueTask);
-    requestSpy = jest.mocked(sendRequest);
-    urlSpy = jest.mocked(getUrl);
-    wrapSpy = jest.mocked(wrapScryfallResponse);
-
-    requestSpy.mockResolvedValue(fixtures.card);
-  });
-
-  afterEach(() => {
-    enqueSpy.mockClear();
-    requestSpy.mockClear();
-    urlSpy.mockClear();
-    wrapSpy.mockClear();
+    getUrl.mockReturnValue("https://api.scryfall.com/endpoint");
+    sendRequest.mockResolvedValue(fixtures.card);
+    enqueTask.mockImplementation((fn) => {
+      return Promise.resolve().then(() => {
+        return fn();
+      });
+    });
   });
 
   it("enques a request task", () => {
@@ -38,8 +27,8 @@ describe("apiRequest", () => {
       endpoint: "foo",
       method: "get",
     }).then(() => {
-      expect(enqueSpy).toBeCalledTimes(1);
-      expect(enqueSpy).toBeCalledWith(expect.any(Function));
+      expect(enqueTask).toBeCalledTimes(1);
+      expect(enqueTask).toBeCalledWith(expect.any(Function));
     });
   });
 
@@ -48,10 +37,10 @@ describe("apiRequest", () => {
       endpoint: "foo",
       method: "get",
     }).then(() => {
-      expect(urlSpy).toBeCalledTimes(1);
-      expect(urlSpy).toBeCalledWith("foo", undefined);
-      expect(requestSpy).toBeCalledTimes(1);
-      expect(requestSpy).toBeCalledWith({
+      expect(getUrl).toBeCalledTimes(1);
+      expect(getUrl).toBeCalledWith("foo", undefined);
+      expect(sendRequest).toBeCalledTimes(1);
+      expect(sendRequest).toBeCalledWith({
         url: "https://api.scryfall.com/endpoint",
         method: "get",
       });
@@ -66,10 +55,10 @@ describe("apiRequest", () => {
         q: "foo",
       },
     }).then(() => {
-      expect(urlSpy).toBeCalledTimes(1);
-      expect(urlSpy).toBeCalledWith("foo", { q: "foo" });
-      expect(requestSpy).toBeCalledTimes(1);
-      expect(requestSpy).toBeCalledWith({
+      expect(getUrl).toBeCalledTimes(1);
+      expect(getUrl).toBeCalledWith("foo", { q: "foo" });
+      expect(sendRequest).toBeCalledTimes(1);
+      expect(sendRequest).toBeCalledWith({
         url: "https://api.scryfall.com/endpoint",
         method: "get",
       });
@@ -81,10 +70,10 @@ describe("apiRequest", () => {
       endpoint: "foo",
       method: "post",
     }).then(() => {
-      expect(urlSpy).toBeCalledTimes(1);
-      expect(urlSpy).toBeCalledWith("foo", undefined);
-      expect(requestSpy).toBeCalledTimes(1);
-      expect(requestSpy).toBeCalledWith({
+      expect(getUrl).toBeCalledTimes(1);
+      expect(getUrl).toBeCalledWith("foo", undefined);
+      expect(sendRequest).toBeCalledTimes(1);
+      expect(sendRequest).toBeCalledWith({
         url: "https://api.scryfall.com/endpoint",
         method: "post",
       });
@@ -99,10 +88,10 @@ describe("apiRequest", () => {
         q: "foo",
       },
     }).then(() => {
-      expect(urlSpy).toBeCalledTimes(1);
-      expect(urlSpy).toBeCalledWith("foo", undefined);
-      expect(requestSpy).toBeCalledTimes(1);
-      expect(requestSpy).toBeCalledWith({
+      expect(getUrl).toBeCalledTimes(1);
+      expect(getUrl).toBeCalledWith("foo", undefined);
+      expect(sendRequest).toBeCalledTimes(1);
+      expect(sendRequest).toBeCalledWith({
         url: "https://api.scryfall.com/endpoint",
         method: "post",
         body: {
@@ -117,8 +106,8 @@ describe("apiRequest", () => {
       endpoint: "foo",
       method: "get",
     }).then((card) => {
-      expect(wrapSpy).toBeCalledTimes(1);
-      expect(wrapSpy).toBeCalledWith(card);
+      expect(wrapScryfallResponse).toBeCalledTimes(1);
+      expect(wrapScryfallResponse).toBeCalledWith(card);
     });
   });
 
@@ -130,7 +119,7 @@ describe("apiRequest", () => {
       status: 500,
     };
 
-    requestSpy.mockRejectedValue(err);
+    sendRequest.mockRejectedValue(err);
 
     return apiRequest({
       endpoint: "foo",
@@ -150,7 +139,7 @@ describe("apiRequest", () => {
 
     const err = new Error("something went wrong");
 
-    wrapSpy.mockImplementation(() => {
+    wrapScryfallResponse.mockImplementation(() => {
       throw err;
     });
 

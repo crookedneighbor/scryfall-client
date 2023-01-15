@@ -1,39 +1,30 @@
 import sendRequest from "Lib/api-request/send-request";
 import ScryfallError from "Models/scryfall-error";
 import superagent = require("superagent");
+import { vi } from "vitest";
 
 let mockResponse: {
   text: string;
 };
 
-jest.mock("superagent", () => {
-  return {
-    post: jest.fn().mockReturnThis(),
-    get: jest.fn().mockReturnThis(),
-    send: jest.fn().mockReturnThis(),
-    set: jest.fn().mockReturnThis(),
-    then: jest.fn().mockImplementation((callback) => {
-      return new Promise((resolve) => {
-        return resolve(callback(mockResponse));
-      });
-    }),
-  };
-});
-
-const getSpy = jest.mocked(superagent.get);
-const postSpy = jest.mocked(superagent.post);
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const sendSpy = jest.mocked((superagent as any).send);
+let agent;
 
 describe("sendRequest", () => {
   beforeEach(() => {
     mockResponse = { text: "{}" };
-  });
 
-  afterEach(() => {
-    getSpy.mockClear();
-    postSpy.mockClear();
-    sendSpy.mockClear();
+    agent = {
+      send: vi.fn().mockReturnThis(),
+      set: vi.fn().mockReturnThis(),
+      then: vi.fn().mockImplementation((callback) => {
+        return new Promise((resolve) => {
+          return resolve(callback(mockResponse));
+        });
+      }),
+    };
+
+    vi.spyOn(superagent, "get").mockReturnValue(agent);
+    vi.spyOn(superagent, "post").mockReturnValue(agent);
   });
 
   it("sends a get request", () => {
@@ -41,8 +32,8 @@ describe("sendRequest", () => {
       method: "get",
       url: "https://example.com",
     }).then(() => {
-      expect(getSpy).toBeCalledTimes(1);
-      expect(getSpy).toBeCalledWith("https://example.com");
+      expect(superagent.get).toBeCalledTimes(1);
+      expect(superagent.get).toBeCalledWith("https://example.com");
     });
   });
 
@@ -54,10 +45,10 @@ describe("sendRequest", () => {
       url: "https://example.com",
       body,
     }).then(() => {
-      expect(postSpy).toBeCalledTimes(1);
-      expect(postSpy).toBeCalledWith("https://example.com");
-      expect(sendSpy).toBeCalledTimes(1);
-      expect(sendSpy).toBeCalledWith(body);
+      expect(superagent.post).toBeCalledTimes(1);
+      expect(superagent.post).toBeCalledWith("https://example.com");
+      expect(agent.send).toBeCalledTimes(1);
+      expect(agent.send).toBeCalledWith(body);
     });
   });
 
@@ -66,9 +57,9 @@ describe("sendRequest", () => {
       method: "post",
       url: "https://example.com",
     }).then(() => {
-      expect(postSpy).toBeCalledTimes(0);
-      expect(getSpy).toBeCalledTimes(1);
-      expect(getSpy).toBeCalledWith("https://example.com");
+      expect(superagent.post).toBeCalledTimes(0);
+      expect(superagent.get).toBeCalledTimes(1);
+      expect(superagent.get).toBeCalledWith("https://example.com");
     });
   });
 

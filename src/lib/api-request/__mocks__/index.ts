@@ -1,2 +1,2 @@
-export const get = jest.fn().mockResolvedValue({});
-export const post = jest.fn().mockResolvedValue({});
+export const get = vi.fn().mockResolvedValue({});
+export const post = vi.fn().mockResolvedValue({});

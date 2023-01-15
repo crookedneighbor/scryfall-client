@@ -5,13 +5,13 @@ import List from "Models/list";
 import fixtures from "Fixtures";
 import { get } from "Lib/api-request";
 
-jest.mock("Lib/api-request");
+vi.mock("Lib/api-request");
 
 describe("List", function () {
-  let fakeRequest: jest.SpyInstance;
+  let fakeRequest: vi.SpyInstance;
 
   beforeEach(() => {
-    fakeRequest = jest.mocked(get);
+    fakeRequest = vi.mocked(get);
   });
 
   afterEach(() => {

@@ -11,27 +11,22 @@ import { get, post } from "Lib/api-request";
 import fixtures from "../../fixtures";
 import List from "Models/list";
 
-jest.mock("Lib/api-request");
+vi.mock("Lib/api-request");
 
 describe("/cards", () => {
-  let fakeGet: jest.SpyInstance;
-  let fakePost: jest.SpyInstance;
-
   beforeEach(() => {
-    fakeGet = jest.mocked(get);
-    fakePost = jest.mocked(post);
-  });
-
-  afterEach(() => {
-    fakeGet.mockClear();
-    fakePost.mockClear();
+    get.mockResolvedValue({});
+    post.mockResolvedValue({
+      warnings: [],
+      not_found: [],
+    });
   });
 
   describe("search", () => {
     it("requests the search endpoint", () => {
       return search("foo").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/search", {
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/search", {
           q: "foo",
         });
       });
@@ -47,8 +42,8 @@ describe("/cards", () => {
         include_variations: false,
         page: 123,
       }).then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/search", {
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/search", {
           q: "foo",
           unique: "prints",
           order: "usd",
@@ -65,8 +60,8 @@ describe("/cards", () => {
   describe("autocomplete", () => {
     it("requests the autocomplete endpoint", () => {
       return autocomplete("foo").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/autocomplete", {
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/autocomplete", {
           q: "foo",
         });
       });
@@ -74,8 +69,8 @@ describe("/cards", () => {
 
     it("allows passing include_extras", () => {
       return autocomplete("foo", { include_extras: true }).then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/autocomplete", {
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/autocomplete", {
           q: "foo",
           include_extras: true,
         });
@@ -86,8 +81,8 @@ describe("/cards", () => {
   describe("getCollection", () => {
     it("requests the collection endpoint", () => {
       return getCollection([{ id: "foo" }]).then(() => {
-        expect(fakePost).toBeCalledTimes(1);
-        expect(fakePost).toBeCalledWith("/cards/collection", {
+        expect(post).toBeCalledTimes(1);
+        expect(post).toBeCalledWith("/cards/collection", {
           identifiers: [{ id: "foo" }],
         });
       });
@@ -123,8 +118,8 @@ describe("/cards", () => {
         },
       ];
       return getCollection(identifiers).then(() => {
-        expect(fakePost).toBeCalledTimes(1);
-        expect(fakePost).toBeCalledWith("/cards/collection", {
+        expect(post).toBeCalledTimes(1);
+        expect(post).toBeCalledWith("/cards/collection", {
           identifiers,
         });
       });
@@ -135,7 +130,7 @@ describe("/cards", () => {
         set: "foo",
         collector_number: "1",
       };
-      const entries = [];
+      const entries: (typeof fakeEntry)[] = [];
       let i = 0;
       while (i < 400) {
         entries.push(fakeEntry);
@@ -143,13 +138,14 @@ describe("/cards", () => {
       }
 
       return getCollection(entries).then(() => {
-        expect(fakePost).toBeCalledTimes(6);
-        expect(fakePost.mock.calls[0][1].identifiers.length).toBe(75);
-        expect(fakePost.mock.calls[1][1].identifiers.length).toBe(75);
-        expect(fakePost.mock.calls[2][1].identifiers.length).toBe(75);
-        expect(fakePost.mock.calls[3][1].identifiers.length).toBe(75);
-        expect(fakePost.mock.calls[4][1].identifiers.length).toBe(75);
-        expect(fakePost.mock.calls[5][1].identifiers.length).toBe(25);
+        expect(post).toBeCalledTimes(6);
+
+        expect(post.mock.calls[0][1].identifiers.length).toBe(75);
+        expect(post.mock.calls[1][1].identifiers.length).toBe(75);
+        expect(post.mock.calls[2][1].identifiers.length).toBe(75);
+        expect(post.mock.calls[3][1].identifiers.length).toBe(75);
+        expect(post.mock.calls[4][1].identifiers.length).toBe(75);
+        expect(post.mock.calls[5][1].identifiers.length).toBe(25);
       });
     });
 
@@ -158,7 +154,7 @@ describe("/cards", () => {
         set: "foo",
         collector_number: "1",
       };
-      const entries = [];
+      const entries: (typeof fakeEntry)[] = [];
       let i = 0;
       while (i < 400) {
         entries.push(fakeEntry);
@@ -171,11 +167,11 @@ describe("/cards", () => {
       notFound1.not_found = [{ name: "foo" }];
       notFound2.not_found = [{ name: "bar" }, { name: "baz" }];
 
-      fakePost.mockResolvedValueOnce(new List(fixtures.listOfCards));
-      fakePost.mockResolvedValueOnce(new List(notFound1));
-      fakePost.mockResolvedValueOnce(new List(fixtures.listOfCards));
-      fakePost.mockResolvedValueOnce(new List(notFound2));
-      fakePost.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      post.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      post.mockResolvedValueOnce(new List(notFound1));
+      post.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      post.mockResolvedValueOnce(new List(notFound2));
+      post.mockResolvedValueOnce(new List(fixtures.listOfCards));
 
       return getCollection(entries).then((result) => {
         expect(result.not_found.length).toBe(3);
@@ -190,7 +186,7 @@ describe("/cards", () => {
         set: "foo",
         collector_number: "1",
       };
-      const entries = [];
+      const entries: (typeof fakeEntry)[] = [];
       let i = 0;
       while (i < 400) {
         entries.push(fakeEntry);
@@ -203,11 +199,11 @@ describe("/cards", () => {
       warnings1.warnings = ["foo"];
       warnings2.warnings = ["bar", "baz"];
 
-      fakePost.mockResolvedValueOnce(new List(fixtures.listOfCards));
-      fakePost.mockResolvedValueOnce(new List(warnings1));
-      fakePost.mockResolvedValueOnce(new List(fixtures.listOfCards));
-      fakePost.mockResolvedValueOnce(new List(warnings2));
-      fakePost.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      post.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      post.mockResolvedValueOnce(new List(warnings1));
+      post.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      post.mockResolvedValueOnce(new List(warnings2));
+      post.mockResolvedValueOnce(new List(fixtures.listOfCards));
 
       return getCollection(entries).then((result) => {
         expect(result.warnings.length).toBe(3);
@@ -221,57 +217,57 @@ describe("/cards", () => {
   describe("getCard", () => {
     it("requests the card id endpoint", () => {
       return getCard("foo").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/foo");
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/foo");
       });
     });
 
     it("requests the card id endpoint with `id` param", () => {
       return getCard("foo", "id").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/foo");
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/foo");
       });
     });
 
     it("requests the card id endpoint with `scryfall` param", () => {
       return getCard("foo", "scryfall").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/foo");
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/foo");
       });
     });
 
     it("requests the card multiverse endpoint with `multiverse` param", () => {
       return getCard("foo", "multiverse").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/multiverse/foo");
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/multiverse/foo");
       });
     });
 
     it("requests the card arena id endpoint with `arena` param", () => {
       return getCard("foo", "arena").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/arena/foo");
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/arena/foo");
       });
     });
 
     it("requests the card mtgo id endpoint with `mtgo` param", () => {
       return getCard("foo", "mtgo").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/mtgo/foo");
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/mtgo/foo");
       });
     });
 
     it("requests the card TCG Player id endpoint with `tcg` param", () => {
       return getCard("foo", "tcg").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/tcgplayer/foo");
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/tcgplayer/foo");
       });
     });
 
     it("requests the card name endpoint with `name` param", () => {
       return getCard("foo", "name").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/named", {
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/named", {
           fuzzy: "foo",
         });
       });
@@ -279,8 +275,8 @@ describe("/cards", () => {
 
     it("requests the card name endpoint with `fuzzyName` param", () => {
       return getCard("foo", "fuzzyName").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/named", {
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/named", {
           fuzzy: "foo",
         });
       });
@@ -288,8 +284,8 @@ describe("/cards", () => {
 
     it("requests the card name endpoint with `exactName` param", () => {
       return getCard("foo", "exactName").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/named", {
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/named", {
           exact: "foo",
         });
       });
@@ -299,8 +295,8 @@ describe("/cards", () => {
   describe("getCardNamed", () => {
     it("gets fuzzy name", () => {
       return getCardNamed("foo").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/named", {
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/named", {
           fuzzy: "foo",
         });
       });
@@ -308,8 +304,8 @@ describe("/cards", () => {
 
     it("gets fuzzy name with kind parameter", () => {
       return getCardNamed("foo", { kind: "fuzzy" }).then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/named", {
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/named", {
           fuzzy: "foo",
         });
       });
@@ -317,8 +313,8 @@ describe("/cards", () => {
 
     it("gets exact name with kind parameter", () => {
       return getCardNamed("foo", { kind: "exact" }).then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/named", {
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/named", {
           exact: "foo",
         });
       });
@@ -326,8 +322,8 @@ describe("/cards", () => {
 
     it("can specify set", () => {
       return getCardNamed("foo", { set: "aer" }).then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/named", {
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/named", {
           fuzzy: "foo",
           set: "aer",
         });
@@ -338,16 +334,16 @@ describe("/cards", () => {
   describe("getCardBySetCodeAndCollectorNumber", () => {
     it("calls set and number endpoint", () => {
       return getCardBySetCodeAndCollectorNumber("foo", "123a").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/foo/123a");
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/foo/123a");
       });
     });
 
     it("calls set and number endpoint with lang", () => {
       return getCardBySetCodeAndCollectorNumber("foo", "123a", "es").then(
         () => {
-          expect(fakeGet).toBeCalledTimes(1);
-          expect(fakeGet).toBeCalledWith("/cards/foo/123a/es");
+          expect(get).toBeCalledTimes(1);
+          expect(get).toBeCalledWith("/cards/foo/123a/es");
         }
       );
     });
@@ -356,15 +352,15 @@ describe("/cards", () => {
   describe("random", () => {
     it("calls random endpoint", () => {
       return random().then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/random");
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/random");
       });
     });
 
     it("calls random endpoint with search query", () => {
       return random("foo").then(() => {
-        expect(fakeGet).toBeCalledTimes(1);
-        expect(fakeGet).toBeCalledWith("/cards/random", {
+        expect(get).toBeCalledTimes(1);
+        expect(get).toBeCalledWith("/cards/random", {
           q: "foo",
         });
       });
