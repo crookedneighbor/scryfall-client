@@ -18,9 +18,9 @@ var scryfall = require("scryfall-client");
 
 For the most part, this is a wrapper around the Scryfall API that provides convenience methods for the resulting API objects.
 
-The goal is to provide a convenient way to get data from the Scryfall API in a succient manner. For the most part, each API object will mirror the documented properties on the Scryfall API and include a set of helper methods to make navigating the data easier.
+The goal is to provide a convenient way to get data from the Scryfall API in a succinct manner. For the most part, each API object will mirror the documented properties on the Scryfall API and include a set of helper methods to make navigating the data easier. If your project uses [TypeScript](https://www.typescriptlang.org/), the response objects will be typed according to [Scryfall's documentation](https://scryfall.com/docs/api).
 
-The one key difference between the response objects returned from the raw API and this module is that for endpoints that return the [list object](https://scryfall.com/docs/api/lists), the raw API returns an object with some properties about the list (`has_more`, `next_page`, `total_cards`) and a `data` property that is an array of other API objects (cards, prints, rulings, etc). This module returns an Array-like object of the data directly, with the properties attached to the object. Similiraly, endpoints that return the [catalog object](https://scryfall.com/docs/api/catalogs) returns an Array-like object containing the data, as well as the other properties on the catalog.
+The one key difference between the response objects returned from the raw API and this module is that for endpoints that return the [list object](https://scryfall.com/docs/api/lists), the raw API returns an object with some properties about the list (`has_more`, `next_page`, `total_cards`) and a `data` property that is an array of other API objects (cards, prints, rulings, etc). This module returns an Array-like object of the data directly, with the properties attached to the object. Similarly, endpoints that return the [catalog object](https://scryfall.com/docs/api/catalogs) returns an Array-like object containing the data, as well as the other properties on the catalog.
 
 ```js
 scryfall.search("o:vigilance t:equipment").then(function (list) {
