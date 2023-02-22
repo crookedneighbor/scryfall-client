@@ -609,6 +609,9 @@ describe("scryfallClient", () => {
       expect(client.getSymbolUrl("GRP")).toEqual(
         expect.stringMatching(/https:\/\/.*scryfall.*RGP.svg/)
       );
+      expect(client.getSymbolUrl("PR")).toEqual(
+        expect.stringMatching(/https:\/\/.*scryfall.*RP.svg/)
+      );
     });
 
     it("ignores slashes in symbol name", () => {

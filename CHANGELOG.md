@@ -1,3 +1,7 @@
+# 0.23.1
+
+- Support passing Phyrexian mana in reverse order to `getSymbolUrl` (IE: passing `PG` will give you the correct symbol url for `GP`)
+
 # 0.23.0
 
 - Allow symbols that get passed in to `getSymbolUrl` to be flexible around ordering of WUBRG characters. (IE: passing `WG` will give you the symbol url for `GW`, `W2` will give you the symbol url for `2W`, `GRP` will give you the symbol url for `RGP`, and so on)

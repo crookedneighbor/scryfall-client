@@ -25,11 +25,13 @@ superagent.get("https://api.scryfall.com/symbology").then((data) => {
 
     // if character is one of the Hybrid WUBRG Symbol
     // or 2 Mana + WUBRG
+    // or WUBRG + Phyrexian
     // or WUBRG + WUBRG + Phyrexian
     // then reverse the first two symbols in the key
+    // and then add the reversed option as well
     // so that people don't have to remember the exact
     // order that the symbols go in to use them
-    if (/^[WUBRG2][WUBRG](P)?$/.test(char)) {
+    if (/^[WUBRG2][WUBRGP](P)?$/.test(char)) {
       const firstTwoCharactersInKeyReversed = char
         .substring(0, 2)
         .split("")
