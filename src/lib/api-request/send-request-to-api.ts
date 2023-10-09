@@ -14,7 +14,7 @@ type RequestOptions = {
 };
 
 export default function sendRequestToApi(
-  options: RequestOptions
+  options: RequestOptions,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   const url = getUrl(options.endpoint, options.query);
@@ -35,7 +35,7 @@ export default function sendRequestToApi(
             message:
               "Something went wrong when wrapping the response from Scryfall",
             thrownError: err,
-          })
+          }),
         );
       }
     })

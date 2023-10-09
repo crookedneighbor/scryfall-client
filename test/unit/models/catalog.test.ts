@@ -35,10 +35,10 @@ describe("Catalog", function () {
     expect(upperCaseNames).toBeInstanceOf(Array);
     expect(upperCaseNames).not.toBeInstanceOf(Catalog);
     expect(upperCaseNames[0]).toBe(
-      fixtures.catalogOfCardNames.data[0].toUpperCase()
+      fixtures.catalogOfCardNames.data[0].toUpperCase(),
     );
     expect(upperCaseNames[1]).toBe(
-      fixtures.catalogOfCardNames.data[1].toUpperCase()
+      fixtures.catalogOfCardNames.data[1].toUpperCase(),
     );
   });
 

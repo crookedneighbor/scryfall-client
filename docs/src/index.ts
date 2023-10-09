@@ -4,17 +4,17 @@ import scryfall = require("../../src/");
 import debounce from "./debounce";
 
 const search = document.querySelector(
-  "#search-wrapper input"
+  "#search-wrapper input",
 ) as HTMLInputElement;
 const autocompleteDatalist = document.querySelector(
-  "#search-wrapper datalist"
+  "#search-wrapper datalist",
 ) as HTMLDataListElement;
 const cardImage = document.querySelector(
-  "#card-wrapper img"
+  "#card-wrapper img",
 ) as HTMLImageElement;
 
 const showCode = document.querySelector(
-  "#search-wrapper #show-code"
+  "#search-wrapper #show-code",
 ) as HTMLParagraphElement;
 const modal = document.querySelector("#code-modal") as HTMLDivElement;
 
@@ -30,7 +30,7 @@ search.addEventListener(
         autocompleteDatalist.appendChild(option);
       });
     });
-  })
+  }),
 );
 
 search.addEventListener("input", () => {
@@ -60,5 +60,5 @@ showCode.addEventListener("click", () => {
   "click",
   () => {
     modal.classList.remove("is-active");
-  }
+  },
 );

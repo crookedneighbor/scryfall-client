@@ -22,7 +22,7 @@ function post(url: string, body: PostBody): SuperAgentRequest {
 }
 
 export default function sendRequest(
-  options: RequestOptions
+  options: RequestOptions,
 ): Promise<ApiResponse> {
   let requestPromise;
 
@@ -42,7 +42,7 @@ export default function sendRequest(
         new ScryfallError({
           message: "Could not parse response from Scryfall.",
           thrownError: parsingError,
-        })
+        }),
       );
     }
 

@@ -45,7 +45,7 @@ type AutoCompleteOptions = {
 // https://scryfall.com/docs/api/cards/search
 export function search(
   searchString: string,
-  options: SearchQueryOptions = {}
+  options: SearchQueryOptions = {},
 ): Promise<List<Card>> {
   const query = {
     q: searchString,
@@ -58,7 +58,7 @@ export function search(
 // https://scryfall.com/docs/api/cards/named
 export function getCardNamed(
   name: string,
-  options: NamedOptions = {}
+  options: NamedOptions = {},
 ): Promise<Card> {
   const kind = options.kind || "fuzzy";
   const query = {
@@ -75,7 +75,7 @@ export function getCardNamed(
 // https://scryfall.com/docs/api/cards/autocomplete
 export function autocomplete(
   searchString: string,
-  options: AutoCompleteOptions = {}
+  options: AutoCompleteOptions = {},
 ): Promise<Catalog> {
   const query = {
     q: searchString,
@@ -98,7 +98,7 @@ export function random(searchString?: string): Promise<Card> {
 
 // https://scryfall.com/docs/api/cards/collection
 export function getCollection(
-  identifiers: CardCollectionIdentifier[]
+  identifiers: CardCollectionIdentifier[],
 ): Promise<List<Card>> {
   const idBatches = identifiers.reduce(
     (array: CardCollectionIdentifier[][], entry, i) => {
@@ -108,15 +108,15 @@ export function getCollection(
 
       return array.concat([identifiers.slice(i, i + 75)]);
     },
-    []
+    [],
   );
 
   return Promise.all(
     idBatches.map((ids) =>
       post("/cards/collection", {
         identifiers: ids,
-      })
-    )
+      }),
+    ),
   ).then((collectionResults) => {
     const warnings: string[] = [];
     const notFound: CardCollectionIdentifier[] = [];
@@ -143,7 +143,7 @@ export function getCollection(
 export function getCardBySetCodeAndCollectorNumber(
   code: string,
   collectorNumber: string,
-  lang?: string
+  lang?: string,
 ): Promise<Card> {
   let url = `/cards/${code}/${collectorNumber}`;
 
@@ -192,7 +192,7 @@ type GetCardKind =
 
 export function getCard(
   idOrName: string | number,
-  kind: GetCardKind = "scryfall"
+  kind: GetCardKind = "scryfall",
 ): Promise<Card> {
   const value = String(idOrName);
 

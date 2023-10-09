@@ -10,7 +10,7 @@ const pathToFixture = path.resolve(
   "src",
   "lib",
   "fixtures",
-  "symbology.ts"
+  "symbology.ts",
 );
 
 superagent.get("https://api.scryfall.com/symbology").then((data) => {
@@ -54,7 +54,7 @@ export default ${JSON.stringify(symbols, null, 2)} as Record<string, string>`;
   if (existingModule !== module) {
     fs.writeFileSync(pathToFixture, module, "utf8");
     console.error(
-      "New symbology data downloaded. Symbology fixture updated. Aborting pre-publish task so the new file can be committed."
+      "New symbology data downloaded. Symbology fixture updated. Aborting pre-publish task so the new file can be committed.",
     );
     process.exit(1);
   } else {

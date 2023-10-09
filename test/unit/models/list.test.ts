@@ -65,7 +65,7 @@ describe("List", function () {
   describe("next", function () {
     beforeEach(function () {
       fakeRequest.mockResolvedValue(
-        wrapScryfallResponse(fixtures.listOfCardsPage2)
+        wrapScryfallResponse(fixtures.listOfCardsPage2),
       );
     });
 

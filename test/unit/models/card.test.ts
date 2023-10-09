@@ -21,7 +21,7 @@ describe("Card", function () {
     const cardWithoutFaces = new Card(fixtures.card);
     const cardWithFaces = new Card(fixtures.cardWithTransformLayout);
     const cardWithFlavorNameOnMultipleFaces = new Card(
-      fixtures.cardWithFlavorNameOnMultipleFaces
+      fixtures.cardWithFlavorNameOnMultipleFaces,
     );
 
     expect(cardWithoutFaces.card_faces).not.toBe(fixtures.card.card_faces);
@@ -42,20 +42,20 @@ describe("Card", function () {
 
     expect(cardWithFaces.card_faces.length).toBe(2);
     expect(cardWithFaces.card_faces).toBe(
-      fixtures.cardWithTransformLayout.card_faces
+      fixtures.cardWithTransformLayout.card_faces,
     );
 
     expect(cardWithFlavorNameOnMultipleFaces.flavor_name).toBe(
       fixtures.cardWithFlavorNameOnMultipleFaces.card_faces[0].flavor_name +
         " // " +
-        cardWithFlavorNameOnMultipleFaces.card_faces[1].flavor_name
+        cardWithFlavorNameOnMultipleFaces.card_faces[1].flavor_name,
     );
   });
 
   describe("getRulings", function () {
     beforeEach(function () {
       fakeRequest.mockResolvedValue(
-        wrapScryfallResponse(fixtures.listOfRulings)
+        wrapScryfallResponse(fixtures.listOfRulings),
       );
       card = new Card(fixtures.card);
     });
@@ -68,7 +68,7 @@ describe("Card", function () {
           expect(get).toBeCalledTimes(1);
           expect(get).toBeCalledWith(fixtures.card.rulings_uri);
           expect(rulings[0].comment).toBe(
-            fixtures.listOfRulings.data[0].comment
+            fixtures.listOfRulings.data[0].comment,
           );
         });
     });
@@ -92,7 +92,7 @@ describe("Card", function () {
   describe("getPrints", function () {
     beforeEach(function () {
       fakeRequest.mockResolvedValue(
-        wrapScryfallResponse(fixtures.listOfPrints)
+        wrapScryfallResponse(fixtures.listOfPrints),
       );
       card = new Card(fixtures.card);
     });
@@ -163,7 +163,7 @@ describe("Card", function () {
       const img = card.getImage();
       expect(typeof img).toBe("string");
       expect(img).toBe(
-        fixtures.cardWithTransformLayout.card_faces[0].image_uris.normal
+        fixtures.cardWithTransformLayout.card_faces[0].image_uris.normal,
       );
     });
 
@@ -224,7 +224,7 @@ describe("Card", function () {
       expect(() => {
         card.getBackImage();
       }).toThrowError(
-        "An unexpected error occured when attempting to show back side of card."
+        "An unexpected error occured when attempting to show back side of card.",
       );
 
       card.card_faces[1].image_uris = oldImageUris;
@@ -235,7 +235,7 @@ describe("Card", function () {
 
       const img = card.getBackImage();
       expect(img).toBe(
-        fixtures.cardWithTransformLayout.card_faces[1].image_uris.normal
+        fixtures.cardWithTransformLayout.card_faces[1].image_uris.normal,
       );
     });
 
@@ -244,7 +244,7 @@ describe("Card", function () {
 
       const img = card.getBackImage("small");
       expect(img).toBe(
-        fixtures.cardWithTransformLayout.card_faces[1].image_uris.small
+        fixtures.cardWithTransformLayout.card_faces[1].image_uris.small,
       );
     });
 
@@ -342,13 +342,13 @@ describe("Card", function () {
   describe("getTokens", function () {
     beforeEach(function () {
       fakeRequest.mockResolvedValueOnce(
-        wrapScryfallResponse(fixtures.tokens.elephant)
+        wrapScryfallResponse(fixtures.tokens.elephant),
       );
       fakeRequest.mockResolvedValueOnce(
-        wrapScryfallResponse(fixtures.tokens.wolf)
+        wrapScryfallResponse(fixtures.tokens.wolf),
       );
       fakeRequest.mockResolvedValueOnce(
-        wrapScryfallResponse(fixtures.tokens.snake)
+        wrapScryfallResponse(fixtures.tokens.snake),
       );
     });
 
@@ -358,13 +358,13 @@ describe("Card", function () {
       return card.getTokens().then((tokens: Card[]) => {
         expect(get).toBeCalledTimes(3);
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b"
+          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
         );
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830"
+          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
         );
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475"
+          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
         );
 
         tokens.forEach((token: Card) => {
@@ -384,7 +384,7 @@ describe("Card", function () {
 
     it("looks up tokens from prints for card when card has no `all_parts` attribute, but rules text mentions token", function () {
       const list = wrapScryfallResponse(
-        fixtures.listOfPrintsWithAndWithoutTokens
+        fixtures.listOfPrintsWithAndWithoutTokens,
       ) as List<Card>;
       const card = list.find((c) => !c.all_parts);
 
@@ -395,7 +395,7 @@ describe("Card", function () {
             fixtures.cardWithTokenButNoParts,
             fixtures.cardWithMultipleTokens,
           ],
-        })
+        }),
       );
 
       return card.getTokens().then((tokens: Card[]) => {
@@ -403,13 +403,13 @@ describe("Card", function () {
 
         expect(get).toBeCalledTimes(3);
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b"
+          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
         );
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830"
+          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
         );
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475"
+          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
         );
 
         tokens.forEach((token: Card) => {
@@ -421,7 +421,7 @@ describe("Card", function () {
 
     it("resolves with empty array when rules text mentions tokens but no prints have them", function () {
       const list = wrapScryfallResponse(
-        fixtures.listOfPrintsWithTokensButNoParts
+        fixtures.listOfPrintsWithTokensButNoParts,
       );
       const card = list[0];
 

@@ -7,8 +7,9 @@ import { get } from "../lib/api-request";
 
 import type SetApiResponse from "../types/api/set";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 interface MagicSet extends SetApiResponse {}
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 class MagicSet extends SingularEntity {
   constructor(scryfallObject: SetApiResponse) {
     super(scryfallObject);

@@ -53,7 +53,7 @@ describe("ScryfallError", function () {
     expect(error.code).toBe("not_found");
     expect(error.status).toBe(404);
     expect(error.details).toBe(
-      "Too many cards match ambiguous name “jace”. Add more words to refine your search."
+      "Too many cards match ambiguous name “jace”. Add more words to refine your search.",
     );
     expect(error.type).toBe("ambiguous");
   });

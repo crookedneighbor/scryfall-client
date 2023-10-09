@@ -13,10 +13,12 @@ import type RelatedCardApiResponse from "../types/api/related-card";
 
 const SCRYFALL_CARD_BACK_IMAGE_URL = "http://cards.scryfall.io/back.png";
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 interface Card extends CardApiResponse {
   card_faces: CardFaceApiResponse[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 class Card extends SingularEntity {
   _tokens: RelatedCardApiResponse[];
   _hasTokens: boolean;
@@ -126,7 +128,7 @@ class Card extends SingularEntity {
 
     if (!imageObject) {
       throw new Error(
-        "An unexpected error occured when attempting to show back side of card."
+        "An unexpected error occured when attempting to show back side of card.",
       );
     }
 
@@ -159,7 +161,7 @@ class Card extends SingularEntity {
     return Promise.all(
       this._tokens.map((token) => {
         return get<Card>(token.uri);
-      })
+      }),
     ).then((tokens: Card[]) => {
       if (tokens.length > 0) {
         return tokens;

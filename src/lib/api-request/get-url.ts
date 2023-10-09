@@ -32,7 +32,7 @@ function getBaseUrl(endpoint: string): string {
 
 export default function getUrl(
   endpoint: string,
-  query?: Record<string, string>
+  query?: Record<string, string>,
 ): string {
   let url = getBaseUrl(endpoint);
 
