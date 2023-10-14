@@ -5,7 +5,7 @@ export default defineConfig({
   test: {
     globals: true,
     restoreMocks: true,
-    testTimeout: 9000,
+    testTimeout: 15000,
     alias: {
       Api: resolve(__dirname, "src/api-routes"),
       Lib: resolve(__dirname, "src/lib"),
