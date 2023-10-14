@@ -1,3 +1,9 @@
+# unreleased
+
+_Potentially Breaking Changes_
+
+- Drop support for Node < 20
+
 # 0.23.1
 
 - Support passing Phyrexian mana in reverse order to `getSymbolUrl` (IE: passing `PG` will give you the correct symbol url for `GP`)
