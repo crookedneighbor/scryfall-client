@@ -4,6 +4,7 @@ _Potentially Breaking Changes_
 
 - Drop support for Node < 22
 - Require using `setUserAgent` when running package on a node server
+- Package is now specificed as a module in package.json
 
 # 0.23.1
 

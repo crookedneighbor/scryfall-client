@@ -2,6 +2,7 @@
   "name": "scryfall-client",
   "version": "0.23.1",
   "description": "A module for making requests to scryfall",
+  "type": "module",
   "main": "dist/index.js",
   "files": [
     "dist"
@@ -46,7 +47,7 @@
     "prettier": "^3.3.3",
     "ts-loader": "^9.5.1",
     "typescript": "^5.5.4",
-    "vitest": "^0.34.6",
+    "vitest": "^2.0.5",
     "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
