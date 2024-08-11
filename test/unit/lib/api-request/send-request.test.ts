@@ -86,13 +86,13 @@ describe("sendRequest", () => {
       sendRequest({
         method: "get",
         url: "https://example.com",
-      })
+      }),
     ).rejects.toBeInstanceOf(ScryfallError);
     await expect(
       sendRequest({
         method: "get",
         url: "https://example.com",
-      })
+      }),
     ).rejects.toMatchObject({
       message: "Could not parse response from Scryfall.",
     });
@@ -110,13 +110,13 @@ describe("sendRequest", () => {
       sendRequest({
         method: "get",
         url: "https://example.com",
-      })
+      }),
     ).rejects.toBeInstanceOf(ScryfallError);
     await expect(
       sendRequest({
         method: "get",
         url: "https://example.com",
-      })
+      }),
     ).rejects.toMatchObject({
       message: "Error from API",
     });
