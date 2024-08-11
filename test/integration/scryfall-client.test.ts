@@ -6,6 +6,7 @@ import Card from "Models/card";
 import MagicSet from "Models/magic-set";
 import Catalog from "Models/catalog";
 import List from "Models/list";
+import packageJSON from "../../package.json";
 
 import type { ListApiResponse } from "Types/api-response";
 import CardApiResponse from "Types/api/card";
@@ -22,6 +23,11 @@ const beastialMenace = "73c16134-692d-4fd1-bffa-f9342113cbd8";
 const originalProsh = "fc411c52-3ee2-4fe4-983d-3fa43b516237";
 
 describe("scryfallClient", () => {
+  beforeAll(() => {
+    const version = packageJSON.version;
+    client.setUserAgent(`ScryfallClient-IntegrationTest/${version}`);
+  });
+
   describe("raw get/post", () => {
     it("can make a get request", () => {
       return client.get<Card>("cards/random").then((card) => {
@@ -87,7 +93,7 @@ describe("scryfallClient", () => {
 
       function collectCards(
         list: List<Card>,
-        allCards: Card[] = [],
+        allCards: Card[] = []
       ): Promise<List<Card> | Card[]> {
         allCards.push(...list);
 
@@ -420,10 +426,10 @@ describe("scryfallClient", () => {
           expect(list[1].mtgo_id).toBe(54957);
           expect(list[2].multiverse_ids).toContain(409574);
           expect(list[3].oracle_id).toBe(
-            "a3fb7228-e76b-4e96-a40e-20b5fed75685",
+            "a3fb7228-e76b-4e96-a40e-20b5fed75685"
           );
           expect(list[4].illustration_id).toBe(
-            "4782559a-f001-4ce6-8672-afd07935440d",
+            "4782559a-f001-4ce6-8672-afd07935440d"
           );
           expect(list[5].name).toBe("Ancient Tomb");
           expect(list[6].name).toBe("Austere Command");
@@ -574,49 +580,49 @@ describe("scryfallClient", () => {
   describe("getSymbolUrl", () => {
     it("returns the url for a character representing a symbol", () => {
       expect(client.getSymbolUrl("W")).toEqual(
-        expect.stringMatching(/https:\/\/.*scryfall.*W.svg/),
+        expect.stringMatching(/https:\/\/.*scryfall.*W.svg/)
       );
     });
 
     it("returns the url for symbol in curly braces", () => {
       expect(client.getSymbolUrl("{U}")).toEqual(
-        expect.stringMatching(/https:\/\/.*scryfall.*U.svg/),
+        expect.stringMatching(/https:\/\/.*scryfall.*U.svg/)
       );
     });
 
     it("returns the correct url for symbol in lowercase", () => {
       expect(client.getSymbolUrl("r")).toEqual(
-        expect.stringMatching(/https:\/\/.*scryfall.*R.svg/),
+        expect.stringMatching(/https:\/\/.*scryfall.*R.svg/)
       );
     });
 
     it("returns the correct url for symbol with long name", () => {
       expect(client.getSymbolUrl("∞")).toEqual(
-        expect.stringMatching(/https:\/\/.*scryfall.*INFINITY.svg/),
+        expect.stringMatching(/https:\/\/.*scryfall.*INFINITY.svg/)
       );
       expect(client.getSymbolUrl("ChaOs")).toEqual(
-        expect.stringMatching(/https:\/\/.*scryfall.*CHAOS.svg/),
+        expect.stringMatching(/https:\/\/.*scryfall.*CHAOS.svg/)
       );
     });
 
     it("returns the correct url for compound WUBRG symbol that is ordered backwords", () => {
       expect(client.getSymbolUrl("WG")).toEqual(
-        expect.stringMatching(/https:\/\/.*scryfall.*GW.svg/),
+        expect.stringMatching(/https:\/\/.*scryfall.*GW.svg/)
       );
       expect(client.getSymbolUrl("W2")).toEqual(
-        expect.stringMatching(/https:\/\/.*scryfall.*2W.svg/),
+        expect.stringMatching(/https:\/\/.*scryfall.*2W.svg/)
       );
       expect(client.getSymbolUrl("GRP")).toEqual(
-        expect.stringMatching(/https:\/\/.*scryfall.*RGP.svg/),
+        expect.stringMatching(/https:\/\/.*scryfall.*RGP.svg/)
       );
       expect(client.getSymbolUrl("PR")).toEqual(
-        expect.stringMatching(/https:\/\/.*scryfall.*RP.svg/),
+        expect.stringMatching(/https:\/\/.*scryfall.*RP.svg/)
       );
     });
 
     it("ignores slashes in symbol name", () => {
       expect(client.getSymbolUrl("C/H/A/O/////S")).toEqual(
-        expect.stringMatching(/https:\/\/.*scryfall.*CHAOS.svg/),
+        expect.stringMatching(/https:\/\/.*scryfall.*CHAOS.svg/)
       );
     });
 
@@ -627,7 +633,7 @@ describe("scryfallClient", () => {
         client.getSymbolUrl("not a real symbol");
       } catch (err) {
         expect((err as Error).message).toEqual(
-          'Symbol "not a real symbol" not found. The scryfall-client module may need an update.',
+          'Symbol "not a real symbol" not found. The scryfall-client module may need an update.'
         );
       }
     });

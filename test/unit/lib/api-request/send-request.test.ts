@@ -2,6 +2,9 @@ import sendRequest from "Lib/api-request/send-request";
 import ScryfallError from "Models/scryfall-error";
 import superagent = require("superagent");
 import { vi } from "vitest";
+import { getUserAgent } from "../../../../src/lib/api-request/user-agent";
+
+vi.mock("Lib/api-request/user-agent");
 
 let mockResponse: {
   text: string;
@@ -63,6 +66,17 @@ describe("sendRequest", () => {
     });
   });
 
+  it("automatically sets useragent", async () => {
+    vi.mocked(getUserAgent).mockReturnValue("User Agent");
+
+    return sendRequest({
+      method: "get",
+      url: "https://example.com",
+    }).then(() => {
+      expect(agent.set).toBeCalledWith("User-Agent", "User Agent");
+    });
+  });
+
   it("handles parsing errors", async () => {
     mockResponse.text = "{";
 
@@ -72,13 +86,13 @@ describe("sendRequest", () => {
       sendRequest({
         method: "get",
         url: "https://example.com",
-      }),
+      })
     ).rejects.toBeInstanceOf(ScryfallError);
     await expect(
       sendRequest({
         method: "get",
         url: "https://example.com",
-      }),
+      })
     ).rejects.toMatchObject({
       message: "Could not parse response from Scryfall.",
     });
@@ -96,13 +110,13 @@ describe("sendRequest", () => {
       sendRequest({
         method: "get",
         url: "https://example.com",
-      }),
+      })
     ).rejects.toBeInstanceOf(ScryfallError);
     await expect(
       sendRequest({
         method: "get",
         url: "https://example.com",
-      }),
+      })
     ).rejects.toMatchObject({
       message: "Error from API",
     });

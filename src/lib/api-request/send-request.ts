@@ -4,6 +4,7 @@ import ScryfallError from "../../models/scryfall-error";
 
 import type { ApiResponse } from "../../types/api-response";
 import type { AnyJson } from "../../types/json";
+import { getUserAgent } from "./user-agent";
 
 type PostBody = Record<string, AnyJson>;
 
@@ -22,7 +23,7 @@ function post(url: string, body: PostBody): SuperAgentRequest {
 }
 
 export default function sendRequest(
-  options: RequestOptions,
+  options: RequestOptions
 ): Promise<ApiResponse> {
   let requestPromise;
 
@@ -32,24 +33,27 @@ export default function sendRequest(
     requestPromise = get(options.url);
   }
 
-  return requestPromise.set("Accept", "application/json").then((response) => {
-    let responseBody;
+  return requestPromise
+    .set("Accept", "application/json")
+    .set("User-Agent", getUserAgent())
+    .then((response) => {
+      let responseBody;
 
-    try {
-      responseBody = JSON.parse(response.text);
-    } catch (parsingError) {
-      return Promise.reject(
-        new ScryfallError({
-          message: "Could not parse response from Scryfall.",
-          thrownError: parsingError,
-        }),
-      );
-    }
+      try {
+        responseBody = JSON.parse(response.text);
+      } catch (parsingError) {
+        return Promise.reject(
+          new ScryfallError({
+            message: "Could not parse response from Scryfall.",
+            thrownError: parsingError,
+          })
+        );
+      }
 
-    if (responseBody.object === "error") {
-      return Promise.reject(new ScryfallError(responseBody));
-    }
+      if (responseBody.object === "error") {
+        return Promise.reject(new ScryfallError(responseBody));
+      }
 
-    return responseBody;
-  });
+      return responseBody;
+    });
 }
