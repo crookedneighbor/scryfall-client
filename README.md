@@ -14,7 +14,7 @@ The module is a singleton object that can make requests to the Scryfall API.
 var scryfall = require("scryfall-client");
 ```
 
-When using on a node server, you must also set the User Agent (a [requirement from the Scryfall API](https://scryfall.com/docs/api)). When used in the browser, no other configuration is required, the browser's user agent will be used insteade of your custom one.
+When using on a node server, you must also set the User Agent (a [requirement from the Scryfall API](https://scryfall.com/docs/api)). When used in the browser, no other configuration is required, the browser's user agent will be used instead of your custom one.
 
 ```js
 scryfall.setUserAgent("MyPackage/1.2.3");
