@@ -2,7 +2,7 @@
 
 _Potentially Breaking Changes_
 
-- Drop support for Node < 20
+- Drop support for Node < 22
 
 # 0.23.1
 
