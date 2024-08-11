@@ -52,7 +52,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "@braintree/extended-promise": "^0.4.1",
+    "@braintree/extended-promise": "^1.0.0",
     "superagent": "^8.1.2"
   }
 }
