@@ -11,7 +11,7 @@ npm install --save scryfall-client
 The module is a singleton object that can make requests to the Scryfall API.
 
 ```js
-var scryfall = require("scryfall-client");
+import scryfall from "scryfall-client";
 ```
 
 When using on a node server, you must also set the User Agent (a [requirement from the Scryfall API](https://scryfall.com/docs/api)). When used in the browser, no other configuration is required, the browser's user agent will be used instead of your custom one.
