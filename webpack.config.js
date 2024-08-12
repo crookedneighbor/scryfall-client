@@ -1,6 +1,6 @@
-const path = require("path");
+import path from "path";
 
-module.exports = {
+export default {
   mode: "production",
   entry: "./docs/src/index.ts",
   module: {
@@ -15,14 +15,14 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js"],
     alias: {
-      Api: path.resolve(__dirname, "src/api-routes/"),
-      Lib: path.resolve(__dirname, "src/lib/"),
-      Types: path.resolve(__dirname, "src/types/"),
-      Models: path.resolve(__dirname, "src/models/"),
+      Api: path.resolve("src/api-routes/"),
+      Lib: path.resolve("src/lib/"),
+      Types: path.resolve("src/types/"),
+      Models: path.resolve("src/models/"),
     },
   },
   output: {
     filename: "script.js",
-    path: path.resolve(__dirname, "docs"),
+    path: path.resolve("docs"),
   },
 };

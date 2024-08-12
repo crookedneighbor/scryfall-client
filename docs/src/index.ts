@@ -1,6 +1,6 @@
 "use strict";
 
-import scryfall = require("../../src/");
+import scryfall from "../../src/";
 import debounce from "./debounce";
 
 const search = document.querySelector(
