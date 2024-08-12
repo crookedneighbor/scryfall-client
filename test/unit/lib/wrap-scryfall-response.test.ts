@@ -4,7 +4,13 @@ import wrapScryfallResponse, {
   setTextTransform,
   resetTextTransform,
 } from "Lib/wrap-scryfall-response";
-import fixtures from "Fixtures";
+import {
+  cardFixture,
+  listOfCardsFixture,
+  setFixture,
+  catalogOfCardNamesFixture,
+  cardWithMultipleTokensFixture,
+} from "Fixtures";
 import Card from "Models/card";
 import MagicSet from "Models/magic-set";
 import GenericScryfallResponse from "Models/generic-scryfall-response";
@@ -30,14 +36,14 @@ describe("wrapScryfallResponse", function () {
   });
 
   it("wraps card responses in Card", function () {
-    const wrappedResponse = wrapScryfallResponse(fixtures.card);
+    const wrappedResponse = wrapScryfallResponse(cardFixture);
 
     expect(wrappedResponse).toBeInstanceOf(Card);
     expect(wrappedResponse.id).toBe("357cf802-2d66-49a4-bf43-ab3bc30ab825");
   });
 
   it("wraps list responses in List", function () {
-    const wrappedResponse = wrapScryfallResponse(fixtures.listOfCards);
+    const wrappedResponse = wrapScryfallResponse(listOfCardsFixture);
 
     expect(wrappedResponse).toBeInstanceOf(Array);
     expect(wrappedResponse.length).toBe(2);
@@ -46,28 +52,26 @@ describe("wrapScryfallResponse", function () {
   });
 
   it("wraps catalog responses in Catalog", function () {
-    const wrappedResponse = wrapScryfallResponse(fixtures.catalogOfCardNames);
+    const wrappedResponse = wrapScryfallResponse(catalogOfCardNamesFixture);
 
     expect(wrappedResponse).toBeInstanceOf(Array);
     expect(wrappedResponse.length).toBe(20);
   });
 
   it("wraps set responses in MagicSet", function () {
-    const wrappedResponse = wrapScryfallResponse(fixtures.set);
+    const wrappedResponse = wrapScryfallResponse(setFixture);
 
     expect(wrappedResponse).toBeInstanceOf(MagicSet);
     expect(wrappedResponse.code).toBe("chk");
   });
 
   it("wraps nested properties", function () {
-    const wrappedResponse = wrapScryfallResponse(
-      fixtures.cardWithMultipleTokens,
-    );
+    const wrappedResponse = wrapScryfallResponse(cardWithMultipleTokensFixture);
 
     expect(wrappedResponse).toBeInstanceOf(Card);
     expect(wrappedResponse.image_uris.small).toContain("scryfall");
     expect(wrappedResponse.all_parts[0]).toBeInstanceOf(
-      GenericScryfallResponse,
+      GenericScryfallResponse
     );
   });
 
@@ -80,7 +84,7 @@ describe("wrapScryfallResponse", function () {
   });
 
   it("can use a text transformer in nested objects", function () {
-    const card = JSON.parse(JSON.stringify(fixtures.cardWithMultipleTokens));
+    const card = JSON.parse(JSON.stringify(cardWithMultipleTokensFixture));
     card.all_parts[1].component = "{F} FOO";
 
     setTextTransform((text) => {
@@ -96,7 +100,7 @@ describe("wrapScryfallResponse", function () {
   });
 
   it("does not convert symbols to slack or discord emoji if not explicitly passed in", function () {
-    const wrappedResponse = wrapScryfallResponse(fixtures.card);
+    const wrappedResponse = wrapScryfallResponse(cardFixture);
 
     expect(wrappedResponse.mana_cost).toBe("{2}{U}");
   });

@@ -1,4 +1,4 @@
-module.exports = {
+export const setFixture = {
   object: "set",
   id: "6183d21f-a0af-4118-ba58-aca1d8719c01",
   code: "chk",

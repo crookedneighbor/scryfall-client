@@ -1,6 +1,6 @@
 import sendRequest from "Lib/api-request/send-request";
 import ScryfallError from "Models/scryfall-error";
-import superagent = require("superagent");
+import superagent from "superagent";
 import { vi } from "vitest";
 import { getUserAgent } from "../../../../src/lib/api-request/user-agent";
 

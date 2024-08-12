@@ -1,6 +1,7 @@
-const superagent = require("superagent");
-const fs = require("fs");
-const path = require("path");
+/* eslint-disable no-undef */
+import superagent from "superagent";
+import fs from "fs";
+import path from "path";
 
 console.log("Downloading latest symbol data from Scryfall...");
 
@@ -15,7 +16,7 @@ const pathToFixture = path.resolve(
 
 superagent.get("https://api.scryfall.com/symbology").then((data) => {
   const symbols = data.body.data.reduce((accum, data) => {
-    const char = data.symbol.replace(/[{}\/]/g, "");
+    const char = data.symbol.replace(/[{}/]/g, "");
 
     if (char in accum) {
       throw new Error(`Unexpected duplicate symbol ${char}`);

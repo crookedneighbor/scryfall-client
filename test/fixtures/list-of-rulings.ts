@@ -1,6 +1,4 @@
-"use strict";
-
-module.exports = {
+export const listOfRulingsFixture = {
   object: "list",
   has_more: false,
   data: [

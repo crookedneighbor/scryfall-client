@@ -6,7 +6,21 @@ import MagicSet from "Models/magic-set";
 import GenericScryfallResponse from "Models/generic-scryfall-response";
 import { get } from "Lib/api-request";
 import wrapScryfallResponse from "Lib/wrap-scryfall-response";
-import fixtures from "Fixtures";
+import {
+  cardFixture,
+  cardWithFlavorNameOnMultipleFacesFixture,
+  cardWithFlipLayoutFixture,
+  cardWithMeldLayoutFixture,
+  cardWithMultipleTokensFixture,
+  cardWithTokenButNoPartsFixture,
+  cardWithTransformLayoutFixture,
+  listOfPrintsFixture,
+  listOfPrintsWithAndWithoutTokensFixture,
+  listOfPrintsWithTokensButNoPartsFixture,
+  listOfRulingsFixture,
+  setFixture,
+  tokensFixture,
+} from "Fixtures";
 
 vi.mock("Lib/api-request");
 
@@ -18,13 +32,13 @@ describe("Card", function () {
   });
 
   it("normalizes card faces", function () {
-    const cardWithoutFaces = new Card(fixtures.card);
-    const cardWithFaces = new Card(fixtures.cardWithTransformLayout);
+    const cardWithoutFaces = new Card(cardFixture);
+    const cardWithFaces = new Card(cardWithTransformLayoutFixture);
     const cardWithFlavorNameOnMultipleFaces = new Card(
-      fixtures.cardWithFlavorNameOnMultipleFaces,
+      cardWithFlavorNameOnMultipleFacesFixture
     );
 
-    expect(cardWithoutFaces.card_faces).not.toBe(fixtures.card.card_faces);
+    expect(cardWithoutFaces.card_faces).not.toBe(cardFixture.card_faces);
     expect(cardWithoutFaces.card_faces.length).toBe(1);
     expect(cardWithoutFaces.card_faces[0]).toEqual({
       object: "card_face",
@@ -42,74 +56,68 @@ describe("Card", function () {
 
     expect(cardWithFaces.card_faces.length).toBe(2);
     expect(cardWithFaces.card_faces).toBe(
-      fixtures.cardWithTransformLayout.card_faces,
+      cardWithTransformLayoutFixture.card_faces
     );
 
     expect(cardWithFlavorNameOnMultipleFaces.flavor_name).toBe(
-      fixtures.cardWithFlavorNameOnMultipleFaces.card_faces[0].flavor_name +
+      cardWithFlavorNameOnMultipleFacesFixture.card_faces[0].flavor_name +
         " // " +
-        cardWithFlavorNameOnMultipleFaces.card_faces[1].flavor_name,
+        cardWithFlavorNameOnMultipleFaces.card_faces[1].flavor_name
     );
   });
 
   describe("getRulings", function () {
     beforeEach(function () {
-      fakeRequest.mockResolvedValue(
-        wrapScryfallResponse(fixtures.listOfRulings),
-      );
-      card = new Card(fixtures.card);
+      fakeRequest.mockResolvedValue(wrapScryfallResponse(listOfRulingsFixture));
+      card = new Card(cardFixture);
     });
 
     it("gets rulings for card", function () {
       return card
         .getRulings()
         .then((rulings: List<GenericScryfallResponse>) => {
-          expect(typeof fixtures.card.rulings_uri).toBe("string");
+          expect(typeof cardFixture.rulings_uri).toBe("string");
           expect(get).toBeCalledTimes(1);
-          expect(get).toBeCalledWith(fixtures.card.rulings_uri);
-          expect(rulings[0].comment).toBe(
-            fixtures.listOfRulings.data[0].comment,
-          );
+          expect(get).toBeCalledWith(cardFixture.rulings_uri);
+          expect(rulings[0].comment).toBe(listOfRulingsFixture.data[0].comment);
         });
     });
   });
 
   describe("getSet", function () {
     beforeEach(function () {
-      fakeRequest.mockResolvedValue(fixtures.set);
-      card = new Card(fixtures.card);
+      fakeRequest.mockResolvedValue(setFixture);
+      card = new Card(cardFixture);
     });
 
     it("gets set for card", function () {
       return card.getSet().then((set: MagicSet) => {
-        expect(typeof fixtures.card.set_uri).toBe("string");
-        expect(get).toBeCalledWith(fixtures.card.set_uri);
-        expect(set.code).toBe(fixtures.set.code);
+        expect(typeof cardFixture.set_uri).toBe("string");
+        expect(get).toBeCalledWith(cardFixture.set_uri);
+        expect(set.code).toBe(setFixture.code);
       });
     });
   });
 
   describe("getPrints", function () {
     beforeEach(function () {
-      fakeRequest.mockResolvedValue(
-        wrapScryfallResponse(fixtures.listOfPrints),
-      );
-      card = new Card(fixtures.card);
+      fakeRequest.mockResolvedValue(wrapScryfallResponse(listOfPrintsFixture));
+      card = new Card(cardFixture);
     });
 
     it("gets prints for card", function () {
       return card.getPrints().then((prints) => {
-        expect(typeof fixtures.listOfPrints.data[0].name).toBe("string");
-        expect(get).toBeCalledWith(fixtures.card.prints_search_uri);
-        expect(prints[0].name).toBe(fixtures.listOfPrints.data[0].name);
-        expect(prints.length).toBe(fixtures.listOfPrints.data.length);
+        expect(typeof listOfPrintsFixture.data[0].name).toBe("string");
+        expect(get).toBeCalledWith(cardFixture.prints_search_uri);
+        expect(prints[0].name).toBe(listOfPrintsFixture.data[0].name);
+        expect(prints.length).toBe(listOfPrintsFixture.data.length);
       });
     });
   });
 
   describe("isLegal", function () {
     beforeEach(function () {
-      card = new Card(fixtures.card);
+      card = new Card(cardFixture);
     });
 
     it("returns true for legal card in provided format", function () {
@@ -139,52 +147,52 @@ describe("Card", function () {
 
   describe("getImage", function () {
     it("returns with the specified image format for normal layout cards", function () {
-      const card = new Card(fixtures.card);
+      const card = new Card(cardFixture);
 
       let img = card.getImage("normal");
       expect(typeof img).toBe("string");
-      expect(img).toBe(fixtures.card.image_uris.normal);
+      expect(img).toBe(cardFixture.image_uris.normal);
 
       img = card.getImage("small");
       expect(typeof img).toBe("string");
-      expect(img).toBe(fixtures.card.image_uris.small);
+      expect(img).toBe(cardFixture.image_uris.small);
     });
 
     it("defaults to normal layout", function () {
-      const card = new Card(fixtures.card);
+      const card = new Card(cardFixture);
 
       const img = card.getImage();
-      expect(img).toBe(fixtures.card.image_uris.normal);
+      expect(img).toBe(cardFixture.image_uris.normal);
     });
 
     it("uses default face for transform card", function () {
-      const card = new Card(fixtures.cardWithTransformLayout);
+      const card = new Card(cardWithTransformLayoutFixture);
 
       const img = card.getImage();
       expect(typeof img).toBe("string");
       expect(img).toBe(
-        fixtures.cardWithTransformLayout.card_faces[0].image_uris.normal,
+        cardWithTransformLayoutFixture.card_faces[0].image_uris.normal
       );
     });
 
     it("gets image for flip card", function () {
-      const card = new Card(fixtures.cardWithFlipLayout);
+      const card = new Card(cardWithFlipLayoutFixture);
 
       const img = card.getImage();
       expect(typeof img).toBe("string");
-      expect(img).toBe(fixtures.cardWithFlipLayout.image_uris.normal);
+      expect(img).toBe(cardWithFlipLayoutFixture.image_uris.normal);
     });
 
     it("gets image for meld card", function () {
-      const card = new Card(fixtures.cardWithMeldLayout);
+      const card = new Card(cardWithMeldLayoutFixture);
 
       const img = card.getImage();
       expect(typeof img).toBe("string");
-      expect(img).toBe(fixtures.cardWithMeldLayout.image_uris.normal);
+      expect(img).toBe(cardWithMeldLayoutFixture.image_uris.normal);
     });
 
     it("rejects with an error if image uris cannot be found", function () {
-      const card = new Card(fixtures.cardWithTransformLayout);
+      const card = new Card(cardWithTransformLayoutFixture);
 
       const originalImgUris = card.card_faces[0].image_uris;
       delete card.card_faces[0].image_uris;
@@ -199,14 +207,14 @@ describe("Card", function () {
 
   describe("getBackImage", function () {
     it("returns with scryfall back image for normal layout cards", function () {
-      const card = new Card(fixtures.card);
+      const card = new Card(cardFixture);
 
       const img = card.getBackImage();
       expect(img).toBe("http://cards.scryfall.io/back.png");
     });
 
     it("returns with the same scryfall back image for normal layout cards regardless of type passed in", function () {
-      const card = new Card(fixtures.card);
+      const card = new Card(cardFixture);
 
       let img = card.getBackImage("normal");
       expect(img).toBe("http://cards.scryfall.io/back.png");
@@ -216,7 +224,7 @@ describe("Card", function () {
     });
 
     it("rejects with an error if card does not have image uris", function () {
-      const card = new Card(fixtures.cardWithTransformLayout);
+      const card = new Card(cardWithTransformLayoutFixture);
       const oldImageUris = card.card_faces[1].image_uris;
 
       delete card.card_faces[1].image_uris;
@@ -224,32 +232,32 @@ describe("Card", function () {
       expect(() => {
         card.getBackImage();
       }).toThrowError(
-        "An unexpected error occured when attempting to show back side of card.",
+        "An unexpected error occured when attempting to show back side of card."
       );
 
       card.card_faces[1].image_uris = oldImageUris;
     });
 
     it("uses back face for transform card", function () {
-      const card = new Card(fixtures.cardWithTransformLayout);
+      const card = new Card(cardWithTransformLayoutFixture);
 
       const img = card.getBackImage();
       expect(img).toBe(
-        fixtures.cardWithTransformLayout.card_faces[1].image_uris.normal,
+        cardWithTransformLayoutFixture.card_faces[1].image_uris.normal
       );
     });
 
     it("can specify size for back face for transform card", function () {
-      const card = new Card(fixtures.cardWithTransformLayout);
+      const card = new Card(cardWithTransformLayoutFixture);
 
       const img = card.getBackImage("small");
       expect(img).toBe(
-        fixtures.cardWithTransformLayout.card_faces[1].image_uris.small,
+        cardWithTransformLayoutFixture.card_faces[1].image_uris.small
       );
     });
 
     it("gives the back card image for flip card", function () {
-      const card = new Card(fixtures.cardWithFlipLayout);
+      const card = new Card(cardWithFlipLayoutFixture);
 
       const img = card.getBackImage();
       expect(img).toBe("http://cards.scryfall.io/back.png");
@@ -260,8 +268,8 @@ describe("Card", function () {
     let originalPrices: Record<string, string>;
 
     beforeEach(function () {
-      card = new Card(fixtures.card);
-      originalPrices = Object.assign({}, fixtures.card.prices);
+      card = new Card(cardFixture);
+      originalPrices = Object.assign({}, cardFixture.prices);
 
       Object.keys(originalPrices).forEach((priceKind) => {
         // ensure that each price type in fixture exists
@@ -270,7 +278,7 @@ describe("Card", function () {
     });
 
     afterEach(function () {
-      fixtures.card.prices = originalPrices;
+      cardFixture.prices = originalPrices;
     });
 
     it("returns the non-foil usd price when no arguments are given", function () {
@@ -342,29 +350,29 @@ describe("Card", function () {
   describe("getTokens", function () {
     beforeEach(function () {
       fakeRequest.mockResolvedValueOnce(
-        wrapScryfallResponse(fixtures.tokens.elephant),
+        wrapScryfallResponse(tokensFixture.elephant)
       );
       fakeRequest.mockResolvedValueOnce(
-        wrapScryfallResponse(fixtures.tokens.wolf),
+        wrapScryfallResponse(tokensFixture.wolf)
       );
       fakeRequest.mockResolvedValueOnce(
-        wrapScryfallResponse(fixtures.tokens.snake),
+        wrapScryfallResponse(tokensFixture.snake)
       );
     });
 
     it("requests card objects for each token", function () {
-      const card = new Card(fixtures.cardWithMultipleTokens);
+      const card = new Card(cardWithMultipleTokensFixture);
 
       return card.getTokens().then((tokens: Card[]) => {
         expect(get).toBeCalledTimes(3);
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
+          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b"
         );
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
+          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830"
         );
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
+          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475"
         );
 
         tokens.forEach((token: Card) => {
@@ -375,7 +383,7 @@ describe("Card", function () {
     });
 
     it("resolves with an empty array when card has no `all_parts` attribute and no tokens in rules text", function () {
-      const card = new Card(fixtures.card);
+      const card = new Card(cardFixture);
 
       return card.getTokens().then((tokens: Card[]) => {
         expect(tokens).toEqual([]);
@@ -384,18 +392,15 @@ describe("Card", function () {
 
     it("looks up tokens from prints for card when card has no `all_parts` attribute, but rules text mentions token", function () {
       const list = wrapScryfallResponse(
-        fixtures.listOfPrintsWithAndWithoutTokens,
+        listOfPrintsWithAndWithoutTokensFixture
       ) as List<Card>;
       const card = list.find((c) => !c.all_parts);
 
       vi.spyOn(card, "getPrints").mockResolvedValue(
         wrapScryfallResponse({
           object: "list",
-          data: [
-            fixtures.cardWithTokenButNoParts,
-            fixtures.cardWithMultipleTokens,
-          ],
-        }),
+          data: [cardWithTokenButNoPartsFixture, cardWithMultipleTokensFixture],
+        })
       );
 
       return card.getTokens().then((tokens: Card[]) => {
@@ -403,13 +408,13 @@ describe("Card", function () {
 
         expect(get).toBeCalledTimes(3);
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
+          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b"
         );
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
+          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830"
         );
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
+          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475"
         );
 
         tokens.forEach((token: Card) => {
@@ -421,7 +426,7 @@ describe("Card", function () {
 
     it("resolves with empty array when rules text mentions tokens but no prints have them", function () {
       const list = wrapScryfallResponse(
-        fixtures.listOfPrintsWithTokensButNoParts,
+        listOfPrintsWithTokensButNoPartsFixture
       );
       const card = list[0];
 
@@ -438,7 +443,7 @@ describe("Card", function () {
 
   describe("getTaggerUrl", function () {
     it("returns the tagger url for the card", function () {
-      const card = new Card(fixtures.card);
+      const card = new Card(cardFixture);
 
       const url = card.getTaggerUrl();
 

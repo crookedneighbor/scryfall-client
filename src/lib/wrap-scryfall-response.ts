@@ -39,7 +39,7 @@ function wrapScryfallResponse(body: CardApiResponse): Card;
 function wrapScryfallResponse(body: ListApiResponse): List<SingularEntity>;
 function wrapScryfallResponse(body: SetApiResponse): MagicSet;
 function wrapScryfallResponse(body: CatalogApiResponse): Catalog;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function wrapScryfallResponse(response: any): any {
   if (typeof response === "string") {
     return transformFunction(response);

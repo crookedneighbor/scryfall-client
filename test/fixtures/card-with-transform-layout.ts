@@ -1,4 +1,4 @@
-module.exports = {
+export const cardWithTransformLayoutFixture = {
   object: "card",
   id: "02d6d693-f1f3-4317-bcc0-c21fa8490d38",
   oracle_id: "594f6881-c059-46f8-aa4e-7151d502de73",

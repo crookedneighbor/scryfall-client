@@ -1,4 +1,4 @@
-module.exports = {
+export const cardWithFlavorNameOnMultipleFacesFixture = {
   object: "card",
   id: "83a86763-c3fe-4cff-8b65-22cb329d112c",
   oracle_id: "e71ac446-02a4-4468-8d29-f28b21617665",

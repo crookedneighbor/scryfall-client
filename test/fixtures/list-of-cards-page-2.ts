@@ -1,6 +1,4 @@
-"use strict";
-
-module.exports = {
+export const listOfCardsPage2Fixture = {
   object: "list",
   total_cards: 327,
   has_more: false,

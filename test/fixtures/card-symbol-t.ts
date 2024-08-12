@@ -1,4 +1,4 @@
-module.exports = {
+export const cardSymbolTFixture = {
   object: "card_symbol",
   symbol: "{T}",
   svg_uri: "https://c1.scryfall.com/symbology/T.svg",

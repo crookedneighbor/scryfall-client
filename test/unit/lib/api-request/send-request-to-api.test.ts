@@ -4,7 +4,7 @@ import getUrl from "Lib/api-request/get-url";
 import enqueTask from "Lib/api-request/enque-task";
 import ScryfallError from "Models/scryfall-error";
 import wrapScryfallResponse from "Lib/wrap-scryfall-response";
-import fixtures from "Fixtures";
+import { cardFixture } from "Fixtures";
 
 vi.mock("Lib/api-request/send-request");
 vi.mock("Lib/api-request/enque-task");
@@ -14,7 +14,7 @@ vi.mock("Lib/wrap-scryfall-response");
 describe("apiRequest", () => {
   beforeEach(() => {
     getUrl.mockReturnValue("https://api.scryfall.com/endpoint");
-    sendRequest.mockResolvedValue(fixtures.card);
+    sendRequest.mockResolvedValue(cardFixture);
     enqueTask.mockImplementation((fn) => {
       return Promise.resolve().then(() => {
         return fn();
@@ -127,7 +127,7 @@ describe("apiRequest", () => {
     }).catch((e) => {
       expect(e).toBeInstanceOf(ScryfallError);
       expect(e.message).toBe(
-        "An unexpected error occurred when requesting resources from Scryfall.",
+        "An unexpected error occurred when requesting resources from Scryfall."
       );
       expect(e.status).toBe(500);
       expect(e.originalError).toBe(err);
@@ -149,7 +149,7 @@ describe("apiRequest", () => {
     }).catch((e) => {
       expect(e).toBeInstanceOf(ScryfallError);
       expect(e.message).toBe(
-        "Something went wrong when wrapping the response from Scryfall",
+        "Something went wrong when wrapping the response from Scryfall"
       );
       expect(e.thrownError).toBe(err);
     });

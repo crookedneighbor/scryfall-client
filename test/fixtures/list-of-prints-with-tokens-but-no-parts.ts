@@ -1,6 +1,6 @@
 // https://api.scryfall.com/cards/search?order=released&q=oracleid%3A55eca80c-dcd8-4c2f-aa0f-fb0aec7b80f7&unique=prints&pretty=true
 
-module.exports = {
+export const listOfPrintsWithTokensButNoPartsFixture = {
   object: "list",
   total_cards: 1,
   has_more: false,

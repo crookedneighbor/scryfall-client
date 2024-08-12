@@ -1,4 +1,4 @@
-module.exports = {
+export const cardFixture = {
   object: "card",
   id: "357cf802-2d66-49a4-bf43-ab3bc30ab825",
   oracle_id: "08becc07-28bc-4a2f-a6b0-28a2998d2f50",

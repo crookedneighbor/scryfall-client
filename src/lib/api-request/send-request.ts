@@ -1,5 +1,4 @@
-import superagent = require("superagent");
-import type { SuperAgentRequest } from "superagent";
+import superagent, { type SuperAgentRequest } from "superagent";
 import ScryfallError from "../../models/scryfall-error";
 
 import type { ApiResponse } from "../../types/api-response";

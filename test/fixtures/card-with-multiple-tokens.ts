@@ -1,4 +1,4 @@
-module.exports = {
+export const cardWithMultipleTokensFixture = {
   object: "card",
   id: "73c16134-692d-4fd1-bffa-f9342113cbd8",
   oracle_id: "ef08d371-9d6c-4a2d-a444-d475fbf1b633",

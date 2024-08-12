@@ -5,7 +5,6 @@ import GenericScryfallResponse from "Models/generic-scryfall-response";
 describe("GenericScryfallResponse", function () {
   it("accepts a Scryfall response object", function () {
     expect(() => {
-      // eslint-disable-next-line no-new
       new GenericScryfallResponse({
         object: "ruling",
         oracle_id: "id",

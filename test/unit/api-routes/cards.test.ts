@@ -8,7 +8,7 @@ import {
   random,
 } from "Api/cards";
 import { get, post } from "Lib/api-request";
-import fixtures from "../../fixtures";
+import { listOfCardsFixture } from "Fixtures";
 import List from "Models/list";
 
 vi.mock("Lib/api-request");
@@ -161,17 +161,17 @@ describe("/cards", () => {
         i++;
       }
 
-      const notFound1 = JSON.parse(JSON.stringify(fixtures.listOfCards));
-      const notFound2 = JSON.parse(JSON.stringify(fixtures.listOfCards));
+      const notFound1 = JSON.parse(JSON.stringify(listOfCardsFixture));
+      const notFound2 = JSON.parse(JSON.stringify(listOfCardsFixture));
 
       notFound1.not_found = [{ name: "foo" }];
       notFound2.not_found = [{ name: "bar" }, { name: "baz" }];
 
-      post.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      post.mockResolvedValueOnce(new List(listOfCardsFixture));
       post.mockResolvedValueOnce(new List(notFound1));
-      post.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      post.mockResolvedValueOnce(new List(listOfCardsFixture));
       post.mockResolvedValueOnce(new List(notFound2));
-      post.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      post.mockResolvedValueOnce(new List(listOfCardsFixture));
 
       return getCollection(entries).then((result) => {
         expect(result.not_found.length).toBe(3);
@@ -193,17 +193,17 @@ describe("/cards", () => {
         i++;
       }
 
-      const warnings1 = JSON.parse(JSON.stringify(fixtures.listOfCards));
-      const warnings2 = JSON.parse(JSON.stringify(fixtures.listOfCards));
+      const warnings1 = JSON.parse(JSON.stringify(listOfCardsFixture));
+      const warnings2 = JSON.parse(JSON.stringify(listOfCardsFixture));
 
       warnings1.warnings = ["foo"];
       warnings2.warnings = ["bar", "baz"];
 
-      post.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      post.mockResolvedValueOnce(new List(listOfCardsFixture));
       post.mockResolvedValueOnce(new List(warnings1));
-      post.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      post.mockResolvedValueOnce(new List(listOfCardsFixture));
       post.mockResolvedValueOnce(new List(warnings2));
-      post.mockResolvedValueOnce(new List(fixtures.listOfCards));
+      post.mockResolvedValueOnce(new List(listOfCardsFixture));
 
       return getCollection(entries).then((result) => {
         expect(result.warnings.length).toBe(3);
@@ -344,7 +344,7 @@ describe("/cards", () => {
         () => {
           expect(get).toBeCalledTimes(1);
           expect(get).toBeCalledWith("/cards/foo/123a/es");
-        },
+        }
       );
     });
   });

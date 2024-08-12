@@ -1,6 +1,4 @@
-"use strict";
-
-module.exports = {
+export const catalogOfCardNamesFixture = {
   object: "catalog",
   total_values: 20,
   data: [

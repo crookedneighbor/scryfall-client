@@ -1,4 +1,4 @@
-module.exports = {
+export const cardWithTokenButNoPartsFixture = {
   object: "card",
   id: "66d80dd1-b944-4cb2-8578-b4dbcabbbc1e",
   oracle_id: "55eca80c-dcd8-4c2f-aa0f-fb0aec7b80f7",

@@ -1,4 +1,4 @@
-module.exports = {
+export const cardBackWithMeldLayoutFixture = {
   object: "card",
   id: "5a7a212e-e0b6-4f12-a95c-173cae023f93",
   oracle_id: "b23587e0-9fb7-492e-8bb4-f218e8e4ce6c",

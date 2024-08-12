@@ -1,26 +1,26 @@
 "use strict";
 
 import Catalog from "Models/catalog";
-import fixtures from "Fixtures";
+import { catalogOfCardNamesFixture } from "Fixtures";
 
 describe("Catalog", function () {
   it("inherits from Array", function () {
-    const catalog = new Catalog(fixtures.catalogOfCardNames);
+    const catalog = new Catalog(catalogOfCardNamesFixture);
 
     expect(catalog).toBeInstanceOf(Array);
   });
 
   it("its entries are defined by data properties", function () {
-    const catalog = new Catalog(fixtures.catalogOfCardNames);
+    const catalog = new Catalog(catalogOfCardNamesFixture);
 
     expect(typeof catalog[0]).toBe("string");
-    expect(catalog[0]).toBe(fixtures.catalogOfCardNames.data[0]);
+    expect(catalog[0]).toBe(catalogOfCardNamesFixture.data[0]);
     expect(typeof catalog[1]).toBe("string");
-    expect(catalog[1]).toBe(fixtures.catalogOfCardNames.data[1]);
+    expect(catalog[1]).toBe(catalogOfCardNamesFixture.data[1]);
   });
 
   it("responds to Array methods", function () {
-    const catalog = new Catalog(fixtures.catalogOfCardNames);
+    const catalog = new Catalog(catalogOfCardNamesFixture);
 
     expect(catalog.length).toBe(20);
 
@@ -35,17 +35,17 @@ describe("Catalog", function () {
     expect(upperCaseNames).toBeInstanceOf(Array);
     expect(upperCaseNames).not.toBeInstanceOf(Catalog);
     expect(upperCaseNames[0]).toBe(
-      fixtures.catalogOfCardNames.data[0].toUpperCase(),
+      catalogOfCardNamesFixture.data[0].toUpperCase()
     );
     expect(upperCaseNames[1]).toBe(
-      fixtures.catalogOfCardNames.data[1].toUpperCase(),
+      catalogOfCardNamesFixture.data[1].toUpperCase()
     );
   });
 
   it("applies properties to object", function () {
-    const catalog = new Catalog(fixtures.catalogOfCardNames);
+    const catalog = new Catalog(catalogOfCardNamesFixture);
 
     expect(catalog.total_values).toBeGreaterThan(0);
-    expect(catalog.total_values).toBe(fixtures.catalogOfCardNames.total_values);
+    expect(catalog.total_values).toBe(catalogOfCardNamesFixture.total_values);
   });
 });

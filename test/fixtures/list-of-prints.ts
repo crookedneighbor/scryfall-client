@@ -1,6 +1,4 @@
-"use strict";
-
-module.exports = {
+export const listOfPrintsFixture = {
   object: "list",
   total_cards: 7,
   has_more: false,

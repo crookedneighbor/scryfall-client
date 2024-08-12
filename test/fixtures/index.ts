@@ -1,23 +1,19 @@
-"use strict";
-
-export default {
-  card: require("./card.ts"),
-  cardWithTransformLayout: require("./card-with-transform-layout.ts"),
-  cardWithFlipLayout: require("./card-with-flip-layout.ts"),
-  cardWithMeldLayout: require("./card-with-meld-layout.ts"),
-  secondCardWithMeldLayout: require("./second-card-with-meld-layout.ts"),
-  cardBackWithMeldLayout: require("./card-back-with-meld-layout.ts"),
-  cardWithTokenButNoParts: require("./card-with-token-but-no-parts.ts"),
-  cardWithMultipleTokens: require("./card-with-multiple-tokens.ts"),
-  cardWithFlavorNameOnMultipleFaces: require("./card-with-flavor-name-on-multiple-faces.ts"),
-  cardSymbolT: require("./card-symbol-t.ts"),
-  catalogOfCardNames: require("./catalog-of-card-names.ts"),
-  listOfCards: require("./list-of-cards.ts"),
-  listOfCardsPage2: require("./list-of-cards-page-2.ts"),
-  listOfPrints: require("./list-of-prints.ts"),
-  listOfPrintsWithAndWithoutTokens: require("./list-of-prints-with-and-without-tokens.ts"),
-  listOfPrintsWithTokensButNoParts: require("./list-of-prints-with-tokens-but-no-parts.ts"),
-  listOfRulings: require("./list-of-rulings.ts"),
-  set: require("./set.ts"),
-  tokens: require("./tokens.ts"),
-};
+export * from "./card";
+export * from "./card-with-transform-layout.ts";
+export * from "./card-with-flip-layout.ts";
+export * from "./card-with-meld-layout.ts";
+export * from "./second-card-with-meld-layout.ts";
+export * from "./card-back-with-meld-layout.ts";
+export * from "./card-with-token-but-no-parts.ts";
+export * from "./card-with-multiple-tokens.ts";
+export * from "./card-with-flavor-name-on-multiple-faces.ts";
+export * from "./card-symbol-t.ts";
+export * from "./catalog-of-card-names.ts";
+export * from "./list-of-cards.ts";
+export * from "./list-of-cards-page-2.ts";
+export * from "./list-of-prints.ts";
+export * from "./list-of-prints-with-and-without-tokens.ts";
+export * from "./list-of-prints-with-tokens-but-no-parts.ts";
+export * from "./list-of-rulings.ts";
+export * from "./set.ts";
+export * from "./tokens.ts";

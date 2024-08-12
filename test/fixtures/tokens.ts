@@ -1,6 +1,4 @@
-"use strict";
-
-module.exports = {
+export const tokensFixture = {
   elephant: {
     object: "card",
     id: "2dbccfc7-427b-41e6-b770-92d73994bf3b",
