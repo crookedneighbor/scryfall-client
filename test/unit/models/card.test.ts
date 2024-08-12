@@ -35,7 +35,7 @@ describe("Card", function () {
     const cardWithoutFaces = new Card(cardFixture);
     const cardWithFaces = new Card(cardWithTransformLayoutFixture);
     const cardWithFlavorNameOnMultipleFaces = new Card(
-      cardWithFlavorNameOnMultipleFacesFixture
+      cardWithFlavorNameOnMultipleFacesFixture,
     );
 
     expect(cardWithoutFaces.card_faces).not.toBe(cardFixture.card_faces);
@@ -56,13 +56,13 @@ describe("Card", function () {
 
     expect(cardWithFaces.card_faces.length).toBe(2);
     expect(cardWithFaces.card_faces).toBe(
-      cardWithTransformLayoutFixture.card_faces
+      cardWithTransformLayoutFixture.card_faces,
     );
 
     expect(cardWithFlavorNameOnMultipleFaces.flavor_name).toBe(
       cardWithFlavorNameOnMultipleFacesFixture.card_faces[0].flavor_name +
         " // " +
-        cardWithFlavorNameOnMultipleFaces.card_faces[1].flavor_name
+        cardWithFlavorNameOnMultipleFaces.card_faces[1].flavor_name,
     );
   });
 
@@ -171,7 +171,7 @@ describe("Card", function () {
       const img = card.getImage();
       expect(typeof img).toBe("string");
       expect(img).toBe(
-        cardWithTransformLayoutFixture.card_faces[0].image_uris.normal
+        cardWithTransformLayoutFixture.card_faces[0].image_uris.normal,
       );
     });
 
@@ -232,7 +232,7 @@ describe("Card", function () {
       expect(() => {
         card.getBackImage();
       }).toThrowError(
-        "An unexpected error occured when attempting to show back side of card."
+        "An unexpected error occured when attempting to show back side of card.",
       );
 
       card.card_faces[1].image_uris = oldImageUris;
@@ -243,7 +243,7 @@ describe("Card", function () {
 
       const img = card.getBackImage();
       expect(img).toBe(
-        cardWithTransformLayoutFixture.card_faces[1].image_uris.normal
+        cardWithTransformLayoutFixture.card_faces[1].image_uris.normal,
       );
     });
 
@@ -252,7 +252,7 @@ describe("Card", function () {
 
       const img = card.getBackImage("small");
       expect(img).toBe(
-        cardWithTransformLayoutFixture.card_faces[1].image_uris.small
+        cardWithTransformLayoutFixture.card_faces[1].image_uris.small,
       );
     });
 
@@ -350,13 +350,13 @@ describe("Card", function () {
   describe("getTokens", function () {
     beforeEach(function () {
       fakeRequest.mockResolvedValueOnce(
-        wrapScryfallResponse(tokensFixture.elephant)
+        wrapScryfallResponse(tokensFixture.elephant),
       );
       fakeRequest.mockResolvedValueOnce(
-        wrapScryfallResponse(tokensFixture.wolf)
+        wrapScryfallResponse(tokensFixture.wolf),
       );
       fakeRequest.mockResolvedValueOnce(
-        wrapScryfallResponse(tokensFixture.snake)
+        wrapScryfallResponse(tokensFixture.snake),
       );
     });
 
@@ -366,13 +366,13 @@ describe("Card", function () {
       return card.getTokens().then((tokens: Card[]) => {
         expect(get).toBeCalledTimes(3);
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b"
+          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
         );
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830"
+          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
         );
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475"
+          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
         );
 
         tokens.forEach((token: Card) => {
@@ -392,7 +392,7 @@ describe("Card", function () {
 
     it("looks up tokens from prints for card when card has no `all_parts` attribute, but rules text mentions token", function () {
       const list = wrapScryfallResponse(
-        listOfPrintsWithAndWithoutTokensFixture
+        listOfPrintsWithAndWithoutTokensFixture,
       ) as List<Card>;
       const card = list.find((c) => !c.all_parts);
 
@@ -400,7 +400,7 @@ describe("Card", function () {
         wrapScryfallResponse({
           object: "list",
           data: [cardWithTokenButNoPartsFixture, cardWithMultipleTokensFixture],
-        })
+        }),
       );
 
       return card.getTokens().then((tokens: Card[]) => {
@@ -408,13 +408,13 @@ describe("Card", function () {
 
         expect(get).toBeCalledTimes(3);
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b"
+          "https://api.scryfall.com/cards/2dbccfc7-427b-41e6-b770-92d73994bf3b",
         );
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830"
+          "https://api.scryfall.com/cards/2a452235-cebd-4e8f-b217-9b55fc1c3830",
         );
         expect(get).toBeCalledWith(
-          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475"
+          "https://api.scryfall.com/cards/7bdb3368-fee3-4795-a23f-c97555ee7475",
         );
 
         tokens.forEach((token: Card) => {
@@ -426,7 +426,7 @@ describe("Card", function () {
 
     it("resolves with empty array when rules text mentions tokens but no prints have them", function () {
       const list = wrapScryfallResponse(
-        listOfPrintsWithTokensButNoPartsFixture
+        listOfPrintsWithTokensButNoPartsFixture,
       );
       const card = list[0];
 

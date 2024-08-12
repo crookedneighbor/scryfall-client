@@ -344,7 +344,7 @@ describe("/cards", () => {
         () => {
           expect(get).toBeCalledTimes(1);
           expect(get).toBeCalledWith("/cards/foo/123a/es");
-        }
+        },
       );
     });
   });

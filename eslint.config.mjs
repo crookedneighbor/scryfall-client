@@ -11,13 +11,7 @@ export default tseslint.config(
       "docs/script.js",
     ],
   },
-  {
-    files: ["**/*.ts"],
-    rules: {
-      "@typescript-eslint/camelcase": "off",
-    },
-  },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
-  eslintConfigPrettier
+  eslintConfigPrettier,
 );
