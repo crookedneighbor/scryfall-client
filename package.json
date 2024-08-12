@@ -1,6 +1,6 @@
 {
   "name": "scryfall-client",
-  "version": "0.23.1",
+  "version": "0.24.0",
   "description": "A module for making requests to scryfall",
   "type": "module",
   "main": "dist/index.js",
