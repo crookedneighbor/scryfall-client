@@ -1,4 +1,4 @@
-# unreleased
+# 0.24.0
 
 - Update symbols for:
   - `{CB}`
