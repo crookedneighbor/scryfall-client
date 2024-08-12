@@ -1,5 +1,18 @@
 # unreleased
 
+- Update symbols for:
+  - `{CB}`
+  - `{CG}`
+  - `{CP}`
+  - `{CR}`
+  - `{CU}`
+  - `{CW}`
+  - `{D}`
+  - `{H}`
+  - `{L}`
+  - `{P}`
+  - `{S}`
+
 _Potentially Breaking Changes_
 
 - Drop support for Node < 22
