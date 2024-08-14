@@ -881,12 +881,6 @@ To run the integration tests, run:
 npm run test:integration
 ```
 
-To run the publishing test, run:
-
-```sh
-npm run test:publishing
-```
-
 ## Bugs
 
 If you find a bug, feel free to [open an issue](https://github.com/crookedneighbor/scryfall-client/issues/new) or [a Pull Request](https://github.com/crookedneighbor/scryfall-client/compare).
