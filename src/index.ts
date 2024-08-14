@@ -76,7 +76,7 @@ function getSymbolUrl(symbol: string): string {
 
   if (!url) {
     throw new Error(
-      `Symbol "${symbol}" not found. The scryfall-client module may need an update.`,
+      `Symbol "${symbol}" not found. The scryfall-client module may need an update.`
     );
   }
 
@@ -91,7 +91,7 @@ function wrap(body: ApiResponse): Model {
   return wrapScryfallResponse(body);
 }
 
-export = {
+export default {
   setUserAgent,
   setApiRequestDelayTime,
   resetApiRequestDelayTime,

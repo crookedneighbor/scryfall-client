@@ -1,3 +1,9 @@
+# unreleased
+
+_Potentially Breaking Changes_
+
+- Changed export from `export =` to `export default`
+
 # 0.24.0
 
 - Update symbols for:
