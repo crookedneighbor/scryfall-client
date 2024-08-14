@@ -7,15 +7,7 @@
   width: 100%;
 }
 
-#search-wrapper #show-code {
-  cursor: pointer;
-}
-
-#card-wrapper {
-  text-align: center;
-}
-
-#card-wrapper img {
+img {
   max-width: 100%;
   border-radius: 25px;
   width: 400px;
