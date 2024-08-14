@@ -4,12 +4,7 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: [
-      "**/dist",
-      "**/publishing-test-dist/",
-      "test/fixutres",
-      "docs/script.js",
-    ],
+    ignores: ["**/dist", "test/fixutres", "docs"],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,

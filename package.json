@@ -13,13 +13,7 @@
   },
   "scripts": {
     "prepublishOnly": "node ./scripts/download-symbology-fixture.js && npm run typescript",
-    "prebuild": "npm run pretty",
     "typescript": "tsc --declaration",
-    "build": "webpack",
-    "build:watch": "webpack-dev-server",
-    "predemo": "npm run build",
-    "demo": "http-server docs -p 4567",
-    "demo:dev": "npm run demo & npm run build:watch",
     "lint": "eslint",
     "pretty": "prettier --write .",
     "posttest": "npm run lint",
@@ -40,18 +34,12 @@
     "@types/eslint__js": "^8.42.3",
     "@types/superagent": "^8.1.8",
     "@typescript-eslint/eslint-plugin": "^8.0.1",
-    "check-ecmascript-version-compatibility": "^0.2.0",
     "eslint": "^9.9.0",
     "eslint-config-prettier": "^9.1.0",
-    "http-server": "^14.1.1",
     "prettier": "^3.3.3",
-    "ts-loader": "^9.5.1",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.0.1",
-    "vitest": "^2.0.5",
-    "webpack": "^5.93.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+    "vitest": "^2.0.5"
   },
   "dependencies": {
     "@braintree/extended-promise": "^1.0.0",
