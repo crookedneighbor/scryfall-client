@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
-    "moduleResolution": "Bundler",
-    "module": "preserve",
+    "module": "CommonJS",
     "outDir": "./dist",
     "declaration": true,
     "esModuleInterop": true

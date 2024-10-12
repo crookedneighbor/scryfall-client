@@ -1,4 +1,5 @@
-import superagent, { type SuperAgentRequest } from "superagent";
+import { type SuperAgentRequest } from "superagent";
+const superagent = require("superagent");
 import ScryfallError from "../../models/scryfall-error";
 
 import type { ApiResponse } from "../../types/api-response";
@@ -22,7 +23,7 @@ function post(url: string, body: PostBody): SuperAgentRequest {
 }
 
 export default function sendRequest(
-  options: RequestOptions,
+  options: RequestOptions
 ): Promise<ApiResponse> {
   let requestPromise;
 
@@ -45,7 +46,7 @@ export default function sendRequest(
           new ScryfallError({
             message: "Could not parse response from Scryfall.",
             thrownError: parsingError,
-          }),
+          })
         );
       }
 

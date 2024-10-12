@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
-import superagent from "superagent";
-import fs from "fs";
-import path from "path";
+const superagent = require("superagent");
+const fs = require("fs");
+const path = require("path");
 
 console.log("Downloading latest symbol data from Scryfall...");
 
@@ -52,7 +52,7 @@ export default ${JSON.stringify(symbols, null, 2)} as Record<string, string>`;
     if (existingModule !== module) {
       fs.writeFileSync(pathToFixture, module, "utf8");
       console.error(
-        "New symbology data downloaded. Symbology fixture updated. Aborting pre-publish task so the new file can be committed.",
+        "New symbology data downloaded. Symbology fixture updated. Aborting pre-publish task so the new file can be committed."
       );
       process.exit(1);
     } else {

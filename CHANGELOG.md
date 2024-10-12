@@ -1,3 +1,9 @@
+# 0.24.3
+
+_Potentially Breaking Changes_
+
+- Revert back to commonjs module
+
 # 0.24.2
 
 - Fix tsconfig for proper module bundling

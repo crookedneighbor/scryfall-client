@@ -2,7 +2,6 @@
   "name": "scryfall-client",
   "version": "0.24.2",
   "description": "A module for making requests to scryfall",
-  "type": "module",
   "main": "dist/index.js",
   "files": [
     "dist"
