@@ -1,5 +1,3 @@
-"use strict";
-
 import GenericScryfallResponse from "../../../src/models/generic-scryfall-response";
 
 describe("GenericScryfallResponse", function () {

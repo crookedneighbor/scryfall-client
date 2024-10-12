@@ -1,5 +1,3 @@
-"use strict";
-
 import Card from "../../../src/models/card";
 import List from "../../../src/models/list";
 import MagicSet from "../../../src/models/magic-set";

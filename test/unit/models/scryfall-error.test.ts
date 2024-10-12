@@ -1,5 +1,3 @@
-"use strict";
-
 import ScryfallError from "../../../src/models/scryfall-error";
 
 describe("ScryfallError", function () {

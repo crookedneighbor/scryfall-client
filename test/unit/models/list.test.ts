@@ -1,5 +1,3 @@
-"use strict";
-
 import wrapScryfallResponse from "../../../src/lib/wrap-scryfall-response";
 import List from "../../../src/models/list";
 import { listOfCardsFixture, listOfCardsPage2Fixture } from "../../fixtures";

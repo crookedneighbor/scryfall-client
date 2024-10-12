@@ -1,5 +1,3 @@
-"use strict";
-
 import MagicSet from "../../../src/models/magic-set";
 import Card from "../../../src/models/card";
 import wrapScryfallResponse from "../../../src/lib/wrap-scryfall-response";

@@ -1,5 +1,3 @@
-"use strict";
-
 import Catalog from "../../../src/models/catalog";
 import { catalogOfCardNamesFixture } from "../../fixtures";
 
