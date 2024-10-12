@@ -30,19 +30,19 @@
   "author": "blade <blade@crookedneighbor.com>",
   "license": "MIT",
   "devDependencies": {
-    "@eslint/js": "^9.9.0",
+    "@eslint/js": "^9.12.0",
     "@types/eslint__js": "^8.42.3",
-    "@types/superagent": "^8.1.8",
-    "@typescript-eslint/eslint-plugin": "^8.0.1",
-    "eslint": "^9.9.0",
+    "@types/superagent": "^8.1.9",
+    "@typescript-eslint/eslint-plugin": "^8.8.1",
+    "eslint": "^9.12.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.3.3",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^8.0.1",
-    "vitest": "^2.0.5"
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.8.1",
+    "vitest": "^2.1.2"
   },
   "dependencies": {
     "@braintree/extended-promise": "^1.0.0",
-    "superagent": "^10.0.0"
+    "superagent": "^10.1.0"
   }
 }
