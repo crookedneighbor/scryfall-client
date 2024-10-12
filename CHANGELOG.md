@@ -1,3 +1,7 @@
+# 0.24.2
+
+- Fix tsconfig for proper module bundling
+
 # 0.24.1
 
 _Potentially Breaking Changes_
