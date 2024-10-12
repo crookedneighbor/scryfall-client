@@ -6,12 +6,12 @@ import {
   getCardNamed,
   getCardBySetCodeAndCollectorNumber,
   random,
-} from "Api/cards";
-import { get, post } from "Lib/api-request";
-import { listOfCardsFixture } from "Fixtures";
-import List from "Models/list";
+} from "../../../src/api-routes/cards";
+import { get, post } from "../../../src/lib/api-request";
+import { listOfCardsFixture } from "../../fixtures";
+import List from "../../../src/models/list";
 
-vi.mock("Lib/api-request");
+vi.mock("../../../src/lib/api-request");
 
 describe("/cards", () => {
   beforeEach(() => {
@@ -344,7 +344,7 @@ describe("/cards", () => {
         () => {
           expect(get).toBeCalledTimes(1);
           expect(get).toBeCalledWith("/cards/foo/123a/es");
-        },
+        }
       );
     });
   });

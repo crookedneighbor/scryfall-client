@@ -1,5 +1,7 @@
-import enqueTask, { clearQueue } from "Lib/api-request/enque-task";
-import Task from "Lib/api-request/task";
+import enqueTask, {
+  clearQueue,
+} from "../../../../src/lib/api-request/enque-task";
+import Task from "../../../../src/lib/api-request/task";
 
 describe("enqueTask", () => {
   beforeEach(() => {

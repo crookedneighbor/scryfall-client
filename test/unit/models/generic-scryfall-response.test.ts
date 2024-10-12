@@ -1,6 +1,6 @@
 "use strict";
 
-import GenericScryfallResponse from "Models/generic-scryfall-response";
+import GenericScryfallResponse from "../../../src/models/generic-scryfall-response";
 
 describe("GenericScryfallResponse", function () {
   it("accepts a Scryfall response object", function () {

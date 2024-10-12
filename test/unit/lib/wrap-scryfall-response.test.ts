@@ -3,17 +3,17 @@
 import wrapScryfallResponse, {
   setTextTransform,
   resetTextTransform,
-} from "Lib/wrap-scryfall-response";
+} from "../../../src/lib/wrap-scryfall-response";
 import {
   cardFixture,
   listOfCardsFixture,
   setFixture,
   catalogOfCardNamesFixture,
   cardWithMultipleTokensFixture,
-} from "Fixtures";
-import Card from "Models/card";
-import MagicSet from "Models/magic-set";
-import GenericScryfallResponse from "Models/generic-scryfall-response";
+} from "../../fixtures";
+import Card from "../../../src/models/card";
+import MagicSet from "../../../src/models/magic-set";
+import GenericScryfallResponse from "../../../src/models/generic-scryfall-response";
 
 describe("wrapScryfallResponse", function () {
   afterEach(() => {
@@ -71,7 +71,7 @@ describe("wrapScryfallResponse", function () {
     expect(wrappedResponse).toBeInstanceOf(Card);
     expect(wrappedResponse.image_uris.small).toContain("scryfall");
     expect(wrappedResponse.all_parts[0]).toBeInstanceOf(
-      GenericScryfallResponse,
+      GenericScryfallResponse
     );
   });
 

@@ -1,6 +1,6 @@
 "use strict";
 
-import { slack, discord } from "Lib/convert-symbols-to-emoji";
+import { slack, discord } from "../../../src/lib/convert-symbols-to-emoji";
 
 describe("convertSymbolsToEmoji", function () {
   describe("slack", function () {

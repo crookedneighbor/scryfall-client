@@ -1,7 +1,7 @@
-import { getCatalog } from "Api/catalog";
-import { get } from "Lib/api-request";
+import { getCatalog } from "../../../src/api-routes/catalog";
+import { get } from "../../../src/lib/api-request";
 
-vi.mock("Lib/api-request");
+vi.mock("../../../src/lib/api-request");
 
 describe("/sets", () => {
   beforeEach(() => {

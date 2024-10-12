@@ -1,11 +1,11 @@
 "use strict";
 
-import wrapScryfallResponse from "Lib/wrap-scryfall-response";
-import List from "Models/list";
-import { listOfCardsFixture, listOfCardsPage2Fixture } from "Fixtures";
-import { get } from "Lib/api-request";
+import wrapScryfallResponse from "../../../src/lib/wrap-scryfall-response";
+import List from "../../../src/models/list";
+import { listOfCardsFixture, listOfCardsPage2Fixture } from "../../fixtures";
+import { get } from "../../../src/lib/api-request";
 
-vi.mock("Lib/api-request");
+vi.mock("../../../src/lib/api-request");
 
 describe("List", function () {
   let fakeRequest: vi.SpyInstance;
@@ -65,7 +65,7 @@ describe("List", function () {
   describe("next", function () {
     beforeEach(function () {
       fakeRequest.mockResolvedValue(
-        wrapScryfallResponse(listOfCardsPage2Fixture),
+        wrapScryfallResponse(listOfCardsPage2Fixture)
       );
     });
 

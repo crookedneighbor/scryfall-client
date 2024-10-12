@@ -1,5 +1,8 @@
-import { setUserAgent, getUserAgent } from "Lib/api-request/user-agent";
-import { resetUserAgent } from "../../../../src/lib/api-request/user-agent";
+import {
+  setUserAgent,
+  getUserAgent,
+  resetUserAgent,
+} from "../../../../src/lib/api-request/user-agent";
 
 describe("user-agent", () => {
   afterEach(() => {

@@ -2,15 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "strict": true,
-    "baseUrl": ".",
     "esModuleInterop": true,
-    "paths": {
-      "Api/*": ["src/api-routes/*"],
-      "Lib/*": ["src/lib/*"],
-      "Models/*": ["src/models/*"],
-      "Types/*": ["src/types/*"],
-      "Fixtures": ["test/fixtures"]
-    },
     "module": "commonjs",
     "target": "es5",
     "lib": ["es2019"]

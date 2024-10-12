@@ -1,7 +1,7 @@
-import { getSets, getSet, getSetByTcgId } from "Api/sets";
-import { get } from "Lib/api-request";
+import { getSets, getSet, getSetByTcgId } from "../../../src/api-routes/sets";
+import { get } from "../../../src/lib/api-request";
 
-vi.mock("Lib/api-request");
+vi.mock("../../../src/lib/api-request");
 
 describe("/sets", () => {
   beforeEach(() => {

@@ -1,4 +1,4 @@
-import Task from "Lib/api-request/task";
+import Task from "../../../../src/lib/api-request/task";
 
 describe("Task", () => {
   describe("getPromise", () => {

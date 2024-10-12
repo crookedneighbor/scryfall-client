@@ -1,15 +1,15 @@
-import apiRequest from "Lib/api-request/send-request-to-api";
-import sendRequest from "Lib/api-request/send-request";
-import getUrl from "Lib/api-request/get-url";
-import enqueTask from "Lib/api-request/enque-task";
-import ScryfallError from "Models/scryfall-error";
-import wrapScryfallResponse from "Lib/wrap-scryfall-response";
-import { cardFixture } from "Fixtures";
+import apiRequest from "../../../../src/lib/api-request/send-request-to-api";
+import sendRequest from "../../../../src/lib/api-request/send-request";
+import getUrl from "../../../../src/lib/api-request/get-url";
+import enqueTask from "../../../../src/lib/api-request/enque-task";
+import ScryfallError from "../../../../src/models/scryfall-error";
+import wrapScryfallResponse from "../../../../src/lib/wrap-scryfall-response";
+import { cardFixture } from "../../../fixtures";
 
-vi.mock("Lib/api-request/send-request");
-vi.mock("Lib/api-request/enque-task");
-vi.mock("Lib/api-request/get-url");
-vi.mock("Lib/wrap-scryfall-response");
+vi.mock("../../../../src/lib/api-request/send-request");
+vi.mock("../../../../src/lib/api-request/enque-task");
+vi.mock("../../../../src/lib/api-request/get-url");
+vi.mock("../../../../src/lib/wrap-scryfall-response");
 
 describe("apiRequest", () => {
   beforeEach(() => {
@@ -127,7 +127,7 @@ describe("apiRequest", () => {
     }).catch((e) => {
       expect(e).toBeInstanceOf(ScryfallError);
       expect(e.message).toBe(
-        "An unexpected error occurred when requesting resources from Scryfall.",
+        "An unexpected error occurred when requesting resources from Scryfall."
       );
       expect(e.status).toBe(500);
       expect(e.originalError).toBe(err);
@@ -149,7 +149,7 @@ describe("apiRequest", () => {
     }).catch((e) => {
       expect(e).toBeInstanceOf(ScryfallError);
       expect(e.message).toBe(
-        "Something went wrong when wrapping the response from Scryfall",
+        "Something went wrong when wrapping the response from Scryfall"
       );
       expect(e.thrownError).toBe(err);
     });

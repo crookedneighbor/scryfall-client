@@ -1,12 +1,12 @@
 "use strict";
 
-import MagicSet from "Models/magic-set";
-import Card from "Models/card";
-import wrapScryfallResponse from "Lib/wrap-scryfall-response";
-import { get } from "Lib/api-request";
-import { listOfCardsFixture, setFixture } from "Fixtures";
+import MagicSet from "../../../src/models/magic-set";
+import Card from "../../../src/models/card";
+import wrapScryfallResponse from "../../../src/lib/wrap-scryfall-response";
+import { get } from "../../../src/lib/api-request";
+import { listOfCardsFixture, setFixture } from "../../fixtures";
 
-vi.mock("Lib/api-request");
+vi.mock("../../../src/lib/api-request");
 
 describe("Set", function () {
   let fakeRequest: vi.SpyInstance, set: MagicSet;

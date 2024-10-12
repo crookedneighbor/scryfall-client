@@ -1,10 +1,10 @@
-import sendRequest from "Lib/api-request/send-request";
-import ScryfallError from "Models/scryfall-error";
+import sendRequest from "../../../../src/lib/api-request/send-request";
+import ScryfallError from "../../../../src/models/scryfall-error";
 import superagent from "superagent";
 import { vi } from "vitest";
 import { getUserAgent } from "../../../../src/lib/api-request/user-agent";
 
-vi.mock("Lib/api-request/user-agent");
+vi.mock("../../../../src/lib/api-request/user-agent");
 
 let mockResponse: {
   text: string;
@@ -86,13 +86,13 @@ describe("sendRequest", () => {
       sendRequest({
         method: "get",
         url: "https://example.com",
-      }),
+      })
     ).rejects.toBeInstanceOf(ScryfallError);
     await expect(
       sendRequest({
         method: "get",
         url: "https://example.com",
-      }),
+      })
     ).rejects.toMatchObject({
       message: "Could not parse response from Scryfall.",
     });
@@ -110,13 +110,13 @@ describe("sendRequest", () => {
       sendRequest({
         method: "get",
         url: "https://example.com",
-      }),
+      })
     ).rejects.toBeInstanceOf(ScryfallError);
     await expect(
       sendRequest({
         method: "get",
         url: "https://example.com",
-      }),
+      })
     ).rejects.toMatchObject({
       message: "Error from API",
     });

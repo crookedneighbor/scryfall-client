@@ -1,7 +1,7 @@
-import { get, post } from "Lib/api-request";
-import sendApiRequest from "Lib/api-request/send-request-to-api";
+import { get, post } from "../../../../src/lib/api-request";
+import sendApiRequest from "../../../../src/lib/api-request/send-request-to-api";
 
-vi.mock("Lib/api-request/send-request-to-api");
+vi.mock("../../../../src/lib/api-request/send-request-to-api");
 
 describe("request", () => {
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe("request", () => {
           expect.objectContaining({
             endpoint: "foo",
             method: "get",
-          }),
+          })
         );
       });
     });
@@ -33,7 +33,7 @@ describe("request", () => {
             query: {
               q: "bar",
             },
-          }),
+          })
         );
       });
     });
@@ -47,7 +47,7 @@ describe("request", () => {
           expect.objectContaining({
             endpoint: "foo",
             method: "post",
-          }),
+          })
         );
       });
     });
@@ -64,7 +64,7 @@ describe("request", () => {
             body: {
               post: "bar",
             },
-          }),
+          })
         );
       });
     });

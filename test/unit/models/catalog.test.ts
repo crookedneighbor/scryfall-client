@@ -1,7 +1,7 @@
 "use strict";
 
-import Catalog from "Models/catalog";
-import { catalogOfCardNamesFixture } from "Fixtures";
+import Catalog from "../../../src/models/catalog";
+import { catalogOfCardNamesFixture } from "../../fixtures";
 
 describe("Catalog", function () {
   it("inherits from Array", function () {
@@ -35,10 +35,10 @@ describe("Catalog", function () {
     expect(upperCaseNames).toBeInstanceOf(Array);
     expect(upperCaseNames).not.toBeInstanceOf(Catalog);
     expect(upperCaseNames[0]).toBe(
-      catalogOfCardNamesFixture.data[0].toUpperCase(),
+      catalogOfCardNamesFixture.data[0].toUpperCase()
     );
     expect(upperCaseNames[1]).toBe(
-      catalogOfCardNamesFixture.data[1].toUpperCase(),
+      catalogOfCardNamesFixture.data[1].toUpperCase()
     );
   });
 
