@@ -54,8 +54,9 @@ describe("enqueTask", () => {
     expect(Task.prototype.start).toBeCalledTimes(3);
   });
 
-  // TODO jest fake timers don't play well with promises
-  // now that we've moved to vitest, try again!
-  // it('TODO: delays between tasks', () => {
-  // });
+  it("TODO: delays between tasks", () => {
+    // TODO jest fake timers don't play well with promises
+    // now that we've moved to vitest, try again!
+    expect(true).toBe(true);
+  });
 });

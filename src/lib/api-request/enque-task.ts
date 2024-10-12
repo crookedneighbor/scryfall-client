@@ -3,6 +3,7 @@ import Task, { TaskFunction } from "./task";
 const DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME = 100;
 
 let taskCurrentlyInProgress = false;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let queue: Task<any>[] = [];
 let delayTime = DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME;
 
