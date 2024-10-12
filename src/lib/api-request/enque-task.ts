@@ -3,7 +3,7 @@ import Task, { TaskFunction } from "./task";
 const DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME = 100;
 
 let taskCurrentlyInProgress = false;
-let queue: Task<unknown>[] = [];
+let queue: Task<any>[] = [];
 let delayTime = DEFAULT_SCRYFALL_DESIGNATED_WAIT_TIME;
 
 export function clearQueue(): void {
