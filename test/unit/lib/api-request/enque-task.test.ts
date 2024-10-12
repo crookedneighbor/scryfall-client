@@ -1,4 +1,3 @@
-import ExtendedPromise from "@braintree/extended-promise";
 import enqueTask, { clearQueue } from "Lib/api-request/enque-task";
 import Task from "Lib/api-request/task";
 
@@ -24,7 +23,8 @@ describe("enqueTask", () => {
   it("waits to start subsequent tasks with delay until the previous task has finished", async () => {
     expect.assertions(7);
 
-    const delayedPromise = new ExtendedPromise();
+    let resolve;
+    const delayedPromise = new Promise((_resolve) => (resolve = _resolve));
     const delayedTask = vi.fn().mockReturnValue(delayedPromise);
     const task = vi.fn().mockReturnValue("result");
 
@@ -34,7 +34,7 @@ describe("enqueTask", () => {
 
     expect(Task.prototype.start).toBeCalledTimes(1);
 
-    delayedPromise.resolve("delayed result");
+    resolve("delayed result");
 
     const res1 = await promise1;
     expect(res1).toBe("delayed result");

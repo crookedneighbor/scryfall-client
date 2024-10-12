@@ -1,23 +1,21 @@
-import ExtendedPromise from "@braintree/extended-promise";
 export type TaskFunction<T> = () => T | Promise<T>;
 
 export default class Task<T> {
   taskFn: TaskFunction<T>;
-  pendingPromise: ExtendedPromise;
+  pendingPromise: Promise<T>;
+  resolve?: (res: T) => void;
+  reject?: (err: Error) => void;
 
   constructor(fn: TaskFunction<T>) {
     this.taskFn = fn;
-    this.pendingPromise = new ExtendedPromise();
+    this.pendingPromise = new Promise((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+    });
   }
 
   getPromise(): Promise<T> {
-    return this.pendingPromise
-      .then((res: T) => {
-        return Promise.resolve(res);
-      })
-      .catch((e: Error) => {
-        return Promise.reject(e);
-      });
+    return this.pendingPromise;
   }
 
   start(): Promise<void> {
@@ -26,10 +24,14 @@ export default class Task<T> {
         return this.taskFn();
       })
       .then((result) => {
-        this.pendingPromise.resolve(result);
+        if (this.resolve) {
+          this.resolve(result);
+        }
       })
       .catch((err) => {
-        this.pendingPromise.reject(err);
+        if (this.reject) {
+          this.reject(err);
+        }
       });
   }
 }

@@ -42,7 +42,6 @@
     "vitest": "^2.1.2"
   },
   "dependencies": {
-    "@braintree/extended-promise": "^1.0.0",
     "superagent": "^10.1.0"
   }
 }
