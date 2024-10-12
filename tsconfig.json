@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
     "strict": true,
-    "esModuleInterop": true,
-    "module": "commonjs",
-    "target": "es5",
-    "lib": ["es2019"]
+    "moduleResolution": "Bundler",
+    "module": "preserve",
+    "outDir": "./dist",
+    "declaration": true,
+    "esModuleInterop": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/__mocks__/"]
