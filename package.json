@@ -13,7 +13,7 @@
   },
   "scripts": {
     "prepublishOnly": "node ./scripts/download-symbology-fixture.js && npm run typescript",
-    "typescript": "tsc --declaration",
+    "typescript": "tsup src/index.ts",
     "lint": "eslint",
     "pretty": "prettier --write .",
     "posttest": "npm run lint",
@@ -37,6 +37,7 @@
     "eslint": "^9.12.0",
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.3.3",
+    "tsup": "^8.3.5",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.8.1",
     "vitest": "^2.1.2"

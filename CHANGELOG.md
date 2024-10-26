@@ -1,4 +1,10 @@
-0.24.5
+0.24.6
+
+_Potentially Breaking Changes_
+
+- Use ts-up for bundling
+
+  0.24.5
 
 _Potentially Breaking Changes_
 
