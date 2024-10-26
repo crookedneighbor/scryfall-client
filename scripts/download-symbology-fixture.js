@@ -1,18 +1,20 @@
 /* eslint-disable no-undef */
-const superagent = require("superagent");
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
 console.log("Downloading latest symbol data from Scryfall...");
 
 const pathToFixture = path.resolve("src", "lib", "fixtures", "symbology.ts");
 
-superagent
-  .get("https://api.scryfall.com/symbology")
-  .set("User-Agent", "ScryfallClient-Symbology-Download")
-  .set("Accept", "application/json")
-  .then((data) => {
-    const symbols = data.body.data.reduce((accum, data) => {
+fetch("https://api.scryfall.com/symbology", {
+  headers: {
+    "User-Agent": "ScryfallClient-Symbology-Download",
+    Accept: "application/json",
+  },
+})
+  .then((res) => res.json())
+  .then((response) => {
+    const symbols = response.data.reduce((accum, data) => {
       const char = data.symbol.replace(/[{}/]/g, "");
 
       if (char in accum) {
