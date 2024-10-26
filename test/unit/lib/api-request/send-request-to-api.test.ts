@@ -127,7 +127,7 @@ describe("apiRequest", () => {
     }).catch((e) => {
       expect(e).toBeInstanceOf(ScryfallError);
       expect(e.message).toBe(
-        "An unexpected error occurred when requesting resources from Scryfall."
+        "An unexpected error occurred when requesting resources from Scryfall.",
       );
       expect(e.status).toBe(500);
       expect(e.originalError).toBe(err);
@@ -149,7 +149,7 @@ describe("apiRequest", () => {
     }).catch((e) => {
       expect(e).toBeInstanceOf(ScryfallError);
       expect(e.message).toBe(
-        "Something went wrong when wrapping the response from Scryfall"
+        "Something went wrong when wrapping the response from Scryfall",
       );
       expect(e.thrownError).toBe(err);
     });

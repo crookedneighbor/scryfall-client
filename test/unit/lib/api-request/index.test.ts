@@ -16,7 +16,7 @@ describe("request", () => {
           expect.objectContaining({
             endpoint: "foo",
             method: "get",
-          })
+          }),
         );
       });
     });
@@ -33,7 +33,7 @@ describe("request", () => {
             query: {
               q: "bar",
             },
-          })
+          }),
         );
       });
     });
@@ -47,7 +47,7 @@ describe("request", () => {
           expect.objectContaining({
             endpoint: "foo",
             method: "post",
-          })
+          }),
         );
       });
     });
@@ -64,7 +64,7 @@ describe("request", () => {
             body: {
               post: "bar",
             },
-          })
+          }),
         );
       });
     });

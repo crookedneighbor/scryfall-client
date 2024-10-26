@@ -11,7 +11,7 @@ describe("getUrl", () => {
 
   it("noops when url already has domain", () => {
     expect(getUrl("https://api.scryfall.com/foo")).toBe(
-      "https://api.scryfall.com/foo"
+      "https://api.scryfall.com/foo",
     );
   });
 
@@ -19,7 +19,7 @@ describe("getUrl", () => {
     expect(
       getUrl("/foo", {
         q: "foo",
-      })
+      }),
     ).toBe("https://api.scryfall.com/foo?q=foo");
   });
 
@@ -28,7 +28,7 @@ describe("getUrl", () => {
       getUrl("/foo", {
         q: "foo",
         x: "bar",
-      })
+      }),
     ).toBe("https://api.scryfall.com/foo?q=foo&x=bar");
   });
 
@@ -37,7 +37,7 @@ describe("getUrl", () => {
       getUrl("/foo?a=baz", {
         q: "foo",
         x: "bar",
-      })
+      }),
     ).toBe("https://api.scryfall.com/foo?a=baz&q=foo&x=bar");
   });
 });

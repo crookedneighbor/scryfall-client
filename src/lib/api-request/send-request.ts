@@ -25,7 +25,7 @@ function makeRequest({ url, method, body }: RequestOptions) {
 }
 
 export default async function sendRequest(
-  options: RequestOptions
+  options: RequestOptions,
 ): Promise<ApiResponse> {
   const response = await makeRequest(options);
 

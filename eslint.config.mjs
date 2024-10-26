@@ -18,5 +18,5 @@ export default tseslint.config(
     rules: {
       ...vitest.configs.recommended.rules, // you can also use vitest.configs.all.rules to enable all rules
     },
-  }
+  },
 );
