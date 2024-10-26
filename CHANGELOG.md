@@ -1,3 +1,7 @@
+# 0.24.4
+
+- Drop dependency on superagent
+
 # 0.24.3
 
 _Potentially Breaking Changes_
