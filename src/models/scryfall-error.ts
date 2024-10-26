@@ -8,7 +8,9 @@ class ExtendableError extends Error {
 
     this.name = this.constructor.name;
 
+    // @ts-expect-error this a v8 specific thing
     if (typeof Error.captureStackTrace === "function") {
+      // @ts-expect-error this a v8 specific thing
       Error.captureStackTrace(this, this.constructor);
     } else {
       this.stack = new Error(message).stack;

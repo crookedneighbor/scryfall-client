@@ -1,10 +1,12 @@
 {
   "compilerOptions": {
     "strict": true,
-    "module": "CommonJS",
+    "moduleResolution": "Bundler",
+    "module": "preserve",
     "outDir": "./dist",
     "declaration": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "lib": ["dom", "ES2022"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/__mocks__/"]

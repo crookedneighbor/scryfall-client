@@ -1,4 +1,10 @@
-# 0.24.4
+0.24.5
+
+_Potentially Breaking Changes_
+
+- Revert back to JavaScript module
+
+  0.24.4
 
 - Drop dependency on superagent
 
