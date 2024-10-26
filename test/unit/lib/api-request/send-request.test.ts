@@ -1,108 +1,80 @@
 import sendRequest from "../../../../src/lib/api-request/send-request";
 import ScryfallError from "../../../../src/models/scryfall-error";
-import superagent from "superagent";
-import { vi } from "vitest";
+import { Mock, vi } from "vitest";
 import { getUserAgent } from "../../../../src/lib/api-request/user-agent";
 
 vi.mock("../../../../src/lib/api-request/user-agent");
 
-let mockResponse: {
-  text: string;
-};
-
-let agent;
-
 describe("sendRequest", () => {
+  let fetchSpy: Mock;
+  let mockResponse: {
+    object: string;
+    data: Record<string, string>;
+    message?: string;
+  };
+
   beforeEach(() => {
-    mockResponse = { text: "{}" };
+    mockResponse = { object: "card", data: {} };
 
-    agent = {
-      send: vi.fn().mockReturnThis(),
-      set: vi.fn().mockReturnThis(),
-      then: vi.fn().mockImplementation((callback) => {
-        return new Promise((resolve) => {
-          return resolve(callback(mockResponse));
-        });
-      }),
-    };
+    fetchSpy = vi.fn().mockResolvedValue({
+      json: vi.fn().mockResolvedValue(mockResponse),
+    });
 
-    vi.spyOn(superagent, "get").mockReturnValue(agent);
-    vi.spyOn(superagent, "post").mockReturnValue(agent);
+    vi.stubGlobal("fetch", fetchSpy);
   });
 
-  it("sends a get request", () => {
-    return sendRequest({
+  it("sends a get request", async () => {
+    await sendRequest({
       method: "get",
       url: "https://example.com",
-    }).then(() => {
-      expect(superagent.get).toBeCalledTimes(1);
-      expect(superagent.get).toBeCalledWith("https://example.com");
+    });
+
+    expect(fetchSpy).toBeCalledTimes(1);
+    expect(fetchSpy).toBeCalledWith("https://example.com", {
+      method: "get",
+      headers: expect.objectContaining({
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }),
     });
   });
 
-  it("can send a post request with body", () => {
+  it("can send a post request with body", async () => {
     const body = { foo: "bar" };
 
-    return sendRequest({
+    await sendRequest({
       method: "post",
       url: "https://example.com",
       body,
-    }).then(() => {
-      expect(superagent.post).toBeCalledTimes(1);
-      expect(superagent.post).toBeCalledWith("https://example.com");
-      expect(agent.send).toBeCalledTimes(1);
-      expect(agent.send).toBeCalledWith(body);
     });
-  });
 
-  it("falls back to get request if post has no body", () => {
-    return sendRequest({
+    expect(fetchSpy).toBeCalledTimes(1);
+    expect(fetchSpy).toBeCalledWith("https://example.com", {
       method: "post",
-      url: "https://example.com",
-    }).then(() => {
-      expect(superagent.post).toBeCalledTimes(0);
-      expect(superagent.get).toBeCalledTimes(1);
-      expect(superagent.get).toBeCalledWith("https://example.com");
+      headers: expect.objectContaining({
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }),
+      body: '{"foo":"bar"}',
     });
   });
 
   it("automatically sets useragent", async () => {
     vi.mocked(getUserAgent).mockReturnValue("User Agent");
 
-    return sendRequest({
-      method: "get",
+    await sendRequest({
       url: "https://example.com",
-    }).then(() => {
-      expect(agent.set).toBeCalledWith("User-Agent", "User Agent");
     });
-  });
-
-  it("handles parsing errors", async () => {
-    mockResponse.text = "{";
-
-    expect.assertions(2);
-
-    await expect(
-      sendRequest({
-        method: "get",
-        url: "https://example.com",
-      })
-    ).rejects.toBeInstanceOf(ScryfallError);
-    await expect(
-      sendRequest({
-        method: "get",
-        url: "https://example.com",
-      })
-    ).rejects.toMatchObject({
-      message: "Could not parse response from Scryfall.",
+    expect(fetchSpy).toBeCalledWith("https://example.com", {
+      headers: expect.objectContaining({
+        "User-Agent": "User Agent",
+      }),
     });
   });
 
   it("handles scryfall api errors", async () => {
-    mockResponse.text = JSON.stringify({
-      object: "error",
-      details: "Error from API",
-    });
+    mockResponse.object = "error";
+    mockResponse.message = "Error from API";
 
     expect.assertions(2);
 
