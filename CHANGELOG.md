@@ -1,4 +1,10 @@
-0.24.6
+0.24.7
+
+_Potentially Breaking Changes_
+
+- Set `main` to cjs version
+
+  0.24.6
 
 _Potentially Breaking Changes_
 
