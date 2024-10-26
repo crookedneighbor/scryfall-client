@@ -18,7 +18,7 @@
     "posttest": "npm run lint",
     "test": "vitest",
     "test:unit": "vitest run test/unit/",
-    "test:integration": "vitest run test/integration/",
+    "test:integration": "vitest test/integration/",
     "test:all": "npm run lint && npm run test:unit && npm run test:integration"
   },
   "keywords": [
@@ -31,7 +31,6 @@
   "devDependencies": {
     "@eslint/js": "^9.12.0",
     "@types/eslint__js": "^8.42.3",
-    "@types/superagent": "^8.1.9",
     "@typescript-eslint/eslint-plugin": "^8.8.1",
     "@vitest/eslint-plugin": "^1.1.7",
     "eslint": "^9.12.0",
@@ -40,8 +39,5 @@
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.8.1",
     "vitest": "^2.1.2"
-  },
-  "dependencies": {
-    "superagent": "^10.1.0"
   }
 }
