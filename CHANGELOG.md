@@ -1,3 +1,9 @@
+0.24.8
+
+_Potentially Breaking Changes_
+
+* fix, set dist index back to js file
+
 0.24.7
 
 _Potentially Breaking Changes_
