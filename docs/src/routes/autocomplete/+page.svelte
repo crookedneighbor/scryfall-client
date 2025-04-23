@@ -1,10 +1,10 @@
 <script lang="ts">
-  import scryfall from "../../../../src/";
+  import scryfall from "scryfall-client";
   import debounce from "$lib/debounce";
 
-  let value = "";
-  let cardImage = "https://cards.scryfall.io/back.png";
-  let autocompleteDatalist: string[] = [];
+  let value = $state("");
+  let cardImage = $state("https://cards.scryfall.io/back.png");
+  let autocompleteDatalist: string[] = $state([]);
 
   const onKeyup = debounce(() => {
     scryfall.autocomplete(value).then((catalog) => {
@@ -16,18 +16,17 @@
     });
   });
 
-  function onSearchInput(e: InputEvent) {
-    const val = (e.target as HTMLInputElement)?.value;
-    if (!val) {
+  function onSearchInput() {
+    if (!value) {
       return;
     }
 
-    if (!autocompleteDatalist.find((name) => name === val)) {
+    if (!autocompleteDatalist.find((name) => name === value)) {
       return;
     }
 
-    return scryfall
-      .getCard(val, "name")
+    scryfall
+      .getCard(value, "name")
       .then((card) => card.getImage())
       .then((img) => {
         cardImage = img;
@@ -53,8 +52,8 @@
           <input
             list="autocomplete-cards"
             class="input is-large"
-            on:input={onSearchInput}
-            on:keyup={onKeyup}
+            oninput={onSearchInput}
+            onkeyup={onKeyup}
             type="text"
             bind:value
             placeholder="Enter Card Name (Ex: Karn)"
